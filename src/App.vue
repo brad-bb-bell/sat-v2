@@ -1,3 +1,13 @@
 <template>
-  <h1 class="text-3xl font-bold underline text-red-500">Simple Activity Tracker</h1>
+  <div class="">
+    <Container>hi</Container>
+  </div>
 </template>
+<script>
+import Container from "./components/ContainerBase.vue";
+export default {
+  components: {
+    Container,
+  },
+};
+</script>
