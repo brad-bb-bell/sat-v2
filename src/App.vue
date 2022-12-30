@@ -3,12 +3,18 @@
     <Container>
       <h1 class="text-center text-xl tracking-widest">🤸 🏋️ 🧘 Simple Activity Tracker 🧘 🏋️ 🤸</h1>
     </Container>
-    <Container v-if="!isLoggedIn">
+
+    <Container v-if="!isLoggedIn && !showLogin && !showSignup">
       <div class="text-center">
-        <button class="mr-14" @click="">Login</button>
-        <button class="ml-14" @click="">Signup</button>
+        <button class="mr-14" @click="showLogin = true">Login</button>
+        <button class="ml-14" @click="showSignup = true">Signup</button>
       </div>
-      <!-- <form @submit="login()">
+    </Container>
+
+    <Container v-if="showSignup">Signup will be here</Container>
+
+    <Container v-if="showLogin">
+      <form @submit="login()">
         <ul>
           <li v-for="error in errors" :key="error">{{ error }}</li>
         </ul>
@@ -19,7 +25,7 @@
           <input type="password" placeholder="Password" v-model="loginParams.password" />
         </div>
         <input type="submit" value="Login" />
-      </form> -->
+      </form>
     </Container>
   </div>
 </template>
@@ -35,6 +41,8 @@ export default {
       errors: [],
       loginParams: {},
       isLoggedIn: false,
+      showLogin: false,
+      showSignup: false,
     };
   },
   methods: {
