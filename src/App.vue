@@ -14,17 +14,29 @@
     <Container v-if="showSignup">Signup will be here</Container>
 
     <Container v-if="showLogin">
-      <form @submit="login()">
+      <form class="flex" @submit="login()">
         <ul>
           <li v-for="error in errors" :key="error">{{ error }}</li>
         </ul>
         <div>
-          <input type="email" placeholder="Email" v-model="loginParams.email" />
+          <input
+            type="email"
+            placeholder="  Email"
+            v-model="loginParams.email"
+            class="text-black mx-2 my-2 rounded-lg"
+          />
         </div>
         <div>
-          <input type="password" placeholder="Password" v-model="loginParams.password" />
+          <input
+            type="password"
+            placeholder="  Password"
+            v-model="loginParams.password"
+            class="text-black mx-2 my-2 rounded-lg"
+          />
         </div>
-        <input type="submit" value="Login" />
+        <button type="submit" class="border text-black font-medium bg-green-400 px-8 text-sm mx-2 my-2 rounded-lg">
+          Login
+        </button>
       </form>
     </Container>
   </div>
