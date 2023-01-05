@@ -16,6 +16,7 @@
     <Container v-if="showLogin">
       <form class="flex" @submit.prevent="login()">
         <ul>
+          <!-- errors do not display properly with css -->
           <li v-for="error in errors" :key="error">{{ error }}</li>
         </ul>
         <div>
@@ -33,6 +34,10 @@
           Login
         </button>
       </form>
+    </Container>
+
+    <Container v-if="isLoggedIn">
+      {{ user.name }}
     </Container>
   </div>
 </template>
@@ -53,32 +58,31 @@ export default {
       user: {},
     };
   },
-  watch: {
-    "$localStorage.jwt": {
-      handler() {
-        this.isLoggedIn = !!localStorage.jwt;
-        console.log("watcher", this.isLoggedIn);
-      },
-      deep: true,
-    },
-  },
   methods: {
     login() {
-      axios
-        .post("/sessions", this.loginParams)
-        .then((response) => {
-          axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.jwt;
-          localStorage.setItem("jwt", response.data.jwt);
-          this.user.name = response.data.name;
-          this.user.user_id = response.data.user_id;
-          console.log("Login successful");
-        })
-        .catch((error) => {
-          console.log(error.response);
-          this.errors = ["Invalid email or password."];
-        });
-      this.loginParams = {};
+      axios.post("/sessions", this.loginParams).then((response) => {
+        axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.jwt;
+        console.log("response.data", response.data);
+        // localStorage.setItem("jwt", response.data.jwt);
+        // localStorage.setItem("user_id", response.data.user_id);
+        // this.user = response.data;
+        // console.log("Login successful");
+        // console.log("User: ", this.user);
+        // })
+        // .catch((error) => {
+        //   this.errors = ["Invalid email or password."];
+      });
+      // this.loginParams = {};
     },
+  },
+  created() {
+    if (localStorage.jwt && localStorage.user_id) {
+      this.isLoggedIn = true;
+      axios.get("/users/" + localStorage.user_id + ".json").then((response) => {
+        this.user = response.data;
+        console.log("Current user:", response.data);
+      });
+    }
   },
 };
 </script>
