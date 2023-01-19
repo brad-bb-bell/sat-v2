@@ -60,19 +60,21 @@ export default {
   },
   methods: {
     login() {
-      axios.post("/sessions", this.loginParams).then((response) => {
-        axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.jwt;
-        console.log("response.data", response.data);
-        // localStorage.setItem("jwt", response.data.jwt);
-        // localStorage.setItem("user_id", response.data.user_id);
-        // this.user = response.data;
-        // console.log("Login successful");
-        // console.log("User: ", this.user);
-        // })
-        // .catch((error) => {
-        //   this.errors = ["Invalid email or password."];
-      });
-      // this.loginParams = {};
+      axios
+        .post("/sessions.json", this.loginParams)
+        .then((response) => {
+          axios.defaults.headers.common["Authorization"] = "Bearer " + response.data.jwt;
+          console.log("response.data", response.data);
+          localStorage.setItem("jwt", response.data.jwt);
+          localStorage.setItem("user_id", response.data.user_id);
+          this.user = response.data;
+          console.log("Login successful");
+          console.log("User: ", this.user);
+        })
+        .catch((error) => {
+          this.errors = ["Invalid email or password."];
+        });
+      this.loginParams = {};
     },
   },
   created() {
