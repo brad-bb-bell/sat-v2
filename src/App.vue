@@ -4,6 +4,7 @@
       <h1 class="text-center text-xl tracking-widest">🤸 🏋️ 🧘 Simple Activity Tracker 🧘 🏋️ 🤸</h1>
     </Container>
 
+    <!-- Login or Signup -->
     <Container v-if="!isLoggedIn && !showLogin && !showSignup">
       <div class="grid grid-cols-2">
         <button class="mx-auto" @click="showLogin = true">Login</button>
@@ -11,6 +12,7 @@
       </div>
     </Container>
 
+    <!-- Signup -->
     <Container v-if="showSignup">
       <form @submit.prevent="signup()">
         <div class="text-center">
@@ -60,7 +62,7 @@
             </button>
             <p>
               <button
-                @click="
+                @click.prevent="
                   this.showSignup = false;
                   this.errors = [];
                 "
@@ -74,6 +76,7 @@
       </form>
     </Container>
 
+    <!-- Login -->
     <Container v-if="showLogin">
       <form @submit.prevent="login()">
         <div class="text-center">
@@ -102,7 +105,7 @@
             </button>
             <p>
               <button
-                @click="
+                @click.prevent="
                   this.showLogin = false;
                   this.errors = [];
                 "
@@ -116,6 +119,7 @@
       </form>
     </Container>
 
+    <!-- Successfully Logged In -->
     <Container v-if="isLoggedIn" class="grid grid-cols-2">
       <div class="mx-auto">
         {{ user.name }}
