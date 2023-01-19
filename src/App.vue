@@ -120,14 +120,27 @@
     </Container>
 
     <!-- Successfully Logged In -->
-    <Container v-if="isLoggedIn" class="grid grid-cols-2">
-      <div class="mx-auto">
-        {{ user.name }}
-      </div>
-      <div class="mx-auto">
-        <button @click="logout">Logout</button>
-      </div>
-    </Container>
+    <div v-if="isLoggedIn">
+      <Container class="grid grid-cols-2">
+        <div class="mx-auto">
+          {{ user.name }}
+        </div>
+        <div class="mx-auto">
+          <button @click="logout">Logout</button>
+        </div>
+      </Container>
+
+      <Container>
+        <div v-for="activity in activities" :key="activity.id">
+          <div class="relative bg-gray-700 border-2 border-black my-1 pl-2">
+            {{ activity.name }}
+            <span class="absolute inset-y-0 right-2">
+              <i class="fa-solid fa-xmark text-red-400"></i>
+            </span>
+          </div>
+        </div>
+      </Container>
+    </div>
   </div>
 </template>
 <script>
@@ -146,6 +159,7 @@ export default {
       showLogin: false,
       showSignup: false,
       user: {},
+      activities: [],
     };
   },
   methods: {
@@ -157,6 +171,7 @@ export default {
           localStorage.setItem("jwt", response.data.jwt);
           localStorage.setItem("user_id", response.data.id);
           this.user = response.data;
+          this.activities = this.user.activities;
           console.log("Login successful");
           console.log("User: ", this.user);
           this.loginParams = {};
