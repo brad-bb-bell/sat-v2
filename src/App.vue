@@ -130,12 +130,19 @@
         </div>
       </Container>
 
-      <Container>
+      <Container class="py-2">
         <div v-for="activity in activities" :key="activity.id">
-          <div class="relative bg-gray-700 border-2 border-black my-1 pl-2">
+          <div
+            @click="toggleSelect(activity.id)"
+            class="relative bg-gray-700 border-2 border-black my-1 pl-2"
+            :class="[selectedActivities.includes(activity.id) === true ? 'border border-green-400' : '']"
+          >
             {{ activity.name }}
             <span class="absolute inset-y-0 right-2">
-              <i class="fa-solid fa-xmark text-red-400"></i>
+              <i
+                @click="deleteActivity(activity.id)"
+                class="fa-solid fa-xmark text-red-400 hover:cursor-pointer hover:text-red-600"
+              ></i>
             </span>
           </div>
         </div>
@@ -160,6 +167,7 @@ export default {
       showSignup: false,
       user: {},
       activities: [],
+      selectedActivities: [],
     };
   },
   methods: {
@@ -206,12 +214,26 @@ export default {
           this.signupParams = {};
         });
     },
+    deleteActivity(id) {
+      console.log("Activity with ID " + id + " will be deleted");
+    },
+    toggleSelect(id) {
+      if (this.selectedActivities.includes(id) === false) {
+        this.selectedActivities.push(id);
+      } else {
+        var index = this.selectedActivities.indexOf(id);
+        if (index !== -1) {
+          this.selectedActivities.splice(index, 1);
+        }
+      }
+    },
   },
   created() {
     if (localStorage.jwt && localStorage.user_id && localStorage.user_id != undefined) {
       this.isLoggedIn = true;
       axios.get("/users/" + localStorage.user_id + ".json").then((response) => {
         this.user = response.data;
+        this.activities = this.user.activities;
         console.log("Current user:", response.data);
       });
     }
