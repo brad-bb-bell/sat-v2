@@ -130,6 +130,7 @@
         </div>
       </Container>
 
+      <!-- Activities -->
       <Container class="py-2">
         <div v-for="activity in activities" :key="activity.id">
           <div
@@ -145,6 +146,11 @@
               ></i>
             </span>
           </div>
+        </div>
+        <div class="">
+          <form @submit.prevent="addActivity()">
+            <input type="text" v-model="newActivity" placeholder="Add Activity" class="w-[99%] m-1 pl-2 text-black" />
+          </form>
         </div>
       </Container>
     </div>
@@ -168,6 +174,7 @@ export default {
       user: {},
       activities: [],
       selectedActivities: [],
+      newActivity: "",
     };
   },
   methods: {
@@ -216,6 +223,10 @@ export default {
     },
     deleteActivity(id) {
       console.log("Activity with ID " + id + " will be deleted");
+    },
+    addActivity() {
+      console.log("Add " + this.newActivity);
+      this.newActivity = "";
     },
     toggleSelect(id) {
       if (this.selectedActivities.includes(id) === false) {
