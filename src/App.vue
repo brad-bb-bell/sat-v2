@@ -132,7 +132,7 @@
       <div v-for="activity in activities" :key="activity.id">
         <div
           @click="toggleSelect(activity.id)"
-          class="relative bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
+          class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
           :class="[selectedActivities.includes(activity.id) === true ? 'border border-green-400' : '']"
         >
           {{ activity.name }}
@@ -164,6 +164,24 @@
         class="mt-1"
       />
     </Container>
+
+    <!-- Did Its -->
+    <Container>
+      <div class="text-center">Recent Activities</div>
+      <div
+        v-for="didIt in didIts"
+        :key="didIt.id"
+        class="relative bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
+      >
+        {{ didIt.name }} on {{ dateFormat(didIt.date) }}
+        <span class="absolute inset-y-0 right-2">
+          <i
+            @click="deleteDidIt(didIt)"
+            class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
+          ></i>
+        </span>
+      </div>
+    </Container>
   </div>
 </template>
 <script>
@@ -186,6 +204,9 @@ export default {
       showSignup: false,
       user: {},
       activities: [],
+      didIts: [],
+      didItsFullList: [],
+      didItsNumber: 10,
       selectedActivities: [],
       newActivityName: "",
       calendarDate: "",
@@ -201,6 +222,14 @@ export default {
           localStorage.setItem("user_id", response.data.id);
           this.user = response.data;
           this.activities = this.user.activities;
+          this.didItsFullList = this.user.did_its;
+          this.didIts = this.user.did_its;
+          this.didIts.sort(function (a, b) {
+            var c = new Date(a.date);
+            var d = new Date(b.date);
+            return c - d;
+          });
+          this.didIts = this.didIts.reverse().slice(0, this.didItsNumber);
           console.log("Login successful");
           console.log("User: ", this.user);
           this.loginParams = {};
@@ -291,18 +320,13 @@ export default {
         }
       }
     },
-    format() {
-      const day = this.date.getDate();
-      const month = this.date.getMonth() + 1;
-      const year = this.date.getFullYear();
-
-      return `${month}/${day}/${year}`;
+    dateFormat(date) {
+      const displayDate = new Date(date.replace(/-/g, "/"));
+      const options = { weekday: "long", month: "short", day: "numeric" };
+      return displayDate.toLocaleDateString("en-US", options);
     },
-    showDate(date) {
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
-      this.calendarDate = `${year}-${month}-${day}`;
+    deleteDidIt(didIt) {
+      console.log("did it will be deleted", didIt);
     },
   },
   created() {
@@ -311,25 +335,25 @@ export default {
       axios.get("/users/" + localStorage.user_id + ".json").then((response) => {
         this.user = response.data;
         this.activities = this.user.activities;
+        this.didItsFullList = this.user.did_its;
+        this.didIts = this.user.did_its;
+        this.didIts.sort(function (a, b) {
+          var c = new Date(a.date);
+          var d = new Date(b.date);
+          return c - d;
+        });
+        this.didIts = this.didIts.reverse().slice(0, this.didItsNumber);
+        console.log(this.didIts);
         console.log("Current user:", response.data);
       });
     }
   },
-  // setup() {
-  //   const date = ref(new Date());
-
-  //   const format = (date) => {
-  //     const day = date.getDate();
-  //     const month = date.getMonth() + 1;
-  //     const year = date.getFullYear();
-
-  //     return `${month}/${day}/${year}`;
-  //   };
-
-  //   return {
-  //     date,
-  //     format,
-  //   };
-  // },
 };
 </script>
+
+// setup() { // const date = ref(new Date()); // const format = (date) => { // const day = date.getDate(); // const
+month = date.getMonth() + 1; // const year = date.getFullYear(); // return `${month}/${day}/${year}`; // }; // return {
+// date, // format, // }; // }, // format() { // const day = this.date.getDate(); // const month = this.date.getMonth()
++ 1; // const year = this.date.getFullYear(); // return `${month}/${day}/${year}`; // }, // showDate(date) { // const
+day = date.getDate(); // const month = date.getMonth() + 1; // const year = date.getFullYear(); // this.calendarDate =
+`${year}-${month}-${day}`; // },
