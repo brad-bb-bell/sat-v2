@@ -13,4 +13,3 @@ if (jwt) {
 }
 
 createApp(App).mount("#app");
-App.component("Date-picker", Datepicker);

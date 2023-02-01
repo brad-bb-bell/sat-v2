@@ -139,24 +139,29 @@
           <span class="absolute inset-y-0 right-2">
             <i
               @click="deleteActivity(activity)"
-              class="fa-solid fa-xmark text-red-400 hover:cursor-pointer hover:text-red-600"
+              class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
             ></i>
           </span>
         </div>
       </div>
       <div class="">
         <form @submit.prevent="addActivity(newActivityName)">
-          <input type="text" v-model="newActivityName" placeholder="Add Activity" class="w-[99%] m-1 pl-2 text-black" />
+          <input
+            type="text"
+            v-model="newActivityName"
+            placeholder="Add Activity"
+            class="w-full pl-3 text-black border-2 border-black"
+          />
         </form>
       </div>
       <Datepicker
         v-model="calendarDate"
         placeholder="Select Date"
-        :format="format"
         :enableTimePicker="false"
         @update:modelValue="calendarDate"
         autoApply
         dark
+        class="mt-1"
       />
     </Container>
   </div>
