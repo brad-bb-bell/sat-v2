@@ -126,10 +126,10 @@
 
     <!-- Activities -->
     <Container class="py-2">
-      <div v-if="activities.length === 0" class="text-center mb-2">
+      <div v-if="activities.length == 0" class="text-center mb-2">
         Add an activity in the box below and press 'Enter'
       </div>
-      <div v-for="activity in activities" :key="activity.id">
+      <div v-else v-for="activity in activities" :key="activity.id">
         <div
           @click="toggleSelect(activity.id)"
           class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
@@ -158,11 +158,18 @@
         v-model="calendarDate"
         placeholder="Select Date"
         :enableTimePicker="false"
-        @update:modelValue="calendarDate"
         autoApply
         dark
         class="mt-1"
       />
+      <div class="flex center py-2">
+        <button
+          @click.prevent="createDidIt()"
+          class="bg-green-400 text-black border-2 border-purple-400 transition font-bold hover:font-extrabold text-xl rounded-lg py-3 px-8 mx-auto"
+        >
+          Did It
+        </button>
+      </div>
     </Container>
 
     <!-- Did Its -->
@@ -209,7 +216,7 @@ export default {
       didItsNumber: 10,
       selectedActivities: [],
       newActivityName: "",
-      calendarDate: "",
+      calendarDate: Date.new,
     };
   },
   methods: {
@@ -325,8 +332,17 @@ export default {
       const options = { weekday: "long", month: "short", day: "numeric" };
       return displayDate.toLocaleDateString("en-US", options);
     },
+    showDate(date) {
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      this.calendarDate = `${year}-${month}-${day}`;
+    },
     deleteDidIt(didIt) {
       console.log("did it will be deleted", didIt);
+    },
+    createDidIt() {
+      console.log("create", this.selectedActivities, this.calendarDate);
     },
   },
   created() {
@@ -350,10 +366,3 @@ export default {
   },
 };
 </script>
-
-// setup() { // const date = ref(new Date()); // const format = (date) => { // const day = date.getDate(); // const
-month = date.getMonth() + 1; // const year = date.getFullYear(); // return `${month}/${day}/${year}`; // }; // return {
-// date, // format, // }; // }, // format() { // const day = this.date.getDate(); // const month = this.date.getMonth()
-+ 1; // const year = this.date.getFullYear(); // return `${month}/${day}/${year}`; // }, // showDate(date) { // const
-day = date.getDate(); // const month = date.getMonth() + 1; // const year = date.getFullYear(); // this.calendarDate =
-`${year}-${month}-${day}`; // },
