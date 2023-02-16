@@ -156,11 +156,12 @@
       </div>
       <Datepicker
         v-model="calendarDate"
-        placeholder="Select Date"
+        :placeholder="showDate(new Date())"
         :enableTimePicker="false"
         autoApply
         dark
         class="mt-1"
+        :initialViewDate="new Date()"
       />
       <div class="flex center py-2">
         <button
