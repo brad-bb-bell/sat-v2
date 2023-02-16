@@ -1,6 +1,6 @@
 <template>
-  <Container>
-    <h1 class="text-center text-xl tracking-widest">🤸 🏋️ 🧘 Simple Activity Tracker 🧘 🏋️ 🤸</h1>
+  <Container class="border-transparent bg-gradient-to-br from-purple-300 to-purple-500">
+    <h1 class="text-center text-xl tracking-widest">Simple Activity Tracker</h1>
   </Container>
 
   <!-- Login or Signup -->
@@ -165,7 +165,7 @@
       <div class="flex center py-2">
         <button
           @click.prevent="createDidIt()"
-          class="bg-green-400 text-black border-2 border-purple-400 transition font-bold hover:font-extrabold text-xl rounded-lg py-3 px-8 mx-auto"
+          class="text-black border-2 border-purple-400 transition font-medium bg-gradient-to-br from-green-300 to-green-500 hover:font-bold text-xl rounded-lg py-3 px-8 mx-auto"
         >
           Did It
         </button>
