@@ -138,7 +138,7 @@
           {{ activity.name }}
           <span class="absolute inset-y-0 right-2">
             <i
-              @click="deleteActivity(activity)"
+              @click.stop="deleteActivity(activity)"
               class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
             ></i>
           </span>
