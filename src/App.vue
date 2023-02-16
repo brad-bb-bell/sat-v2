@@ -231,12 +231,7 @@ export default {
           this.activities = this.user.activities;
           this.didItsFullList = this.user.did_its;
           this.didIts = this.user.did_its;
-          this.didIts.sort(function (a, b) {
-            var c = new Date(a.date);
-            var d = new Date(b.date);
-            return c - d;
-          });
-          this.didIts = this.didIts.reverse().slice(0, this.didItsNumber);
+          this.sortByDate(this.didIts);
           console.log("Login successful");
           console.log("User: ", this.user);
           this.loginParams = {};
@@ -342,7 +337,39 @@ export default {
       console.log("did it will be deleted", didIt);
     },
     createDidIt() {
-      console.log("create", this.selectedActivities, this.calendarDate);
+      if (!this.calendarDate) {
+        alert("Please select a date.");
+        return;
+      }
+      if (this.selectedActivities.length === 0) {
+        alert("Please select an activity.");
+        return;
+      }
+      for (let index = 0; index < this.selectedActivities.length; index++) {
+        axios
+          .post("/did_its.json", {
+            user_id: this.user.id,
+            activity_id: this.selectedActivities[index],
+            date: this.calendarDate,
+          })
+          .then((response) => {
+            console.log("Successfully recorded activity", response.data);
+            this.didIts.push(response.data);
+            this.sortByDate(this.didIts);
+
+            // could this be included in sortByDate?
+            this.didIts = this.didIts.reverse().slice(0, this.didItsNumber);
+          });
+      }
+      this.selectedId = [];
+      this.calendarDate = "";
+    },
+    sortByDate(array) {
+      array.sort(function (a, b) {
+        var c = new Date(a.date);
+        var d = new Date(b.date);
+        return c - d;
+      });
     },
   },
   created() {
@@ -353,11 +380,7 @@ export default {
         this.activities = this.user.activities;
         this.didItsFullList = this.user.did_its;
         this.didIts = this.user.did_its;
-        this.didIts.sort(function (a, b) {
-          var c = new Date(a.date);
-          var d = new Date(b.date);
-          return c - d;
-        });
+        this.sortByDate(this.didIts);
         this.didIts = this.didIts.reverse().slice(0, this.didItsNumber);
         console.log(this.didIts);
         console.log("Current user:", response.data);
