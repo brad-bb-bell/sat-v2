@@ -115,7 +115,7 @@
 
   <!-- Successfully Logged In -->
   <div v-if="isLoggedIn">
-    <Container class="grid grid-cols-2">
+    <Container class="text-xl grid grid-cols-2">
       <div class="mx-auto">
         {{ user.name }}
       </div>
@@ -156,7 +156,7 @@
       </div>
       <Datepicker
         v-model="calendarDate"
-        :placeholder="showDate(new Date())"
+        placeholder="Select Date"
         :enableTimePicker="false"
         autoApply
         dark
@@ -166,7 +166,7 @@
       <div class="flex center py-2">
         <button
           @click.prevent="createDidIt()"
-          class="text-black border-2 border-purple-400 transition font-medium bg-gradient-to-br from-green-300 to-green-500 hover:font-bold text-xl rounded-lg py-3 px-8 mx-auto"
+          class="text-black border-2 border-purple-400 transition font-medium bg-gradient-to-br from-green-300 to-green-500 hover:underline text-xl rounded-lg py-3 px-8 mx-auto"
         >
           Did It
         </button>
@@ -175,7 +175,7 @@
 
     <!-- Did Its -->
     <Container>
-      <div class="text-center">Recent Activities</div>
+      <div class="text-xl text-center">Recent Activities</div>
       <div
         v-for="didIt in didIts"
         :key="didIt.id"
@@ -184,7 +184,7 @@
         {{ didIt.name }} on {{ dateFormat(didIt.date) }}
         <span class="absolute inset-y-0 right-2">
           <i
-            @click="deleteDidIt(didIt)"
+            @click="deleteDidIt(didIt.id)"
             class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
           ></i>
         </span>
@@ -217,7 +217,7 @@ export default {
       didItsNumber: 10,
       selectedActivities: [],
       newActivityName: "",
-      calendarDate: Date.new,
+      calendarDate: "",
     };
   },
   methods: {
@@ -233,6 +233,7 @@ export default {
           this.didItsFullList = this.user.did_its;
           this.didIts = this.user.did_its;
           this.sortByDate(this.didIts);
+          this.sortByDate(this.didItsFullList);
           console.log("Login successful");
           console.log("User: ", this.user);
           this.loginParams = {};
@@ -334,8 +335,13 @@ export default {
       const year = date.getFullYear();
       this.calendarDate = `${year}-${month}-${day}`;
     },
-    deleteDidIt(didIt) {
-      console.log("did it will be deleted", didIt);
+    deleteDidIt(id) {
+      console.log("did it will be deleted", id);
+      axios.delete("/did_its/" + id + ".json").then((response) => {
+        console.log("Success,", response.data);
+        this.didItsFullList = this.didItsFullList.filter((didIt) => didIt.id != id);
+        this.didIts = this.didItsFullList.slice(0, this.didItsNumber);
+      });
     },
     createDidIt() {
       if (!this.calendarDate) {
@@ -382,8 +388,8 @@ export default {
         this.didItsFullList = this.user.did_its;
         this.didIts = this.user.did_its;
         this.sortByDate(this.didIts);
+        this.sortByDate(this.didItsFullList);
         this.didIts = this.didIts.reverse().slice(0, this.didItsNumber);
-        console.log(this.didIts);
         console.log("Current user:", response.data);
       });
     }
