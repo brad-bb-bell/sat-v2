@@ -5,7 +5,7 @@
 
   <!-- Login or Signup -->
   <Container v-if="!isLoggedIn && !showLogin && !showSignup">
-    <div class="grid grid-cols-2">
+    <div class="grid grid-cols-2 text-xl">
       <button class="mx-auto" @click="showLogin = true">Login</button>
       <button class="mx-auto" @click="showSignup = true">Signup</button>
     </div>
@@ -51,7 +51,7 @@
         </div>
         <div class="text-center my-auto">
           <h2>New User Signup</h2>
-          <button type="submit" class="w-[100px] border text-black font-medium bg-green-400 text-sm rounded my-1">
+          <button type="submit" class="w-[100px] border text-black font-medium bg-green-400 rounded my-1">
             Submit
           </button>
           <p>
@@ -60,7 +60,7 @@
                 this.showSignup = false;
                 this.errors = [];
               "
-              class="w-[100px] border text-black font-medium bg-gray-400 text-sm rounded my-1"
+              class="w-[100px] border text-black font-medium bg-gray-400 rounded my-1"
             >
               Back
             </button>
@@ -72,7 +72,7 @@
 
   <!-- Login -->
   <Container v-if="showLogin">
-    <form @submit.prevent="login()">
+    <form @submit.prevent="login()" class="">
       <div class="text-center">
         <ul>
           <li v-for="error in errors" :key="error">{{ error }}</li>
@@ -94,7 +94,7 @@
         </div>
 
         <div class="text-center my-auto">
-          <button type="submit" class="border text-black font-medium bg-green-400 px-8 text-sm mx-10 my-1 rounded">
+          <button type="submit" class="border text-black font-medium bg-green-400 px-8 mx-10 my-1 rounded">
             Login
           </button>
           <p>
@@ -103,7 +103,7 @@
                 this.showLogin = false;
                 this.errors = [];
               "
-              class="border text-black font-medium bg-gray-400 px-8 text-sm mx-10 my-1 rounded"
+              class="border text-black font-medium bg-gray-400 px-8 mx-10 my-1 rounded"
             >
               Back
             </button>
@@ -234,6 +234,7 @@ export default {
           this.didIts = this.user.did_its;
           this.sortByDate(this.didIts);
           this.sortByDate(this.didItsFullList);
+          this.didIts = this.didIts.reverse().slice(0, this.didItsNumber);
           console.log("Login successful");
           console.log("User: ", this.user);
           this.loginParams = {};
@@ -336,9 +337,8 @@ export default {
       this.calendarDate = `${year}-${month}-${day}`;
     },
     deleteDidIt(id) {
-      console.log("did it will be deleted", id);
       axios.delete("/did_its/" + id + ".json").then((response) => {
-        console.log("Success,", response.data);
+        console.log("Success,", response.data.message);
         this.didItsFullList = this.didItsFullList.filter((didIt) => didIt.id != id);
         this.didIts = this.didItsFullList.slice(0, this.didItsNumber);
       });
