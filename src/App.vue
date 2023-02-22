@@ -50,7 +50,7 @@
           </div>
         </div>
         <div class="text-center my-auto">
-          <h2>New User Signup</h2>
+          <h2 class="text-xl">New User Signup</h2>
           <button type="submit" class="w-[100px] border text-black font-medium bg-green-400 rounded my-1">
             Submit
           </button>
@@ -125,7 +125,7 @@
     </Container>
 
     <!-- Activities -->
-    <Container class="py-2">
+    <Container>
       <div v-if="activities.length == 0" class="text-center mb-2">
         Add an activity in the box below and press 'Enter'
       </div>
