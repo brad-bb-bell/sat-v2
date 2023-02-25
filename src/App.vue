@@ -161,7 +161,6 @@
         autoApply
         dark
         class="mt-1"
-        :initialViewDate="new Date()"
       />
       <div class="flex center py-2">
         <button
@@ -360,12 +359,23 @@ export default {
       const options = { weekday: "long", month: "short", day: "numeric" };
       return displayDate.toLocaleDateString("en-US", options);
     },
+    postFormat(dateString) {
+      // this function changes the date before it posts to the backend on createDidIt
+      const date = new Date(dateString);
+      const year = date.getFullYear();
+      const month = (date.getMonth() + 1).toString().padStart(2, "0");
+      const day = date.getDate().toString().padStart(2, "0");
+      return `${year}-${month}-${day}`;
+    },
     deleteDidIt(id, name) {
       axios.delete("/did_its/" + id + ".json").then((response) => {
         console.log("Success,", response.data.message);
         this.didItsFullList = this.didItsFullList.filter((didIt) => didIt.id != id);
         this.didIts = this.didItsFullList.slice(0, this.didItsNumber);
         this.decrementValue(name);
+        if (name == this.favoriteActivity.name) {
+          this.favoriteActivity.count--;
+        }
       });
     },
     createDidIt() {
@@ -378,21 +388,20 @@ export default {
         return;
       }
       for (let index = 0; index < this.selectedActivities.length; index++) {
-        // I have no idea how this is possible but if you delete this two lines the calendarDate will be off by 1 day in the future. WTF?
-        console.log(this.calendarDate);
-        console.log(this.showDate(this.calendarDate));
-
         axios
           .post("/did_its.json", {
             user_id: this.user.id,
             activity_id: this.selectedActivities[index],
-            date: this.calendarDate,
+            date: this.postFormat(this.calendarDate),
           })
           .then((response) => {
             console.log("Successfully recorded activity", response.data);
             this.didIts.push(response.data);
             this.sortByDate(this.didIts);
             this.incrementValue(response.data.name);
+            if (response.data.name == this.favoriteActivity.name) {
+              this.favoriteActivity.count++;
+            }
             // could this be included in sortByDate?
             this.didIts = this.didIts.reverse().slice(0, this.didItsNumber);
           });
