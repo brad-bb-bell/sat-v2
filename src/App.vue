@@ -184,7 +184,7 @@
         {{ didIt.name }} on {{ dateFormat(didIt.date) }}
         <span class="absolute inset-y-0 right-2">
           <i
-            @click="deleteDidIt(didIt.id)"
+            @click="deleteDidIt(didIt.id, didIt.name)"
             class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
           ></i>
         </span>
@@ -345,11 +345,12 @@ export default {
       const year = date.getFullYear();
       this.calendarDate = `${year}-${month}-${day}`;
     },
-    deleteDidIt(id) {
+    deleteDidIt(id, name) {
       axios.delete("/did_its/" + id + ".json").then((response) => {
         console.log("Success,", response.data.message);
         this.didItsFullList = this.didItsFullList.filter((didIt) => didIt.id != id);
         this.didIts = this.didItsFullList.slice(0, this.didItsNumber);
+        this.decrementValue(name);
       });
     },
     createDidIt() {
@@ -376,7 +377,7 @@ export default {
             console.log("Successfully recorded activity", response.data);
             this.didIts.push(response.data);
             this.sortByDate(this.didIts);
-
+            this.incrementValue(response.data.name);
             // could this be included in sortByDate?
             this.didIts = this.didIts.reverse().slice(0, this.didItsNumber);
           });
@@ -404,8 +405,18 @@ export default {
     getValue(key) {
       return this.hashTable[key];
     },
+    // increment and decrement could be lumped into on function
+    incrementValue(key) {
+      var count = this.getValue(key);
+      count++;
+      this.addToHashTable(key, count);
+    },
+    decrementValue(key) {
+      var count = this.getValue(key);
+      count--;
+      this.addToHashTable(key, count);
+    },
     buildHashTable() {
-      console.log("build hash table");
       for (let index = 0; index < this.didItsFullList.length; index++) {
         if (this.hasKey(this.didItsFullList[index].name) == false) {
           this.addToHashTable(this.didItsFullList[index].name, 1);
