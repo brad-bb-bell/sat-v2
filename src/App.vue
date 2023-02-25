@@ -173,6 +173,32 @@
       </div>
     </Container>
 
+    <Container>
+      <div class="text-xl text-center">Favorite Activity</div>
+      <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600">
+        {{ favoriteActivity.name }}: {{ favoriteActivity.count }}x
+        <br />
+        Average: xxx/week
+      </div>
+      <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600">
+        Since: {{ dateFormat(firstDate) }}
+        <br />
+        Total days: xxx
+      </div>
+    </Container>
+
+    <!-- All Activities -->
+    <Container>
+      <div class="text-xl text-center">All Activities</div>
+      <div
+        v-for="(value, key) in hashTable"
+        :key="key"
+        class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
+      >
+        {{ key }}: {{ value }}x
+      </div>
+    </Container>
+
     <!-- Recent Activities aka Did Its -->
     <Container>
       <div class="text-xl text-center">Recent Activities</div>
@@ -189,13 +215,6 @@
           ></i>
         </span>
       </div>
-    </Container>
-
-    <Container>
-      <h1>My Hash Table</h1>
-      <ul>
-        <li v-for="(value, key) in hashTable" :key="key">{{ key }}: {{ value }}</li>
-      </ul>
     </Container>
   </div>
 </template>
@@ -226,6 +245,9 @@ export default {
       newActivityName: "",
       calendarDate: "",
       hashTable: {},
+      firstDate: "",
+      lastDate: "",
+      favoriteActivity: { count: 0, name: "none" },
     };
   },
   methods: {
@@ -338,13 +360,6 @@ export default {
       const options = { weekday: "long", month: "short", day: "numeric" };
       return displayDate.toLocaleDateString("en-US", options);
     },
-    showDate(date) {
-      // not sure what I'm using this for... check v1
-      const day = date.getDate();
-      const month = date.getMonth() + 1;
-      const year = date.getFullYear();
-      this.calendarDate = `${year}-${month}-${day}`;
-    },
     deleteDidIt(id, name) {
       axios.delete("/did_its/" + id + ".json").then((response) => {
         console.log("Success,", response.data.message);
@@ -423,9 +438,14 @@ export default {
         } else {
           var count = this.getValue(this.didItsFullList[index].name);
           count++;
+          if (count > this.favoriteActivity.count) {
+            this.favoriteActivity.count = count;
+            this.favoriteActivity.name = this.didItsFullList[index].name;
+          }
           this.addToHashTable(this.didItsFullList[index].name, count);
         }
       }
+      console.log("favorite", this.favoriteActivity.name, this.favoriteActivity.count);
     },
   },
   created() {
@@ -440,6 +460,8 @@ export default {
             this.didItsFullList = this.user.did_its;
             this.didIts = this.user.did_its;
             this.sortByDate(this.didIts);
+            this.firstDate = this.didIts[0].date;
+            this.lastDate = this.didIts[this.didIts.length - 1].date;
             this.sortByDate(this.didItsFullList);
             this.didIts = this.didIts.reverse().slice(0, this.didItsNumber);
             console.log("Current user:", response.data);
