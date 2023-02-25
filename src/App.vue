@@ -149,7 +149,7 @@
           <input
             type="text"
             v-model="newActivityName"
-            placeholder="Add Activity"
+            placeholder="Add New Activity"
             class="w-full pl-3 text-black border-2 border-black"
           />
         </form>
@@ -166,14 +166,14 @@
       <div class="flex center py-2">
         <button
           @click.prevent="createDidIt()"
-          class="text-black border-2 border-purple-400 transition font-medium bg-gradient-to-br from-green-300 to-green-500 hover:underline text-xl rounded-lg py-3 px-8 mx-auto"
+          class="text-black border-2 border-purple-400 transition font-medium bg-gradient-to-br from-green-300 to-green-500 hover:font-semibold text-xl rounded-lg py-3 px-8 mx-auto"
         >
           Did It
         </button>
       </div>
     </Container>
 
-    <!-- Did Its -->
+    <!-- Recent Activities aka Did Its -->
     <Container>
       <div class="text-xl text-center">Recent Activities</div>
       <div
@@ -189,6 +189,13 @@
           ></i>
         </span>
       </div>
+    </Container>
+
+    <Container>
+      <h1>My Hash Table</h1>
+      <ul>
+        <li v-for="(value, key) in hashTable" :key="key">{{ key }}: {{ value }}</li>
+      </ul>
     </Container>
   </div>
 </template>
@@ -218,6 +225,7 @@ export default {
       selectedActivities: [],
       newActivityName: "",
       calendarDate: "",
+      hashTable: {},
     };
   },
   methods: {
@@ -269,7 +277,6 @@ export default {
           this.signupParams = {};
         });
     },
-
     deleteActivity(activity) {
       if (confirm("Are you sure you want to permanently remove this activity and all associated Did Its?")) {
         // var deleteName = activity.name;
@@ -326,11 +333,13 @@ export default {
       }
     },
     dateFormat(date) {
+      // this function is for displaying dates in recent activities
       const displayDate = new Date(date.replace(/-/g, "/"));
       const options = { weekday: "long", month: "short", day: "numeric" };
       return displayDate.toLocaleDateString("en-US", options);
     },
     showDate(date) {
+      // not sure what I'm using this for... check v1
       const day = date.getDate();
       const month = date.getMonth() + 1;
       const year = date.getFullYear();
@@ -353,6 +362,10 @@ export default {
         return;
       }
       for (let index = 0; index < this.selectedActivities.length; index++) {
+        // I have no idea how this is possible but if you delete this two lines the calendarDate will be off by 1 day in the future. WTF?
+        console.log(this.calendarDate);
+        console.log(this.showDate(this.calendarDate));
+
         axios
           .post("/did_its.json", {
             user_id: this.user.id,
@@ -369,7 +382,8 @@ export default {
           });
       }
       this.selectedId = [];
-      this.calendarDate = "";
+      // I don't think I want the calendarDate to reset
+      // this.calendarDate = "";
     },
     sortByDate(array) {
       array.sort(function (a, b) {
@@ -378,21 +392,59 @@ export default {
         return c - d;
       });
     },
+    addToHashTable(key, value) {
+      this.hashTable[key] = value;
+    },
+    removeFromHashTable(key) {
+      delete this.hashTable[key];
+    },
+    hasKey(key) {
+      return this.hashTable.hasOwnProperty(key);
+    },
+    getValue(key) {
+      return this.hashTable[key];
+    },
+    buildHashTable() {
+      console.log("build hash table");
+      for (let index = 0; index < this.didItsFullList.length; index++) {
+        if (this.hasKey(this.didItsFullList[index].name) == false) {
+          this.addToHashTable(this.didItsFullList[index].name, 1);
+        } else {
+          var count = this.getValue(this.didItsFullList[index].name);
+          count++;
+          this.addToHashTable(this.didItsFullList[index].name, count);
+        }
+      }
+    },
   },
   created() {
     if (localStorage.jwt && localStorage.user_id && localStorage.user_id != undefined) {
       this.isLoggedIn = true;
-      axios.get("/users/" + localStorage.user_id + ".json").then((response) => {
-        this.user = response.data;
-        this.activities = this.user.activities;
-        this.didItsFullList = this.user.did_its;
-        this.didIts = this.user.did_its;
-        this.sortByDate(this.didIts);
-        this.sortByDate(this.didItsFullList);
-        this.didIts = this.didIts.reverse().slice(0, this.didItsNumber);
-        console.log("Current user:", response.data);
+      this.dataLoaded = new Promise((resolve, reject) => {
+        axios
+          .get("/users/" + localStorage.user_id + ".json")
+          .then((response) => {
+            this.user = response.data;
+            this.activities = this.user.activities;
+            this.didItsFullList = this.user.did_its;
+            this.didIts = this.user.did_its;
+            this.sortByDate(this.didIts);
+            this.sortByDate(this.didItsFullList);
+            this.didIts = this.didIts.reverse().slice(0, this.didItsNumber);
+            console.log("Current user:", response.data);
+            resolve();
+          })
+          .catch((error) => {
+            reject(error);
+          });
       });
     }
+  },
+  mounted() {
+    this.dataLoaded.then(() => {
+      this.calendarDate = new Date();
+      this.buildHashTable();
+    });
   },
 };
 </script>
