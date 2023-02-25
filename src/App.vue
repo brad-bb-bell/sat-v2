@@ -172,17 +172,18 @@
       </div>
     </Container>
 
+    <!-- Favorite Activity -->
     <Container>
       <div class="text-xl text-center">Favorite Activity</div>
       <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600">
         {{ favoriteActivity.name }}: {{ favoriteActivity.count }}x
         <br />
-        Average: xxx/week
+        Average: {{ (favoriteActivity.count / (favoriteDays / 7)).toFixed(2) }} days/week
       </div>
       <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600">
-        Since: {{ dateFormat(firstDate) }}
+        Since: {{ favFormat(firstDate) }}
         <br />
-        Total days: xxx
+        Total days: {{ favoriteDays }}
       </div>
     </Container>
 
@@ -247,6 +248,7 @@ export default {
       firstDate: "",
       lastDate: "",
       favoriteActivity: { count: 0, name: "none" },
+      favoriteDays: 0,
     };
   },
   methods: {
@@ -359,6 +361,11 @@ export default {
       const options = { weekday: "long", month: "short", day: "numeric" };
       return displayDate.toLocaleDateString("en-US", options);
     },
+    favFormat(date) {
+      const displayDate = new Date(date.replace(/-/g, "/"));
+      const options = { month: "long", day: "numeric" };
+      return displayDate.toLocaleDateString("en-US", options);
+    },
     postFormat(dateString) {
       // this function changes the date before it posts to the backend on createDidIt
       const date = new Date(dateString);
@@ -407,8 +414,6 @@ export default {
           });
       }
       this.selectedId = [];
-      // I don't think I want the calendarDate to reset
-      // this.calendarDate = "";
     },
     sortByDate(array) {
       array.sort(function (a, b) {
@@ -456,6 +461,29 @@ export default {
       }
       console.log("favorite", this.favoriteActivity.name, this.favoriteActivity.count);
     },
+    getFavorite() {
+      console.log(this.didItsFullList);
+      for (let index = 0; index < this.didItsFullList.length; index++) {
+        if (this.didItsFullList[index].name == this.favoriteActivity.name) {
+          this.lastDate = this.didItsFullList[index].date;
+          break;
+        }
+      }
+      for (let index = this.didItsFullList.length - 1; index >= 0; index--) {
+        if (this.didItsFullList[index].name == this.favoriteActivity.name) {
+          this.firstDate = this.didItsFullList[index].date;
+          break;
+        }
+      }
+      this.favoriteDays = this.getDaysBetweenDates(this.firstDate, this.lastDate);
+    },
+    getDaysBetweenDates(date1, date2) {
+      const oneDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
+      const firstDate = new Date(date1);
+      const secondDate = new Date(date2);
+      const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
+      return diffDays;
+    },
   },
   created() {
     if (localStorage.jwt && localStorage.user_id && localStorage.user_id != undefined) {
@@ -486,6 +514,7 @@ export default {
     this.dataLoaded.then(() => {
       this.calendarDate = new Date();
       this.buildHashTable();
+      this.getFavorite();
     });
   },
 };
