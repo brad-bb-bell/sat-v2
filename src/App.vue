@@ -185,6 +185,17 @@
         <br />
         Total days: {{ favoriteDays }}
       </div>
+      <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600">
+        This week: 4x
+        <br />
+        This month: 15x
+        <br />
+        Last 30 days: 18x
+        <br />
+        This year: (if it's been a year)
+        <br />
+        Last year: (then this will be a thing too)
+      </div>
     </Container>
 
     <!-- All Activities -->
@@ -290,7 +301,6 @@ export default {
       axios
         .post("/users.json", this.signupParams)
         .then((response) => {
-          console.log(response.data);
           this.signupParams = {};
           this.showSignup = false;
           this.showLogin = true;
@@ -459,10 +469,8 @@ export default {
           this.addToHashTable(this.didItsFullList[index].name, count);
         }
       }
-      console.log("favorite", this.favoriteActivity.name, this.favoriteActivity.count);
     },
     getFavorite() {
-      console.log(this.didItsFullList);
       for (let index = 0; index < this.didItsFullList.length; index++) {
         if (this.didItsFullList[index].name == this.favoriteActivity.name) {
           this.lastDate = this.didItsFullList[index].date;
@@ -484,6 +492,53 @@ export default {
       const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
       return diffDays;
     },
+    getStreak(array) {
+      let currentStreak = 0;
+      let longestStreak = 0;
+      let previousDate = null;
+      const today = new Date();
+      const lastDate = new Date(array[0].date);
+      const timeSinceLast = today.getTime() - lastDate.getTime();
+      const daysSinceLast = Math.floor(timeSinceLast / (1000 * 60 * 60 * 24));
+
+      // Check if the last activity was performed today
+      if (daysSinceLast === 0) {
+        currentStreak += 1;
+      }
+
+      array.forEach((activity) => {
+        const currentDate = new Date(activity.date);
+
+        // Skip over activities that occurred on the same day as the previous activity
+        if (previousDate && previousDate.toDateString() === currentDate.toDateString()) {
+          return;
+        }
+
+        // Check if the current activity occurred one day after the previous activity
+        if (previousDate && this.isConsecutiveDates(previousDate, currentDate)) {
+          currentStreak += 1;
+        } else {
+          longestStreak = Math.max(currentStreak, longestStreak);
+          currentStreak = 1;
+        }
+
+        previousDate = currentDate;
+      });
+
+      // Check if the last activity completed a streak
+      longestStreak = Math.max(currentStreak, longestStreak);
+
+      console.log("current", currentStreak);
+      console.log("longest", longestStreak);
+
+      return longestStreak;
+    },
+    isConsecutiveDates(date1, date2) {
+      const oneDay = 24 * 60 * 60 * 1000;
+      const differenceMs = Math.abs(date1 - date2);
+      const differenceDays = Math.floor(differenceMs / oneDay);
+      return differenceDays === 1;
+    },
   },
   created() {
     if (localStorage.jwt && localStorage.user_id && localStorage.user_id != undefined) {
@@ -495,6 +550,7 @@ export default {
             this.user = response.data;
             this.activities = this.user.activities;
             this.didItsFullList = this.user.did_its;
+            console.log(this.didItsFullList);
             this.didIts = this.user.did_its;
             this.sortByDate(this.didIts);
             this.firstDate = this.didIts[0].date;
@@ -515,6 +571,7 @@ export default {
       this.calendarDate = new Date();
       this.buildHashTable();
       this.getFavorite();
+      this.getStreak(this.didItsFullList);
     });
   },
 };
