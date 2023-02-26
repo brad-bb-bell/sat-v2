@@ -172,6 +172,15 @@
       </div>
     </Container>
 
+    <Container>
+      <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 text-xl text-center">
+        Current Streak: {{ currentStreak }}x
+      </div>
+      <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 text-xl text-center">
+        <!-- Longest Streak: {{ longestStreak }}x -->
+      </div>
+    </Container>
+
     <!-- Favorite Activity -->
     <Container>
       <div class="text-xl text-center">Favorite Activity</div>
@@ -260,6 +269,7 @@ export default {
       lastDate: "",
       favoriteActivity: { count: 0, name: "none" },
       favoriteDays: 0,
+      currentStreak: 0,
     };
   },
   methods: {
@@ -413,13 +423,17 @@ export default {
           })
           .then((response) => {
             console.log("Successfully recorded activity", response.data);
+            console.log("new did it date", response.data.date);
+            console.log("did it index[0] date", this.didIts[0].date);
+            if (this.getDaysBetweenDates(response.data.date, this.didIts[0].date) === 1) {
+              this.currentStreak++;
+            }
             this.didIts.push(response.data);
             this.sortByDate(this.didIts);
             this.incrementValue(response.data.name);
             if (response.data.name == this.favoriteActivity.name) {
               this.favoriteActivity.count++;
             }
-            // could this be included in sortByDate?
             this.didIts = this.didIts.reverse().slice(0, this.didItsNumber);
           });
       }
@@ -492,7 +506,7 @@ export default {
       const diffDays = Math.round(Math.abs((firstDate - secondDate) / oneDay));
       return diffDays;
     },
-    getStreak(array) {
+    getCurrentStreak(array) {
       let currentStreak = 0;
       let previousDate = null;
       const today = new Date();
@@ -508,7 +522,7 @@ export default {
       }
 
       let index = 0;
-      while (currentStreak > 0) {
+      while (currentStreak > 0 && index < array.length) {
         let currentDate = new Date(array[index].date);
 
         if (previousDate == null || this.getDaysBetweenDates(previousDate, currentDate) == 0) {
@@ -522,8 +536,7 @@ export default {
         index++;
         previousDate = currentDate;
       }
-
-      return currentStreak;
+      this.currentStreak = currentStreak;
     },
   },
   created() {
@@ -556,7 +569,7 @@ export default {
       this.calendarDate = new Date();
       this.buildHashTable();
       this.getFavorite();
-      console.log("streak", this.getStreak(this.didItsFullList));
+      this.getCurrentStreak(this.didItsFullList);
     });
   },
 };
