@@ -503,29 +503,25 @@ export default {
       // Check if the last activity was performed today or yesterday and starts streak from there
       if (daysSinceLast === 0 || daysSinceLast === 1) {
         currentStreak += 1;
+      } else {
+        currentStreak = 0;
       }
 
       let index = 0;
       while (currentStreak > 0) {
         let currentDate = new Date(array[index].date);
-        console.log("previous", previousDate);
-        console.log("current", currentDate);
 
         if (previousDate == null || this.getDaysBetweenDates(previousDate, currentDate) == 0) {
-          console.log("skipping", currentDate.toDateString(), array[index].name);
-        }
-
-        if ((previousDate != null && this.getDaysBetweenDates(previousDate, currentDate)) === 1) {
+          continue;
+        } else if ((previousDate != null && this.getDaysBetweenDates(previousDate, currentDate)) === 1) {
           currentStreak += 1;
-          console.log("incrementing currentStreak");
         } else {
-          console.log("reset @", array[index].name, array[index].date);
-          console.log("days between", this.getDaysBetweenDates(previousDate, currentDate));
-          console.log("current streak", currentStreak);
-          currentStreak = 0;
+          break;
         }
+        previousDate = currentDate;
         index++;
       }
+      return currentStreak;
     },
   },
   created() {
@@ -558,8 +554,7 @@ export default {
       this.calendarDate = new Date();
       this.buildHashTable();
       this.getFavorite();
-      this.getStreak(this.didItsFullList);
-      console.log(this.getDaysBetweenDates("2023-02-25", "2023-02-25"));
+      console.log(this.getStreak(this.didItsFullList));
     });
   },
 };
