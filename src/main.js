@@ -7,13 +7,13 @@ import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 
 // uncomment line below to use the dev server
-// axios.defaults.baseURL = process.env.NODE_ENV === "development" ? "http://localhost:3000" : "/";
+axios.defaults.baseURL = process.env.NODE_ENV === "development" ? "http://localhost:3000" : "/";
 
 // this has not been tested -> chatgpt suggestion
 // axios.defaults.baseURL = process.env.NODE_ENV === "development" ? "http://localhost:3000" : "https://sat-api-v2.herokuapp.com";
 
 // uncomment line below to use the production server
-axios.defaults.baseURL = "https://sat-api-v2.herokuapp.com/";
+// axios.defaults.baseURL = "https://sat-api-v2.herokuapp.com/";
 
 var jwt = localStorage.getItem("jwt");
 if (jwt) {

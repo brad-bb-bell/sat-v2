@@ -504,7 +504,7 @@ export default {
       if (daysSinceLast === 0 || daysSinceLast === 1) {
         currentStreak += 1;
       } else {
-        currentStreak = 0;
+        return currentStreak;
       }
 
       let index = 0;
@@ -512,15 +512,17 @@ export default {
         let currentDate = new Date(array[index].date);
 
         if (previousDate == null || this.getDaysBetweenDates(previousDate, currentDate) == 0) {
-          continue;
+          // couldn't figure out a line that does nothing... using 'continue;' breaks the app
+          console.log();
         } else if ((previousDate != null && this.getDaysBetweenDates(previousDate, currentDate)) === 1) {
           currentStreak += 1;
         } else {
           break;
         }
-        previousDate = currentDate;
         index++;
+        previousDate = currentDate;
       }
+
       return currentStreak;
     },
   },
@@ -554,7 +556,7 @@ export default {
       this.calendarDate = new Date();
       this.buildHashTable();
       this.getFavorite();
-      console.log(this.getStreak(this.didItsFullList));
+      console.log("streak", this.getStreak(this.didItsFullList));
     });
   },
 };
