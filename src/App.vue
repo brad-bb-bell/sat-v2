@@ -234,6 +234,16 @@
           ></i>
         </span>
       </div>
+      <div class="text-center">
+        <label for="didItsNumber" class="pr-2">Show:</label>
+        <input
+          type="number"
+          id="didItsNumber"
+          v-model="didItsNumber"
+          class="text-black w-10 pl-1"
+          @keyup="updateDidItsNumber"
+        />
+      </div>
     </Container>
   </div>
 </template>
@@ -624,6 +634,13 @@ export default {
         previousDate = currentDate;
       }
       this.longestStreak = record;
+    },
+    updateDidItsNumber() {
+      console.log("yes");
+      var temp = this.user.did_its;
+      console.log(temp);
+      this.sortByDate(temp);
+      this.didIts = temp.reverse().slice(0, this.didItsNumber);
     },
   },
   created() {
