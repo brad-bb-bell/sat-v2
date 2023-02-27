@@ -202,8 +202,7 @@
         Last 30 days: {{ favoriteCount.thirty }}x
         <br />
         This year: {{ favoriteCount.year }}x
-        <br />
-        Last year: {{ favoriteCount.lastYear }}x
+        <div v-if="this.favoriteCount.lastYear > 0">Last year: {{ favoriteCount.lastYear }}x</div>
       </div>
     </Container>
 
@@ -440,6 +439,10 @@ export default {
             this.incrementValue(response.data.name);
             if (response.data.name == this.favoriteActivity.name) {
               this.favoriteActivity.count++;
+              this.favoriteCount.week++;
+              this.favoriteCount.month++;
+              this.favoriteCount.thirty++;
+              this.favoriteCount.year++;
             }
             this.didIts = this.didIts.reverse().slice(0, this.didItsNumber);
           });
