@@ -220,7 +220,7 @@
 
     <!-- Recent Activities aka Did Its -->
     <Container>
-      <div class="text-xl text-center">
+      <div class="text-xl text-center py-1">
         <label for="didItsNumber">
           Recent
           <input
