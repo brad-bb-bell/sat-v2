@@ -177,7 +177,7 @@
         Current Streak: {{ currentStreak }}x
       </div>
       <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 text-xl text-center">
-        <!-- Longest Streak: {{ longestStreak }}x -->
+        Longest Streak: {{ longestStreak }}x
       </div>
     </Container>
 
@@ -230,7 +230,7 @@
         {{ didIt.name }} on {{ dateFormat(didIt.date) }}
         <span class="absolute inset-y-0 right-2">
           <i
-            @click="deleteDidIt(didIt.id, didIt.name)"
+            @click="deleteDidIt(didIt)"
             class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
           ></i>
         </span>
@@ -270,6 +270,7 @@ export default {
       favoriteActivity: { count: 0, name: "none" },
       favoriteDays: 0,
       currentStreak: 0,
+      longestStreak: 0,
     };
   },
   methods: {
@@ -394,14 +395,17 @@ export default {
       const day = date.getDate().toString().padStart(2, "0");
       return `${year}-${month}-${day}`;
     },
-    deleteDidIt(id, name) {
-      axios.delete("/did_its/" + id + ".json").then((response) => {
+    deleteDidIt(activity) {
+      axios.delete("/did_its/" + activity.id + ".json").then((response) => {
         console.log("Success,", response.data.message);
-        this.didItsFullList = this.didItsFullList.filter((didIt) => didIt.id != id);
+        this.didItsFullList = this.didItsFullList.filter((didIt) => didIt.id != activity.id);
         this.didIts = this.didItsFullList.slice(0, this.didItsNumber);
-        this.decrementValue(name);
-        if (name == this.favoriteActivity.name) {
+        this.decrementValue(activity.name);
+        if (activity.name == this.favoriteActivity.name) {
           this.favoriteActivity.count--;
+        }
+        if (this.currentStreak > 0) {
+          this.getCurrentStreak;
         }
       });
     },
@@ -422,10 +426,11 @@ export default {
             date: this.postFormat(this.calendarDate),
           })
           .then((response) => {
-            console.log("Successfully recorded activity", response.data);
-            console.log("new did it date", response.data.date);
-            console.log("did it index[0] date", this.didIts[0].date);
+            // this will only increment streak by 1 if previous last activity was yesterday. If it connects to a consecutive string of activities it will not add them all.
             if (this.getDaysBetweenDates(response.data.date, this.didIts[0].date) === 1) {
+              if (this.currentStreak == this.longestStreak) {
+                this.longestStreak++;
+              }
               this.currentStreak++;
             }
             this.didIts.push(response.data);
@@ -517,8 +522,6 @@ export default {
       // Check if the last activity was performed today or yesterday and starts streak from there
       if (daysSinceLast === 0 || daysSinceLast === 1) {
         currentStreak += 1;
-      } else {
-        return currentStreak;
       }
 
       let index = 0;
@@ -537,6 +540,42 @@ export default {
         previousDate = currentDate;
       }
       this.currentStreak = currentStreak;
+    },
+    getLongestStreak(array) {
+      let streak = 0;
+      let record = 0;
+      let previousDate = null;
+      const today = new Date();
+      const lastDate = new Date(array[0].date);
+      const timeSinceLast = today.getTime() - lastDate.getTime();
+      const daysSinceLast = Math.floor(timeSinceLast / (1000 * 60 * 60 * 24));
+      console.log("dsl", daysSinceLast);
+
+      // Check if the last activity was performed today or yesterday and starts streak from there
+      // if (daysSinceLast === 0 || daysSinceLast === 1) {
+      // changed to < 3 to get proper record but clearly work needs to be done here.
+      if (daysSinceLast < 3) {
+        streak += 1;
+        console.log("initialized");
+      }
+
+      let index = 0;
+      while (index < array.length) {
+        let currentDate = new Date(array[index].date);
+
+        if (previousDate == null || this.getDaysBetweenDates(previousDate, currentDate) == 0) {
+          console.log();
+        } else if ((previousDate != null && this.getDaysBetweenDates(previousDate, currentDate)) === 1) {
+          streak += 1;
+        } else {
+          console.log("record", record);
+          record = Math.max(record, streak);
+          streak = 0;
+        }
+        index++;
+        previousDate = currentDate;
+      }
+      this.longestStreak = record;
     },
   },
   created() {
@@ -570,6 +609,7 @@ export default {
       this.buildHashTable();
       this.getFavorite();
       this.getCurrentStreak(this.didItsFullList);
+      this.getLongestStreak(this.didItsFullList);
     });
   },
 };
