@@ -114,7 +114,7 @@
   </Container>
 
   <!-- Successfully Logged In -->
-  <div v-if="isLoggedIn">
+  <div v-if="isLoggedIn" class="pb-16">
     <Container class="text-xl grid grid-cols-2">
       <div class="mx-auto">
         {{ user.name }}
