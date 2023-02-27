@@ -220,7 +220,22 @@
 
     <!-- Recent Activities aka Did Its -->
     <Container>
-      <div class="text-xl text-center">Recent Activities</div>
+      <div class="text-xl text-center">
+        <label for="didItsNumber">
+          Recent
+          <input
+            type="number"
+            id="didItsNumber"
+            v-model="didItsNumber"
+            class="text-black w-10 pl-1 mx-1 text-base"
+            @keyup.enter="updateDidItsNumber"
+            min="0"
+            :max="didItsFullList.length"
+            controls
+          />
+          Activities
+        </label>
+      </div>
       <div
         v-for="didIt in didIts"
         :key="didIt.id"
@@ -233,16 +248,6 @@
             class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
           ></i>
         </span>
-      </div>
-      <div class="text-center">
-        <label for="didItsNumber" class="pr-2">Show:</label>
-        <input
-          type="number"
-          id="didItsNumber"
-          v-model="didItsNumber"
-          class="text-black w-10 pl-1"
-          @keyup="updateDidItsNumber"
-        />
       </div>
     </Container>
   </div>
@@ -636,9 +641,7 @@ export default {
       this.longestStreak = record;
     },
     updateDidItsNumber() {
-      console.log("yes");
       var temp = this.user.did_its;
-      console.log(temp);
       this.sortByDate(temp);
       this.didIts = temp.reverse().slice(0, this.didItsNumber);
     },
@@ -679,3 +682,9 @@ export default {
   },
 };
 </script>
+<style>
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  opacity: 1;
+}
+</style>
