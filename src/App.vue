@@ -195,15 +195,15 @@
         Total days: {{ favoriteDays }}
       </div>
       <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600">
-        This week: 4x
+        This week: {{ favoriteCount.week }}x
         <br />
-        This month: 15x
+        This month: {{ favoriteCount.month }}x
         <br />
-        Last 30 days: 18x
+        Last 30 days: {{ favoriteCount.thirty }}x
         <br />
-        This year: (if it's been a year)
+        This year: {{ favoriteCount.year }}x
         <br />
-        Last year: (then this will be a thing too)
+        Last year: {{ favoriteCount.lastYear }}x
       </div>
     </Container>
 
@@ -268,7 +268,9 @@ export default {
       firstDate: "",
       lastDate: "",
       favoriteActivity: { count: 0, name: "none" },
+      favoriteCount: { week: 0, month: 0, thirty: 0, year: 0, lastYear: 0 },
       favoriteDays: 0,
+      favoriteList: [],
       currentStreak: 0,
       longestStreak: 0,
     };
@@ -503,6 +505,52 @@ export default {
         }
       }
       this.favoriteDays = this.getDaysBetweenDates(this.firstDate, this.lastDate);
+      this.didItsFullList.forEach((didIt) => {
+        if (didIt.name === this.favoriteActivity.name) {
+          this.favoriteList.push(didIt);
+        }
+      });
+      const today = new Date();
+      const firstDayOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() - today.getDay());
+      const lastDayOfWeek = new Date(today.getFullYear(), today.getMonth(), today.getDate() + (6 - today.getDay()));
+      const firstDayOfMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+      const lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+      const thirtyDaysAgo = new Date(today.getFullYear(), today.getMonth(), today.getDate() - 30);
+      const firstDayOfYear = new Date(today.getFullYear(), 0, 1);
+      const lastDayOfYear = new Date(today.getFullYear(), 11, 31);
+      const firstDayOfLastYear = new Date(today.getFullYear() - 1, 0, 1);
+      const lastDayOfLastYear = new Date(today.getFullYear() - 1, 11, 31);
+
+      let week = 0;
+      let month = 0;
+      let thirty = 0;
+      let year = 0;
+      let prevYear = 0;
+
+      this.favoriteList.forEach((favoriteList) => {
+        const d = new Date(favoriteList.date);
+        if (d >= firstDayOfWeek && d <= lastDayOfWeek) {
+          week++;
+        }
+        if (d >= firstDayOfMonth && d <= lastDayOfMonth) {
+          month++;
+        }
+        if (d >= thirtyDaysAgo && d <= today) {
+          thirty++;
+        }
+        if (d >= firstDayOfYear && d <= lastDayOfYear) {
+          year++;
+        }
+        if (d >= firstDayOfLastYear && d <= lastDayOfLastYear) {
+          prevYear++;
+        }
+      });
+
+      this.favoriteCount.week = week;
+      this.favoriteCount.month = month;
+      this.favoriteCount.thirty = thirty;
+      this.favoriteCount.year = year;
+      this.favoriteCount.lastYear = prevYear;
     },
     getDaysBetweenDates(date1, date2) {
       const oneDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
@@ -549,14 +597,12 @@ export default {
       const lastDate = new Date(array[0].date);
       const timeSinceLast = today.getTime() - lastDate.getTime();
       const daysSinceLast = Math.floor(timeSinceLast / (1000 * 60 * 60 * 24));
-      console.log("dsl", daysSinceLast);
 
       // Check if the last activity was performed today or yesterday and starts streak from there
       // if (daysSinceLast === 0 || daysSinceLast === 1) {
       // changed to < 3 to get proper record but clearly work needs to be done here.
       if (daysSinceLast < 3) {
         streak += 1;
-        console.log("initialized");
       }
 
       let index = 0;
@@ -568,7 +614,6 @@ export default {
         } else if ((previousDate != null && this.getDaysBetweenDates(previousDate, currentDate)) === 1) {
           streak += 1;
         } else {
-          console.log("record", record);
           record = Math.max(record, streak);
           streak = 0;
         }
