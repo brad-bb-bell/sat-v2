@@ -228,12 +228,15 @@
               class="absolute translate-x-[-35%] z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
             >
               <div v-for="activity in activities">
-                <div class="py-1">
+                <div class="py-0">
                   <MenuItem v-slot="{ active }">
                     <button
                       class="mx-auto"
-                      :class="[active ? 'bg-gray-100 text-gray-900' : 'text-gray-700', 'block px-4 py-2 text-sm']"
-                      @click.prevent="changeFavorite(activity)"
+                      :class="[
+                        active ? 'bg-purple-100 text-gray-900 w-full rounded-md' : 'text-gray-700',
+                        'block px-4 py-2 text-sm',
+                      ]"
+                      @click="changeFavorite(activity)"
                     >
                       {{ activity.name }}
                     </button>
