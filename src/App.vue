@@ -270,7 +270,7 @@
             type="number"
             id="didItsNumber"
             v-model="didItsNumber"
-            class="text-black w-10 pl-1 mx-1 text-base"
+            class="text-black w-10 pl-1 mx-1 text-base rounded-md"
             @keyup.enter="updateDidItsNumber"
             min="0"
             :max="didItsFullList.length"
