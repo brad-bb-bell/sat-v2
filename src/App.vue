@@ -1,4 +1,5 @@
 <template>
+  <!-- Hero -->
   <Container class="border-transparent bg-gradient-to-br from-purple-300 to-purple-500">
     <h1 class="text-center text-xl tracking-widest">Simple Activity Tracker</h1>
   </Container>
@@ -209,7 +210,7 @@
         <Menu as="div" class="relative inline-block text-left">
           <div>
             <MenuButton
-              class="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+              class="inline-flex w-40 justify-center rounded-md border-2 border-purple-400 bg-gray-700 px-4 py-2 text-sm font-medium text-white hover:bg-purple-100 hover:text-black focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-100"
             >
               {{ favoriteActivity.name }}
               <ChevronDownIcon class="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
@@ -225,7 +226,7 @@
             leave-to-class="transform opacity-0 scale-95"
           >
             <MenuItems
-              class="absolute translate-x-[-35%] z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
+              class="absolute z-10 mt-2 w-40 origin-center divide-black divide-y-2 bg-gray-700 rounded-md text-white shadow-lg ring-1 ring-black ring-opacity-5 border-double border-4 border-purple-400 focus:outline-none"
             >
               <div v-for="activity in activities">
                 <div class="py-0">
@@ -233,7 +234,7 @@
                     <button
                       class="mx-auto"
                       :class="[
-                        active ? 'bg-purple-100 text-gray-900 w-full rounded-md' : 'text-gray-700',
+                        active ? 'bg-purple-100 text-gray-900 w-full ' : 'text-white',
                         'block px-4 py-2 text-sm',
                       ]"
                       @click="getFavorite(activity)"
