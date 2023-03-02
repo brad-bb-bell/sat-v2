@@ -554,10 +554,8 @@ export default {
           this.addToHashTable(this.didItsFullList[index].name, count);
         }
       }
-      console.log("build hash table", this.favoriteActivity.name);
     },
     getFavorite(activity) {
-      console.log("get favorite", activity.name);
       this.favoriteActivity.name = activity.name;
       let count = 0;
       this.didItsFullList.forEach((didIt) => {
