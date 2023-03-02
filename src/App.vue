@@ -232,7 +232,7 @@
                 <MenuItem v-slot="{ active }">
                   <button
                     class="mx-auto"
-                    :class="[active ? 'bg-purple-100 text-gray-900 w-full ' : 'text-white', 'block px-4 py-2 text-sm']"
+                    :class="[active ? 'bg-purple-100 text-black w-full ' : 'text-white', 'block px-4 py-2 text-sm']"
                     @click="getFavorite(activity)"
                   >
                     {{ activity.name }}
