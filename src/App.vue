@@ -192,7 +192,7 @@
       <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600">
         Since: {{ favFormat(firstDate) }}
         <br />
-        Total days: {{ favoriteDays }}
+        Days since 1st: {{ favoriteDays }}
       </div>
       <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600">
         This week: {{ favoriteCount.week }}x
@@ -236,7 +236,7 @@
                         active ? 'bg-purple-100 text-gray-900 w-full rounded-md' : 'text-gray-700',
                         'block px-4 py-2 text-sm',
                       ]"
-                      @click="changeFavorite(activity)"
+                      @click="getFavorite(activity)"
                     >
                       {{ activity.name }}
                     </button>
@@ -559,22 +559,31 @@ export default {
         }
       }
     },
-    getFavorite() {
+    getFavorite(activity) {
+      this.favoriteActivity.name = activity.name;
+      let count = 0;
+      this.didItsFullList.forEach((didIt) => {
+        if (didIt.name === activity.name) {
+          count++;
+        }
+      });
+      this.favoriteActivity.count = count;
       for (let index = 0; index < this.didItsFullList.length; index++) {
-        if (this.didItsFullList[index].name == this.favoriteActivity.name) {
+        if (this.didItsFullList[index].name == activity.name) {
           this.lastDate = this.didItsFullList[index].date;
           break;
         }
       }
       for (let index = this.didItsFullList.length - 1; index >= 0; index--) {
-        if (this.didItsFullList[index].name == this.favoriteActivity.name) {
+        if (this.didItsFullList[index].name == activity.name) {
           this.firstDate = this.didItsFullList[index].date;
           break;
         }
       }
       this.favoriteDays = this.getDaysBetweenDates(this.firstDate, this.lastDate);
+      this.favoriteList = [];
       this.didItsFullList.forEach((didIt) => {
-        if (didIt.name === this.favoriteActivity.name) {
+        if (didIt.name === activity.name) {
           this.favoriteList.push(didIt);
         }
       });
@@ -619,6 +628,7 @@ export default {
       this.favoriteCount.thirty = thirty;
       this.favoriteCount.year = year;
       this.favoriteCount.lastYear = prevYear;
+      console.log();
     },
     getDaysBetweenDates(date1, date2) {
       const oneDay = 24 * 60 * 60 * 1000; // Number of milliseconds in a day
@@ -728,7 +738,7 @@ export default {
     this.dataLoaded.then(() => {
       this.calendarDate = new Date();
       this.buildHashTable();
-      this.getFavorite();
+      this.getFavorite(this.favoriteActivity.name);
       this.getCurrentStreak(this.didItsFullList);
       this.getLongestStreak(this.didItsFullList);
     });
