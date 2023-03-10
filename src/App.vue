@@ -120,7 +120,7 @@
       <div class="text-center font-syne-mono">
         {{ user.name }}
       </div>
-      <div class="absolute top-1 right-1">
+      <div class="absolute top-3 right-1">
         <button @click="logout"><span class="text-gray-400 material-symbols-outlined">logout</span></button>
       </div>
     </Container>
