@@ -116,12 +116,12 @@
 
   <!-- Successfully Logged In -->
   <div v-if="isLoggedIn" class="pb-16">
-    <Container class="text-xl grid grid-cols-2">
-      <div class="mx-auto">
+    <Container class="relative text-2xl">
+      <div class="text-center font-syne-mono">
         {{ user.name }}
       </div>
-      <div class="mx-auto">
-        <button @click="logout">Logout</button>
+      <div class="absolute top-1 right-1">
+        <button @click="logout"><span class="text-gray-400 material-symbols-outlined">logout</span></button>
       </div>
     </Container>
 
