@@ -2,7 +2,11 @@
 module.exports = {
   content: ["./index.html", "./src/**/*.{vue,js,html}", "./src/components/*.vue"],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        "syne-mono": ["Syne Mono", "monospace"],
+      },
+    },
   },
   plugins: [],
 };

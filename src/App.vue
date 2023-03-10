@@ -1,7 +1,7 @@
 <template>
   <!-- Hero -->
   <Container class="border-transparent bg-gradient-to-br from-purple-300 to-purple-500">
-    <h1 class="text-center text-xl tracking-widest">Simple Activity Tracker</h1>
+    <h1 class="text-center text-xl tracking-widest font-syne-mono">Simple Activity Tracker</h1>
   </Container>
 
   <!-- Login or Signup -->
