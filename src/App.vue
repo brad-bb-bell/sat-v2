@@ -116,13 +116,11 @@
 
   <!-- Successfully Logged In -->
   <div v-if="isLoggedIn" class="pb-16">
-    <Container class="relative text-2xl">
-      <div class="text-center font-syne-mono">
+    <Container class="flex justify-between items-center text-2xl">
+      <div class="text-center font-syne-mono flex-1">
         {{ user.name }}
       </div>
-      <div class="absolute top-3 right-1">
-        <button @click="logout"><span class="text-gray-400 material-symbols-outlined">logout</span></button>
-      </div>
+      <button @click="logout" class="text-gray-400 material-symbols-outlined">logout</button>
     </Container>
 
     <!-- Activities -->
