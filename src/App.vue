@@ -303,8 +303,8 @@
       :message="modalMessage"
       :confirmText="confirmText"
       :cancelText="cancelText"
-      @close="showModal = false"
-    ></Modal>
+      v-on:close-modal="showModal = false"
+    />
   </div>
 </template>
 <script>
@@ -503,7 +503,10 @@ export default {
         return;
       }
       if (this.selectedActivities.length === 0) {
-        alert("Please select an activity.");
+        this.modalTitle = "Error";
+        this.modalMessage = "Please select an activity.";
+        this.confirmText = "OK";
+        this.showModal = true;
         return;
       }
       for (let index = 0; index < this.selectedActivities.length; index++) {
