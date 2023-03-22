@@ -297,15 +297,14 @@
       </div>
     </Container>
 
-    <Modal :show="showModal" @close="showModal = false">
-      <template #title>Modal Title</template>
-
-      <template #message>Modal Message</template>
-
-      <template #confirmButtonText>Confirm</template>
-
-      <template #cancelButtonText>Cancel</template>
-    </Modal>
+    <Modal
+      :show="showModal"
+      :title="modalTitle"
+      :message="modalMessage"
+      :confirmText="confirmText"
+      :cancelText="cancelText"
+      @close="showModal = false"
+    ></Modal>
   </div>
 </template>
 <script>
@@ -353,6 +352,10 @@ export default {
       currentStreak: 0,
       longestStreak: 0,
       showModal: false,
+      modalTitle: "",
+      modalMessage: "",
+      confirmText: "",
+      cancelText: "",
     };
   },
   methods: {
@@ -493,7 +496,10 @@ export default {
     },
     createDidIt() {
       if (!this.calendarDate) {
-        showModal = true;
+        this.modalTitle = "Error";
+        this.modalMessage = "Please select a date.";
+        this.confirmText = "OK";
+        this.showModal = true;
         return;
       }
       if (this.selectedActivities.length === 0) {
