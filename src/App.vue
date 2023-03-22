@@ -290,24 +290,22 @@
     </Container>
 
     <Container>
-      <div class="mx-auto">
+      <div class="text-center">
         <button @click="showModal = true" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Open Modal
         </button>
       </div>
-
-      <div>
-        <Modal :show="showModal" @close="showModal = false">
-          <template #title>Modal Title</template>
-
-          <template #message>Modal Message</template>
-
-          <template #confirmButtonText>Confirm</template>
-
-          <template #cancelButtonText>Cancel</template>
-        </Modal>
-      </div>
     </Container>
+
+    <Modal :show="showModal" @close="showModal = false">
+      <template #title>Modal Title</template>
+
+      <template #message>Modal Message</template>
+
+      <template #confirmButtonText>Confirm</template>
+
+      <template #cancelButtonText>Cancel</template>
+    </Modal>
   </div>
 </template>
 <script>
@@ -495,7 +493,7 @@ export default {
     },
     createDidIt() {
       if (!this.calendarDate) {
-        alert("Please select a date.");
+        showModal = true;
         return;
       }
       if (this.selectedActivities.length === 0) {
