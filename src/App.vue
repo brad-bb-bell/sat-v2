@@ -171,6 +171,7 @@
       </div>
     </Container>
 
+    <!-- Streak -->
     <Container>
       <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 text-xl text-center">
         Current Streak: {{ currentStreak }}x
@@ -287,6 +288,26 @@
         </span>
       </div>
     </Container>
+
+    <Container>
+      <div class="mx-auto">
+        <button @click="showModal = true" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+          Open Modal
+        </button>
+      </div>
+
+      <div>
+        <Modal :show="showModal" @close="showModal = false">
+          <template #title>Modal Title</template>
+
+          <template #message>Modal Message</template>
+
+          <template #confirmButtonText>Confirm</template>
+
+          <template #cancelButtonText>Cancel</template>
+        </Modal>
+      </div>
+    </Container>
   </div>
 </template>
 <script>
@@ -296,6 +317,7 @@ import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { ChevronDownIcon } from "@heroicons/vue/20/solid";
+import Modal from "./components/Modal.vue";
 export default {
   components: {
     Container,
@@ -304,6 +326,7 @@ export default {
     MenuButton,
     MenuItem,
     MenuItems,
+    Modal,
     ChevronDownIcon,
   },
   data() {
@@ -331,6 +354,7 @@ export default {
       favoriteList: [],
       currentStreak: 0,
       longestStreak: 0,
+      showModal: false,
     };
   },
   methods: {
