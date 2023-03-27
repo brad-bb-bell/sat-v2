@@ -289,14 +289,6 @@
       </div>
     </Container>
 
-    <Container>
-      <div class="text-center">
-        <button @click="showModal = true" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-          Open Modal
-        </button>
-      </div>
-    </Container>
-
     <Modal
       :show="showModal"
       :title="modalTitle"
