@@ -551,7 +551,7 @@ export default {
     getValue(key) {
       return this.hashTable[key];
     },
-    // increment and decrement could be lumped into on function
+    // increment and decrement could be lumped into one function
     incrementValue(key) {
       var count = this.getValue(key);
       count++;
