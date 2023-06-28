@@ -164,7 +164,7 @@
       <div class="flex center py-2">
         <button
           @click.prevent="createDidIt()"
-          class="text-black border-2 border-purple-400 transition font-medium bg-gradient-to-br from-green-300 to-green-500 hover:font-semibold text-xl rounded-lg py-3 px-8 mx-auto"
+          class="text-black border-2 border-purple-400 transition font-medium bg-gradient-to-br from-green-300 to-green-500 hover:font-semibold hover:bg-gradient-to-r hover:from-green-300 hover:to-green-500 text-xl rounded-lg py-3 px-8 mx-auto"
         >
           Did It
         </button>
@@ -530,6 +530,7 @@ export default {
           });
       }
       this.selectedId = [];
+      this.selectedActivities = [];
     },
     sortByDate(array) {
       array.sort(function (a, b) {
