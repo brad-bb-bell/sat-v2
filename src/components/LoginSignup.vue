@@ -92,16 +92,28 @@ export default {
     };
   },
   methods: {
+    // after signup, the user should be automatically logged in
     signup() {
       axios
         .post("/users.json", this.signupParams)
         .then((response) => {
-          this.signupParams = {};
-          this.showSignup = false;
-          this.showLogin = true;
+          if (response && response.status >= 200 && response.status < 300) {
+            // this.$emit("login", response.data);
+            console.log(response.data);
+            this.showSignup = false;
+            this.showLogin = true;
+          } else {
+            this.errors.push(response.data.errors);
+          }
         })
         .catch((error) => {
-          this.errors = error.response.data.errors;
+          if (error.response && error.response.data) {
+            this.errors.push(error.response.data.errors);
+          } else {
+            this.errors = ["An unexpected error occurred. Please try again later."];
+          }
+        })
+        .finally(() => {
           this.signupParams = {};
         });
     },
