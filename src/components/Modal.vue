@@ -1,6 +1,8 @@
 <template>
   <div v-if="show" class="fixed z-10 inset-0 overflow-y-auto">
-    <div class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+    <div
+      class="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0"
+    >
       <div class="fixed inset-0 transition-opacity" aria-hidden="true">
         <div class="absolute inset-0 bg-slate-800 opacity-90"></div>
       </div>
@@ -10,7 +12,9 @@
       >
         <div class="bg-slate-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
           <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-            <h3 class="text-lg leading-6 font-medium text-center text-white">{{ title }}</h3>
+            <h3 class="text-lg leading-6 font-medium text-center text-white">
+              {{ title }}
+            </h3>
             <div class="mt-2">
               <p class="text-sm text-center text-white">{{ message }}</p>
             </div>
@@ -43,16 +47,16 @@
 </template>
 
 <script>
-export default {
-  props: {
-    show: {
-      type: Boolean,
-      required: true,
-    },
-    title: String,
-    message: String,
-    confirmText: String,
-    cancelText: String,
-  },
-};
+  export default {
+    props: {
+      show: {
+        type: Boolean,
+        required: true
+      },
+      title: String,
+      message: String,
+      confirmText: String,
+      cancelText: String
+    }
+  }
 </script>
