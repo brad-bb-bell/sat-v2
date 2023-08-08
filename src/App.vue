@@ -2,18 +2,18 @@
   <div class="container mx-auto py-6 px-4">
     <Hero title="Simple Activity Tracker"></Hero>
 
-    <LoginSignup v-if="!isLoggedIn && !showLogin && !showSignup"></LoginSignup>
+    <LoginSignup v-if="!isLoggedIn"></LoginSignup>
 
     <!-- Login or Signup -->
-    <Section v-if="!isLoggedIn && !showLogin && !showSignup">
+    <!-- <Section v-if="!isLoggedIn && !showLogin && !showSignup">
       <div class="grid grid-cols-2 text-xl">
         <button class="mx-auto" @click="showLogin = true">Login</button>
         <button class="mx-auto" @click="showSignup = true">Signup</button>
       </div>
-    </Section>
+    </Section> -->
 
     <!-- Signup -->
-    <Section v-if="showSignup">
+    <!-- <Section v-if="showSignup">
       <form @submit.prevent="signup()">
         <div class="text-center">
           <ul>
@@ -74,10 +74,10 @@
           </div>
         </div>
       </form>
-    </Section>
+    </Section> -->
 
     <!-- Login -->
-    <Section v-if="showLogin">
+    <!-- <Section v-if="showLogin">
       <form @submit.prevent="login()" class="">
         <div class="text-center">
           <ul>
@@ -117,7 +117,7 @@
           </div>
         </div>
       </form>
-    </Section>
+    </Section> -->
 
     <!-- Successfully Logged In -->
     <div v-if="isLoggedIn" class="pb-16">
@@ -331,9 +331,9 @@ export default {
   },
   data() {
     return {
-      errors: [],
-      loginParams: {},
-      signupParams: {},
+      // errors: [],
+      // loginParams: {},
+      // signupParams: {},
       isLoggedIn: false,
       showLogin: false,
       showSignup: false,
