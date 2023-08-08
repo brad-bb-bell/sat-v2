@@ -18,11 +18,6 @@
 
   <Section v-if="showSignup">
     <form @submit.prevent="signup()">
-      <div class="text-center">
-        <ul>
-          <li v-for="error in errors" :key="error">{{ error }}</li>
-        </ul>
-      </div>
       <div class="grid grid-cols-2">
         <div class="flex flex-col gap-2 py-2 items-center">
           <div>
@@ -31,6 +26,7 @@
               placeholder="Username"
               v-model="signupParams.name"
               class="text-black rounded px-1"
+              @input="clearErrors"
             />
           </div>
           <div>
@@ -39,6 +35,7 @@
               placeholder="Email address"
               v-model="signupParams.email"
               class="text-black rounded px-1"
+              @input="clearErrors"
             />
           </div>
           <div>
@@ -47,6 +44,7 @@
               placeholder="Password"
               v-model="signupParams.password"
               class="text-black rounded px-1"
+              @input="clearErrors"
             />
           </div>
           <div>
@@ -55,6 +53,7 @@
               placeholder="Password confirmation"
               v-model="signupParams.password_confirmation"
               class="text-black rounded px-1"
+              @input="clearErrors"
             />
           </div>
         </div>
@@ -68,10 +67,7 @@
           </button>
           <p>
             <button
-              @click.prevent="
-                this.showSignup = false
-                this.errors = []
-              "
+              @click.prevent="handleBackClick()"
               class="w-[100px] border text-black font-medium bg-gray-400 rounded my-1"
             >
               Back
@@ -84,11 +80,6 @@
 
   <Section v-if="showLogin">
     <form @submit.prevent="login()">
-      <div class="text-center">
-        <ul>
-          <li v-for="error in errors" :key="error">{{ error }}</li>
-        </ul>
-      </div>
       <div class="grid grid-cols-2">
         <div class="flex flex-col gap-2 my-2 items-center">
           <div>
@@ -97,6 +88,7 @@
               placeholder="Email"
               v-model="loginParams.email"
               class="text-black rounded px-1"
+              @input="clearErrors"
             />
           </div>
           <div>
@@ -105,6 +97,7 @@
               placeholder="Password"
               v-model="loginParams.password"
               class="text-black rounded px-1"
+              @input="clearErrors"
             />
           </div>
         </div>
@@ -118,10 +111,7 @@
           </button>
           <p>
             <button
-              @click.prevent="
-                this.showLogin = false
-                this.errors = []
-              "
+              @click.prevent="handleBackClick()"
               class="border text-black font-medium bg-gray-400 px-8 mx-10 my-1 rounded"
             >
               Back
@@ -130,6 +120,14 @@
         </div>
       </div>
     </form>
+  </Section>
+
+  <Section v-if="errors.length > 0">
+    <div class="text-center">
+      <ul>
+        <li v-for="error in errors" :key="error">{{ error }}</li>
+      </ul>
+    </div>
   </Section>
 </template>
 <script>
@@ -149,8 +147,28 @@
         signupParams: {}
       }
     },
+    emits: ['login'],
+    computed: {
+      passwordsMatch() {
+        return (
+          this.signupParams.password === this.signupParams.password_confirmation
+        )
+      }
+    },
     methods: {
+      handleBackClick() {
+        this.showSignup = false
+        this.showLogin = false
+        this.errors = []
+      },
+      clearErrors() {
+        this.errors = []
+      },
       signup() {
+        if (!this.passwordsMatch) {
+          this.errors.push('Passwords do not match.')
+          return
+        }
         axios
           .post('/users.json', this.signupParams)
 
@@ -180,6 +198,7 @@
           })
           .finally(() => {
             this.signupParams = {}
+            this.errors = []
             this.login()
           })
       },
@@ -187,7 +206,7 @@
         axios
           .post('/sessions.json', this.loginParams)
           .then(response => {
-            if (response && response.status >= 200 && response.status < 300) {
+            if (response.status >= 200 && response.status < 300) {
               axios.defaults.headers.common['Authorization'] =
                 'Bearer ' + response.data.jwt
               localStorage.setItem('jwt', response.data.jwt)
@@ -195,7 +214,6 @@
               this.user = response.data
               this.loginParams = {}
               this.showLogin = false
-              this.errors = []
               this.$emit('login', response.data)
             } else {
               this.errors.push(response.data.errors)
@@ -203,7 +221,17 @@
           })
           .catch(error => {
             console.log(error.response)
-            this.errors = ['Invalid email or password.']
+            if (
+              error.response &&
+              error.response.data &&
+              error.response.data.errors
+            ) {
+              this.errors = [...this.errors, ...error.response.data.errors]
+            } else {
+              this.errors.push('Invalid email or password.')
+            }
+          })
+          .finally(() => {
             this.loginParams = {}
           })
       }
