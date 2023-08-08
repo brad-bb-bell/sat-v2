@@ -1,315 +1,324 @@
 <template>
-  <!-- Hero -->
-  <Container class="border-transparent bg-gradient-to-br from-purple-300 to-purple-500">
-    <h1 class="text-center text-xl tracking-widest font-syne-mono">Simple Activity Tracker</h1>
-  </Container>
+  <div class="container mx-auto py-6 px-4">
+    <Hero title="Simple Activity Tracker"></Hero>
 
-  <!-- Login or Signup -->
-  <Container v-if="!isLoggedIn && !showLogin && !showSignup">
-    <div class="grid grid-cols-2 text-xl">
-      <button class="mx-auto" @click="showLogin = true">Login</button>
-      <button class="mx-auto" @click="showSignup = true">Signup</button>
-    </div>
-  </Container>
+    <LoginSignup v-if="!isLoggedIn && !showLogin && !showSignup"></LoginSignup>
 
-  <!-- Signup -->
-  <Container v-if="showSignup">
-    <form @submit.prevent="signup()">
-      <div class="text-center">
-        <ul>
-          <li v-for="error in errors" :key="error">{{ error }}</li>
-        </ul>
+    <!-- Login or Signup -->
+    <Section v-if="!isLoggedIn && !showLogin && !showSignup">
+      <div class="grid grid-cols-2 text-xl">
+        <button class="mx-auto" @click="showLogin = true">Login</button>
+        <button class="mx-auto" @click="showSignup = true">Signup</button>
       </div>
-      <div class="grid grid-cols-2">
-        <div class="flex flex-col gap-2 py-2 items-center">
-          <div>
-            <input type="username" placeholder="Username" v-model="signupParams.name" class="text-black rounded px-1" />
-          </div>
-          <div>
-            <input
-              type="email"
-              placeholder="Email address"
-              v-model="signupParams.email"
-              class="text-black rounded px-1"
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              placeholder="Password"
-              v-model="signupParams.password"
-              class="text-black rounded px-1"
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              placeholder="Password confirmation"
-              v-model="signupParams.password_confirmation"
-              class="text-black rounded px-1"
-            />
-          </div>
+    </Section>
+
+    <!-- Signup -->
+    <Section v-if="showSignup">
+      <form @submit.prevent="signup()">
+        <div class="text-center">
+          <ul>
+            <li v-for="error in errors" :key="error">{{ error }}</li>
+          </ul>
         </div>
-        <div class="text-center my-auto">
-          <h2 class="text-xl">New User Signup</h2>
-          <button type="submit" class="w-[100px] border text-black font-medium bg-green-400 rounded my-1">
-            Submit
-          </button>
-          <p>
-            <button
-              @click.prevent="
-                this.showSignup = false;
-                this.errors = [];
-              "
-              class="w-[100px] border text-black font-medium bg-gray-400 rounded my-1"
-            >
-              Back
+        <div class="grid grid-cols-2">
+          <div class="flex flex-col gap-2 py-2 items-center">
+            <div>
+              <input
+                type="username"
+                placeholder="Username"
+                v-model="signupParams.name"
+                class="text-black rounded px-1"
+              />
+            </div>
+            <div>
+              <input
+                type="email"
+                placeholder="Email address"
+                v-model="signupParams.email"
+                class="text-black rounded px-1"
+              />
+            </div>
+            <div>
+              <input
+                type="password"
+                placeholder="Password"
+                v-model="signupParams.password"
+                class="text-black rounded px-1"
+              />
+            </div>
+            <div>
+              <input
+                type="password"
+                placeholder="Password confirmation"
+                v-model="signupParams.password_confirmation"
+                class="text-black rounded px-1"
+              />
+            </div>
+          </div>
+          <div class="text-center my-auto">
+            <h2 class="text-xl">New User Signup</h2>
+            <button type="submit" class="w-[100px] border text-black font-medium bg-green-400 rounded my-1">
+              Submit
             </button>
-          </p>
-        </div>
-      </div>
-    </form>
-  </Container>
-
-  <!-- Login -->
-  <Container v-if="showLogin">
-    <form @submit.prevent="login()" class="">
-      <div class="text-center">
-        <ul>
-          <li v-for="error in errors" :key="error">{{ error }}</li>
-        </ul>
-      </div>
-      <div class="grid grid-cols-2">
-        <div class="flex flex-col gap-2 my-2 items-center">
-          <div>
-            <input type="email" placeholder="Email" v-model="loginParams.email" class="text-black rounded px-1" />
-          </div>
-          <div>
-            <input
-              type="password"
-              placeholder="Password"
-              v-model="loginParams.password"
-              class="text-black rounded px-1"
-            />
+            <p>
+              <button
+                @click.prevent="
+                  this.showSignup = false;
+                  this.errors = [];
+                "
+                class="w-[100px] border text-black font-medium bg-gray-400 rounded my-1"
+              >
+                Back
+              </button>
+            </p>
           </div>
         </div>
+      </form>
+    </Section>
 
-        <div class="text-center my-auto">
-          <button type="submit" class="border text-black font-medium bg-green-400 px-8 mx-10 my-1 rounded">
-            Login
-          </button>
-          <p>
-            <button
-              @click.prevent="
-                this.showLogin = false;
-                this.errors = [];
-              "
-              class="border text-black font-medium bg-gray-400 px-8 mx-10 my-1 rounded"
-            >
-              Back
+    <!-- Login -->
+    <Section v-if="showLogin">
+      <form @submit.prevent="login()" class="">
+        <div class="text-center">
+          <ul>
+            <li v-for="error in errors" :key="error">{{ error }}</li>
+          </ul>
+        </div>
+        <div class="grid grid-cols-2">
+          <div class="flex flex-col gap-2 my-2 items-center">
+            <div>
+              <input type="email" placeholder="Email" v-model="loginParams.email" class="text-black rounded px-1" />
+            </div>
+            <div>
+              <input
+                type="password"
+                placeholder="Password"
+                v-model="loginParams.password"
+                class="text-black rounded px-1"
+              />
+            </div>
+          </div>
+
+          <div class="text-center my-auto">
+            <button type="submit" class="border text-black font-medium bg-green-400 px-8 mx-10 my-1 rounded">
+              Login
             </button>
-          </p>
+            <p>
+              <button
+                @click.prevent="
+                  this.showLogin = false;
+                  this.errors = [];
+                "
+                class="border text-black font-medium bg-gray-400 px-8 mx-10 my-1 rounded"
+              >
+                Back
+              </button>
+            </p>
+          </div>
         </div>
-      </div>
-    </form>
-  </Container>
+      </form>
+    </Section>
 
-  <!-- Successfully Logged In -->
-  <div v-if="isLoggedIn" class="pb-16">
-    <Container class="flex justify-between items-center text-2xl">
-      <div class="text-center font-syne-mono flex-1">
-        {{ user.name }}
-      </div>
-      <button @click="logout" class="text-gray-400 material-symbols-outlined">logout</button>
-    </Container>
+    <!-- Successfully Logged In -->
+    <div v-if="isLoggedIn" class="pb-16">
+      <Section class="flex justify-between items-center text-2xl">
+        <div class="text-center font-syne-mono flex-1">
+          {{ user.name }}
+        </div>
+        <button @click="logout" class="text-gray-400 material-symbols-outlined">logout</button>
+      </Section>
 
-    <!-- Activities -->
-    <Container>
-      <div v-if="activities.length == 0" class="text-center mb-2">
-        Add an activity in the box below and press 'Enter'
-      </div>
-      <div v-else v-for="activity in activities" :key="activity.id">
+      <!-- Activities -->
+      <Section>
+        <div v-if="activities.length == 0" class="text-center mb-2">
+          Add an activity in the box below and press 'Enter'
+        </div>
+        <div v-else v-for="activity in activities" :key="activity.id">
+          <div
+            @click="toggleSelect(activity.id)"
+            class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
+            :class="[selectedActivities.includes(activity.id) === true ? 'border border-green-400' : '']"
+          >
+            {{ activity.name }}
+            <span class="absolute inset-y-0 right-2">
+              <i
+                @click.stop="deleteActivity(activity)"
+                class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
+              ></i>
+            </span>
+          </div>
+        </div>
+        <div class="">
+          <form @submit.prevent="addActivity(newActivityName)">
+            <input
+              type="text"
+              v-model="newActivityName"
+              placeholder="Add New Activity"
+              class="w-full pl-3 text-black border-2 border-black"
+            />
+          </form>
+        </div>
+        <Datepicker
+          v-model="calendarDate"
+          placeholder="Select Date"
+          :enableTimePicker="false"
+          autoApply
+          dark
+          class="mt-1"
+        />
+        <div class="flex center py-2">
+          <button
+            @click.prevent="createDidIt()"
+            class="text-black border-2 border-purple-400 transition font-medium bg-gradient-to-br from-green-300 to-green-500 hover:font-semibold hover:bg-gradient-to-r hover:from-green-300 hover:to-green-500 text-xl rounded-lg py-3 px-8 mx-auto"
+          >
+            Did It
+          </button>
+        </div>
+      </Section>
+
+      <!-- Streak -->
+      <Section>
+        <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 text-xl text-center">
+          Current Streak: {{ currentStreak }}x
+        </div>
+        <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 text-xl text-center">
+          Longest Streak: {{ longestStreak }}x
+        </div>
+      </Section>
+
+      <!-- Favorite Activity -->
+      <Section>
+        <div class="text-xl text-center">Favorite Activity</div>
+        <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600">
+          {{ favoriteActivity.name }}: {{ favoriteActivity.count }}x
+          <br />
+          Average: {{ (favoriteActivity.count / (favoriteDays / 7)).toFixed(2) }} days/week
+        </div>
+        <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600">
+          Since: {{ favFormat(firstDate) }}
+          <br />
+          Days since 1st: {{ favoriteDays }}
+        </div>
+        <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600">
+          This week: {{ favoriteCount.week }}x
+          <br />
+          This month: {{ favoriteCount.month }}x
+          <br />
+          Last 30 days: {{ favoriteCount.thirty }}x
+          <br />
+          This year: {{ favoriteCount.year }}x
+          <div v-if="this.favoriteCount.lastYear > 0">Last year: {{ favoriteCount.lastYear }}x</div>
+        </div>
+
+        <div class="text-center">
+          <Menu as="div" class="relative inline-block text-left">
+            <div>
+              <MenuButton
+                class="inline-flex w-44 justify-center rounded-md border-2 border-purple-400 bg-gray-700 px-4 py-1 text-sm font-medium text-white hover:bg-purple-100 hover:text-black focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-100"
+              >
+                {{ favoriteActivity.name }}
+                <ChevronDownIcon class="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
+              </MenuButton>
+            </div>
+
+            <transition
+              enter-active-class="transition ease-out duration-100"
+              enter-from-class="transform opacity-0 scale-95"
+              enter-to-class="transform opacity-100 scale-100"
+              leave-active-class="transition ease-in duration-75"
+              leave-from-class="transform opacity-100 scale-100"
+              leave-to-class="transform opacity-0 scale-95"
+            >
+              <MenuItems
+                class="absolute z-10 mt-1 w-44 origin-center divide-black divide-y-2 bg-gray-700 rounded-md text-white ring-1 ring-black ring-opacity-5 border-double border-4 border-purple-400 focus:outline-none"
+              >
+                <div v-for="activity in activities">
+                  <MenuItem v-slot="{ active }">
+                    <button
+                      class="mx-auto"
+                      :class="[active ? 'bg-purple-100 text-black w-full ' : 'text-white', 'block px-4 py-2 text-sm']"
+                      @click="getFavorite(activity)"
+                    >
+                      {{ activity.name }}
+                    </button>
+                  </MenuItem>
+                </div>
+              </MenuItems>
+            </transition>
+          </Menu>
+        </div>
+      </Section>
+
+      <!-- All Activities -->
+      <Section>
+        <div class="text-xl text-center">All Activities</div>
         <div
-          @click="toggleSelect(activity.id)"
-          class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
-          :class="[selectedActivities.includes(activity.id) === true ? 'border border-green-400' : '']"
+          v-for="(value, key) in hashTable"
+          :key="key"
+          class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
         >
-          {{ activity.name }}
+          {{ key }}: {{ value }}x
+        </div>
+      </Section>
+
+      <!-- Recent Activities aka Did Its -->
+      <Section>
+        <div class="text-xl text-center py-1">
+          <label for="didItsNumber">
+            Recent
+            <input
+              type="number"
+              id="didItsNumber"
+              v-model="didItsNumber"
+              class="text-black w-12 mx-1 pl-1 text-center text-base rounded-md focus:ring-purple-500"
+              @keyup.enter="updateDidItsNumber"
+              min="0"
+              :max="didItsFullList.length"
+              controls
+            />
+            Activities
+          </label>
+        </div>
+        <div
+          v-for="didIt in didIts"
+          :key="didIt.id"
+          class="relative bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
+        >
+          {{ didIt.name }} on {{ dateFormat(didIt.date) }}
           <span class="absolute inset-y-0 right-2">
             <i
-              @click.stop="deleteActivity(activity)"
+              @click="deleteDidIt(didIt)"
               class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
             ></i>
           </span>
         </div>
-      </div>
-      <div class="">
-        <form @submit.prevent="addActivity(newActivityName)">
-          <input
-            type="text"
-            v-model="newActivityName"
-            placeholder="Add New Activity"
-            class="w-full pl-3 text-black border-2 border-black"
-          />
-        </form>
-      </div>
-      <Datepicker
-        v-model="calendarDate"
-        placeholder="Select Date"
-        :enableTimePicker="false"
-        autoApply
-        dark
-        class="mt-1"
+      </Section>
+
+      <Modal
+        :show="showModal"
+        :title="modalTitle"
+        :message="modalMessage"
+        :confirmText="confirmText"
+        :cancelText="cancelText"
+        v-on:close-modal="showModal = false"
       />
-      <div class="flex center py-2">
-        <button
-          @click.prevent="createDidIt()"
-          class="text-black border-2 border-purple-400 transition font-medium bg-gradient-to-br from-green-300 to-green-500 hover:font-semibold hover:bg-gradient-to-r hover:from-green-300 hover:to-green-500 text-xl rounded-lg py-3 px-8 mx-auto"
-        >
-          Did It
-        </button>
-      </div>
-    </Container>
-
-    <!-- Streak -->
-    <Container>
-      <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 text-xl text-center">
-        Current Streak: {{ currentStreak }}x
-      </div>
-      <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 text-xl text-center">
-        Longest Streak: {{ longestStreak }}x
-      </div>
-    </Container>
-
-    <!-- Favorite Activity -->
-    <Container>
-      <div class="text-xl text-center">Favorite Activity</div>
-      <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600">
-        {{ favoriteActivity.name }}: {{ favoriteActivity.count }}x
-        <br />
-        Average: {{ (favoriteActivity.count / (favoriteDays / 7)).toFixed(2) }} days/week
-      </div>
-      <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600">
-        Since: {{ favFormat(firstDate) }}
-        <br />
-        Days since 1st: {{ favoriteDays }}
-      </div>
-      <div class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600">
-        This week: {{ favoriteCount.week }}x
-        <br />
-        This month: {{ favoriteCount.month }}x
-        <br />
-        Last 30 days: {{ favoriteCount.thirty }}x
-        <br />
-        This year: {{ favoriteCount.year }}x
-        <div v-if="this.favoriteCount.lastYear > 0">Last year: {{ favoriteCount.lastYear }}x</div>
-      </div>
-
-      <div class="text-center">
-        <Menu as="div" class="relative inline-block text-left">
-          <div>
-            <MenuButton
-              class="inline-flex w-44 justify-center rounded-md border-2 border-purple-400 bg-gray-700 px-4 py-1 text-sm font-medium text-white hover:bg-purple-100 hover:text-black focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-100"
-            >
-              {{ favoriteActivity.name }}
-              <ChevronDownIcon class="-mr-1 ml-2 h-5 w-5" aria-hidden="true" />
-            </MenuButton>
-          </div>
-
-          <transition
-            enter-active-class="transition ease-out duration-100"
-            enter-from-class="transform opacity-0 scale-95"
-            enter-to-class="transform opacity-100 scale-100"
-            leave-active-class="transition ease-in duration-75"
-            leave-from-class="transform opacity-100 scale-100"
-            leave-to-class="transform opacity-0 scale-95"
-          >
-            <MenuItems
-              class="absolute z-10 mt-1 w-44 origin-center divide-black divide-y-2 bg-gray-700 rounded-md text-white ring-1 ring-black ring-opacity-5 border-double border-4 border-purple-400 focus:outline-none"
-            >
-              <div v-for="activity in activities">
-                <MenuItem v-slot="{ active }">
-                  <button
-                    class="mx-auto"
-                    :class="[active ? 'bg-purple-100 text-black w-full ' : 'text-white', 'block px-4 py-2 text-sm']"
-                    @click="getFavorite(activity)"
-                  >
-                    {{ activity.name }}
-                  </button>
-                </MenuItem>
-              </div>
-            </MenuItems>
-          </transition>
-        </Menu>
-      </div>
-    </Container>
-
-    <!-- All Activities -->
-    <Container>
-      <div class="text-xl text-center">All Activities</div>
-      <div
-        v-for="(value, key) in hashTable"
-        :key="key"
-        class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
-      >
-        {{ key }}: {{ value }}x
-      </div>
-    </Container>
-
-    <!-- Recent Activities aka Did Its -->
-    <Container>
-      <div class="text-xl text-center py-1">
-        <label for="didItsNumber">
-          Recent
-          <input
-            type="number"
-            id="didItsNumber"
-            v-model="didItsNumber"
-            class="text-black w-12 mx-1 pl-1 text-center text-base rounded-md focus:ring-purple-500"
-            @keyup.enter="updateDidItsNumber"
-            min="0"
-            :max="didItsFullList.length"
-            controls
-          />
-          Activities
-        </label>
-      </div>
-      <div
-        v-for="didIt in didIts"
-        :key="didIt.id"
-        class="relative bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
-      >
-        {{ didIt.name }} on {{ dateFormat(didIt.date) }}
-        <span class="absolute inset-y-0 right-2">
-          <i
-            @click="deleteDidIt(didIt)"
-            class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
-          ></i>
-        </span>
-      </div>
-    </Container>
-
-    <Modal
-      :show="showModal"
-      :title="modalTitle"
-      :message="modalMessage"
-      :confirmText="confirmText"
-      :cancelText="cancelText"
-      v-on:close-modal="showModal = false"
-    />
+    </div>
   </div>
 </template>
 <script>
 import axios from "axios";
-import Container from "./components/ContainerBase.vue";
+import Section from "./components/Section.vue";
 import Datepicker from "@vuepic/vue-datepicker";
 import "@vuepic/vue-datepicker/dist/main.css";
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/vue";
 import { ChevronDownIcon } from "@heroicons/vue/20/solid";
 import Modal from "./components/Modal.vue";
+import Hero from "./components/Hero.vue";
+import LoginSignup from "./components/LoginSignup.vue";
+
 export default {
   components: {
-    Container,
+    Section,
     Datepicker,
     Menu,
     MenuButton,
@@ -317,6 +326,8 @@ export default {
     MenuItems,
     Modal,
     ChevronDownIcon,
+    Hero,
+    LoginSignup,
   },
   data() {
     return {
