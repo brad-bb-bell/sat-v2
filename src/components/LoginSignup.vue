@@ -166,6 +166,8 @@
             }
           })
           .catch(error => {
+            console.log(error.response)
+
             // Test this and potentially implement in the login method
 
             if (error.response && error.response.data) {
