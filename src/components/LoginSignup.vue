@@ -14,42 +14,30 @@
     <form @submit.prevent="signup()">
       <div class="grid grid-cols-2">
         <div class="flex flex-col gap-2 py-2 items-center">
-          <div>
-            <input
-              type="username"
-              placeholder="Username"
-              v-model="signupParams.name"
-              class="text-black rounded p-1 focus:outline-purple-700"
-              @input="clearErrors"
-            />
-          </div>
-          <div>
-            <input
-              type="email"
-              placeholder="Email address"
-              v-model="signupParams.email"
-              class="text-black rounded p-1 focus:outline-purple-700"
-              @input="clearErrors"
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              placeholder="Password"
-              v-model="signupParams.password"
-              class="text-black rounded p-1 focus:outline-purple-700"
-              @input="clearErrors"
-            />
-          </div>
-          <div>
-            <input
-              type="password"
-              placeholder="Password confirmation"
-              v-model="signupParams.password_confirmation"
-              class="text-black rounded p-1 focus:outline-purple-700"
-              @input="clearErrors"
-            />
-          </div>
+          <InputBox
+            type="username"
+            placeholder="Username"
+            v-model="signupParams.name"
+            @input="clearErrors"
+          />
+          <InputBox
+            type="email"
+            placeholder="Email address"
+            v-model="signupParams.email"
+            @input="clearErrors"
+          />
+          <InputBox
+            type="password"
+            placeholder="Password"
+            v-model="signupParams.password"
+            @input="clearErrors"
+          />
+          <InputBox
+            type="password"
+            placeholder="Password confirmation"
+            v-model="signupParams.password_confirmation"
+            @input="clearErrors"
+          />
         </div>
         <div class="text-center my-auto">
           <h2 class="text-xl mb-5">New User Signup</h2>
@@ -81,7 +69,7 @@
               type="email"
               placeholder="Email"
               v-model="loginParams.email"
-              class="text-black rounded px-1"
+              class="text-black rounded p-1 w-64 focus:outline-purple-700"
               @input="clearErrors"
             />
           </div>
@@ -90,7 +78,7 @@
               type="password"
               placeholder="Password"
               v-model="loginParams.password"
-              class="text-black rounded px-1"
+              class="text-black rounded p-1 w-64 focus:outline-purple-700"
               @input="clearErrors"
             />
           </div>
@@ -127,10 +115,14 @@
 <script>
   import axios from 'axios'
   import Section from './Section.vue'
+  import InputBox from './InputBox.vue'
+  import { Input } from 'postcss'
 
   export default {
     components: {
-      Section
+      Section,
+      InputBox,
+      Input
     },
     data() {
       return {
@@ -170,30 +162,19 @@
 
           .then(response => {
             if (response && response.status >= 200 && response.status < 300) {
-              console.log(response.data)
               this.showSignup = false
               this.showLogin = true
+              this.login()
             } else {
-              this.errors.push(response.data.errors)
+              console.log('signup else')
+              this.errors.push(...response.data.errors)
             }
           })
           .catch(error => {
-            console.log(error.response)
-
-            // Test this and potentially implement in the login method
-
-            if (error.response && error.response.data) {
-              this.errors.push(error.response.data.errors)
-            } else {
-              this.errors = [
-                'An unexpected error occurred. Please try again later.'
-              ]
-            }
+            this.errors.push(...error.response.data.errors)
           })
           .finally(() => {
             this.signupParams = {}
-            this.errors = []
-            this.login()
           })
       },
       login() {
