@@ -1,16 +1,10 @@
 <template>
   <Section v-if="!showLogin && !showSignup">
     <div class="grid grid-cols-2 text-xl">
-      <button
-        class="login-signup-button active:green-400 mx-auto"
-        @click="showLogin = true"
-      >
+      <button class="login-signup-button mx-auto" @click="showLogin = true">
         Login
       </button>
-      <button
-        class="login-signup-button active:green-400 mx-auto"
-        @click="showSignup = true"
-      >
+      <button class="login-signup-button mx-auto" @click="showSignup = true">
         Signup
       </button>
     </div>
@@ -25,7 +19,7 @@
               type="username"
               placeholder="Username"
               v-model="signupParams.name"
-              class="text-black rounded px-1"
+              class="text-black rounded p-1 focus:outline-purple-700"
               @input="clearErrors"
             />
           </div>
@@ -34,7 +28,7 @@
               type="email"
               placeholder="Email address"
               v-model="signupParams.email"
-              class="text-black rounded px-1"
+              class="text-black rounded p-1 focus:outline-purple-700"
               @input="clearErrors"
             />
           </div>
@@ -43,7 +37,7 @@
               type="password"
               placeholder="Password"
               v-model="signupParams.password"
-              class="text-black rounded px-1"
+              class="text-black rounded p-1 focus:outline-purple-700"
               @input="clearErrors"
             />
           </div>
@@ -52,7 +46,7 @@
               type="password"
               placeholder="Password confirmation"
               v-model="signupParams.password_confirmation"
-              class="text-black rounded px-1"
+              class="text-black rounded p-1 focus:outline-purple-700"
               @input="clearErrors"
             />
           </div>
