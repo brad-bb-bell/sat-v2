@@ -2,13 +2,13 @@
   <Section v-if="!showLogin && !showSignup">
     <div class="grid grid-cols-2 text-xl">
       <button
-        class="mx-auto hover:underline hover:decoration-purple-300 hover:underline-offset-4"
+        class="login-signup-button active:green-400 mx-auto"
         @click="showLogin = true"
       >
         Login
       </button>
       <button
-        class="mx-auto hover:underline hover:decoration-purple-300 hover:underline-offset-4"
+        class="login-signup-button active:green-400 mx-auto"
         @click="showSignup = true"
       >
         Signup
@@ -238,3 +238,26 @@
     }
   }
 </script>
+<style>
+  .login-signup-button {
+    position: relative;
+    padding-bottom: 5px; /* Adjust as needed for spacing between text and underline */
+    overflow: hidden;
+  }
+
+  .login-signup-button::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    width: 0;
+    height: 3px; /* Thickness of underline */
+    background-color: #9f7aea; /* Color equivalent to decoration-purple-300 */
+    transition: width 0.3s ease-out;
+    transform: translateX(-50%);
+  }
+
+  .login-signup-button:hover::before {
+    width: 100%;
+  }
+</style>
