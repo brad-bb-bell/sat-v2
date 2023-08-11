@@ -1,10 +1,16 @@
 <template>
   <Section v-if="!showLogin && !showSignup">
     <div class="grid grid-cols-2 text-xl">
-      <button class="login-signup-button mx-auto" @click="showLogin = true">
+      <button
+        class="login-signup-button hover:text-white mx-auto"
+        @click="showLogin = true"
+      >
         Login
       </button>
-      <button class="login-signup-button mx-auto" @click="showSignup = true">
+      <button
+        class="login-signup-button hover:text-white mx-auto"
+        @click="showSignup = true"
+      >
         Signup
       </button>
     </div>
@@ -151,10 +157,6 @@
         this.errors = []
       },
       signup() {
-        if (!this.passwordsMatch) {
-          this.errors.push('Passwords do not match.')
-          return
-        }
         if (
           !this.signupParams.name ||
           !this.signupParams.email ||
@@ -162,6 +164,10 @@
           !this.signupParams.password_confirmation
         ) {
           this.errors.push('Please fill out all fields')
+          return
+        }
+        if (!this.passwordsMatch) {
+          this.errors.push('Passwords do not match')
           return
         }
         axios
@@ -172,6 +178,7 @@
           .then(response => {
             if (response && response.status >= 200 && response.status < 300) {
               this.showSignup = false
+              // shouldn't showLogin be false?
               this.showLogin = true
               this.login()
             } else {
@@ -198,24 +205,16 @@
                 'Bearer ' + response.data.jwt
               localStorage.setItem('jwt', response.data.jwt)
               localStorage.setItem('user_id', response.data.id)
-              this.user = response.data
               this.loginParams = {}
               this.showLogin = false
               this.$emit('login', response.data)
-            } else {
-              this.errors.push(response.data.errors)
             }
           })
           .catch(error => {
-            console.log(error.response)
-            if (
-              error.response &&
-              error.response.data &&
-              error.response.data.errors
-            ) {
+            if (error?.response?.data?.errors) {
               this.errors = [...this.errors, ...error.response.data.errors]
             } else {
-              this.errors.push('Invalid email or password.')
+              this.errors.push('Invalid email or password')
             }
           })
           .finally(() => {
