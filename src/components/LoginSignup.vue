@@ -155,6 +155,15 @@
           this.errors.push('Passwords do not match.')
           return
         }
+        if (
+          !this.signupParams.name ||
+          !this.signupParams.email ||
+          !this.signupParams.password ||
+          !this.signupParams.password_confirmation
+        ) {
+          this.errors.push('Please fill out all fields')
+          return
+        }
         axios
           .post('/users.json', this.signupParams)
 
@@ -166,7 +175,6 @@
               this.showLogin = true
               this.login()
             } else {
-              console.log('signup else')
               this.errors.push(...response.data.errors)
             }
           })
@@ -178,6 +186,10 @@
           })
       },
       login() {
+        if (!this.loginParams.email || !this.loginParams.password) {
+          this.errors.push('Please enter your email and password')
+          return
+        }
         axios
           .post('/sessions.json', this.loginParams)
           .then(response => {
