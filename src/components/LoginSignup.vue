@@ -117,17 +117,25 @@
       </ul>
     </div>
   </Section>
+
+  <Section>
+    <div class="flex justify-center">
+      <Button type="green">Login</Button>
+    </div>
+  </Section>
 </template>
 <script>
   import axios from 'axios'
   import Section from './Section.vue'
   import InputBox from './InputBox.vue'
+  import Button from './Button.vue'
   import { Input } from 'postcss'
 
   export default {
     components: {
       Section,
       InputBox,
+      Button,
       Input
     },
     data() {
