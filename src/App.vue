@@ -20,6 +20,7 @@
         <div v-if="activities.length == 0" class="text-center mb-2">
           Add an activity in the box below and press 'Enter'
         </div>
+
         <div v-else v-for="activity in activities" :key="activity.id">
           <div
             @click="toggleSelect(activity.id)"
@@ -703,6 +704,7 @@
               this.sortByDate(this.didItsFullList)
               this.didIts = this.didIts.reverse().slice(0, this.didItsNumber)
               console.log('Current user:', response.data)
+              console.log('this.activities', this.activities)
               resolve()
             })
             .catch(error => {
