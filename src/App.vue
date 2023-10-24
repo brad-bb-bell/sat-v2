@@ -253,6 +253,7 @@
         showSignup: false,
         user: {},
         activities: [],
+        categories: [],
         didIts: [],
         didItsFullList: [],
         didItsNumber: 10,
@@ -681,7 +682,8 @@
       },
       changeFavorite(activity) {
         console.log(activity.name)
-      }
+      },
+      getCategories() {}
     },
     created() {
       if (
@@ -696,6 +698,7 @@
             .then(response => {
               this.user = response.data
               this.activities = this.user.activities
+              getCategories()
               this.didItsFullList = this.user.did_its
               this.didIts = this.user.did_its
               this.sortByDate(this.didIts)
