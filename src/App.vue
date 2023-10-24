@@ -21,50 +21,71 @@
           Add an activity in the box below and press 'Enter'
         </div>
 
-        <div v-else v-for="activity in activities" :key="activity.id">
-          <div
-            @click="toggleSelect(activity.id)"
-            class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
-            :class="[
-              selectedActivities.includes(activity.id) === true
-                ? 'border border-green-400'
-                : ''
-            ]"
-          >
-            {{ activity.name }}
-            <span class="absolute inset-y-0 right-2">
-              <i
-                @click.stop="deleteActivity(activity)"
-                class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
-              ></i>
-            </span>
+        <div v-else>
+          <div v-for="category in categories" :key="category.id">
+            <div
+              @click="toggleSelect(category.id)"
+              class="relative text-xl bg-purple-400 text-black border-2 border-black my-1 pl-2 hover:bg-gray-600"
+              :class="[
+                selectedActivities.includes(category.id) === true
+                  ? 'border border-green-400'
+                  : ''
+              ]"
+            >
+              {{ category.name }}
+              <span class="absolute inset-y-0 right-2">
+                <i
+                  @click.stop="deleteActivity(activity)"
+                  class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
+                ></i>
+              </span>
+            </div>
           </div>
-        </div>
-        <div class="">
-          <form @submit.prevent="addActivity(newActivityName)">
-            <input
-              type="text"
-              v-model="newActivityName"
-              placeholder="Add New Activity"
-              class="w-full pl-3 text-black border-2 border-black"
-            />
-          </form>
-        </div>
-        <Datepicker
-          v-model="calendarDate"
-          placeholder="Select Date"
-          :enableTimePicker="false"
-          autoApply
-          dark
-          class="mt-1"
-        />
-        <div class="flex center py-2">
-          <button
-            @click.prevent="createDidIt()"
-            class="text-black border-2 border-purple-400 transition font-medium bg-gradient-to-br from-green-300 to-green-500 hover:font-semibold hover:bg-gradient-to-r hover:from-green-300 hover:to-green-500 text-xl rounded-lg py-3 px-8 mx-auto"
-          >
-            Did It
-          </button>
+          <div v-for="activity in activities" :key="activity.id">
+            <div
+              @click="toggleSelect(activity.id)"
+              class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
+              :class="[
+                selectedActivities.includes(activity.id) === true
+                  ? 'border border-green-400'
+                  : ''
+              ]"
+            >
+              {{ activity.name }}
+              <span class="absolute inset-y-0 right-2">
+                <i
+                  @click.stop="deleteActivity(activity)"
+                  class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
+                ></i>
+              </span>
+            </div>
+          </div>
+          <div class="">
+            <form @submit.prevent="addActivity(newActivityName)">
+              <input
+                type="text"
+                v-model="newActivityName"
+                placeholder="Add New Activity"
+                class="w-full pl-3 text-black border-2 border-black"
+              />
+            </form>
+          </div>
+          <Datepicker
+            v-model="calendarDate"
+            placeholder="Select Date"
+            :enableTimePicker="false"
+            autoApply
+            dark
+            class="mt-1"
+          />
+          <div class="flex center py-2">
+            <button
+              @click.prevent="createDidIt()"
+              class="text-black border-2 border-purple-400 transition font-medium bg-gradient-to-br from-green-300 to-green-500 hover:font-semibold hover:bg-gradient-to-r hover:from-green-300 hover:to-green-500 text-xl rounded-lg py-3 px-8 mx-auto"
+            >
+              Did It
+            </button>
+          </div>
         </div>
       </Section>
 
@@ -691,7 +712,7 @@
           }
         })
         this.categories = Array.from(categorySet)
-        console.log(this.categories)
+        console.log('categories', this.categories)
       }
     },
     created() {
