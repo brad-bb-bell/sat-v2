@@ -683,7 +683,16 @@
       changeFavorite(activity) {
         console.log(activity.name)
       },
-      getCategories() {}
+      getCategories() {
+        const categorySet = new Set()
+        this.activities.forEach(activity => {
+          if (activity.categories && activity.categories.length > 0) {
+            activity.categories.forEach(category => categorySet.add(category))
+          }
+        })
+        this.categories = Array.from(categorySet)
+        console.log(this.categories)
+      }
     },
     created() {
       if (
@@ -698,7 +707,7 @@
             .then(response => {
               this.user = response.data
               this.activities = this.user.activities
-              getCategories()
+              this.getCategories()
               this.didItsFullList = this.user.did_its
               this.didIts = this.user.did_its
               this.sortByDate(this.didIts)
