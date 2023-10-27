@@ -751,6 +751,7 @@
       // }
       getCategories() {
         let categoriesMap = {}
+        this.uncategorizedActivities = [] // New array for activities without categories
 
         // Loop through all activities
         this.activities.forEach(activity => {
@@ -769,6 +770,9 @@
                 }
               }
             })
+          } else {
+            // If the activity has no categories, add it to the uncategorizedActivities array
+            this.uncategorizedActivities.push(activity)
           }
         })
 
