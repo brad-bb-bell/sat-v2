@@ -62,7 +62,7 @@
           </div> -->
           <div v-for="category in categories" :key="category.id">
             <div
-              class="category-title"
+              class="category-title relative text-xl bg-purple-400 text-black border-2 border-black my-1 pl-2 hover:bg-purple-500"
               @click="toggleSelect(category.id)"
               :class="{
                 'active-category': selectedActivities.includes(category.id)
@@ -70,6 +70,12 @@
             >
               {{ category.name }}
               <!-- you can also add a button here for category-related actions -->
+              <span class="absolute inset-y-0 right-2">
+                <i
+                  @click.stop="deleteActivity(activity)"
+                  class="fa-solid fa-xmark text-gray-600 hover:cursor-pointer hover:text-red-500"
+                ></i>
+              </span>
             </div>
 
             <!-- Nested loop for activities within the category -->
@@ -78,18 +84,27 @@
               :key="activity.id"
               class="activity-item"
             >
+              <!-- <div
+              @click="toggleSelect(activity.id)"
+              class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
+              :class="[
+                selectedActivities.includes(activity.id) === true
+                  ? 'border border-green-400'
+                  : ''
+              ]"
+            > -->
               <div
                 @click="toggleSelect(activity.id)"
+                class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
                 :class="{
                   'active-activity': selectedActivities.includes(activity.id)
                 }"
               >
                 {{ activity.name }}
-                <span>
-                  <!-- Activity delete button -->
+                <span class="absolute inset-y-0 right-2">
                   <i
                     @click.stop="deleteActivity(activity)"
-                    class="delete-activity-icon"
+                    class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
                   ></i>
                 </span>
               </div>
