@@ -22,7 +22,7 @@
         </div>
 
         <div v-else>
-          <div v-for="category in categories" :key="category.id">
+          <!-- <div v-for="category in categories" :key="category.id">
             <div
               @click="toggleSelect(category.id)"
               class="relative text-xl bg-purple-400 text-black border-2 border-black my-1 pl-2 hover:bg-purple-500"
@@ -58,6 +58,41 @@
                   class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
                 ></i>
               </span>
+            </div>
+          </div> -->
+          <div v-for="category in categories" :key="category.id">
+            <div
+              class="category-title"
+              @click="toggleSelect(category.id)"
+              :class="{
+                'active-category': selectedActivities.includes(category.id)
+              }"
+            >
+              {{ category.name }}
+              <!-- you can also add a button here for category-related actions -->
+            </div>
+
+            <!-- Nested loop for activities within the category -->
+            <div
+              v-for="activity in category.activities"
+              :key="activity.id"
+              class="activity-item"
+            >
+              <div
+                @click="toggleSelect(activity.id)"
+                :class="{
+                  'active-activity': selectedActivities.includes(activity.id)
+                }"
+              >
+                {{ activity.name }}
+                <span>
+                  <!-- Activity delete button -->
+                  <i
+                    @click.stop="deleteActivity(activity)"
+                    class="delete-activity-icon"
+                  ></i>
+                </span>
+              </div>
             </div>
           </div>
           <div class="">
@@ -739,7 +774,7 @@
 
         // Convert the categoriesMap object to an array of values (which are the categories)
         this.categories = Object.values(categoriesMap)
-        console.log('categories[0]', this.categories[0])
+        console.log('categories', this.categories)
       }
     },
     created() {
