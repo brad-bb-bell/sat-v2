@@ -95,6 +95,32 @@
               </div>
             </div>
           </div>
+          <!-- New section for uncategorized activities -->
+          <div v-if="uncategorizedActivities.length">
+            <h2 class="uncategorized-header">Uncategorized</h2>
+            <!-- You can style this header -->
+            <div
+              v-for="activity in uncategorizedActivities"
+              :key="activity.id"
+              class="activity-item"
+            >
+              <!-- The template for the activity is the same as in categorized ones -->
+              <div
+                @click="toggleSelect(activity.id)"
+                :class="{
+                  'active-activity': selectedActivities.includes(activity.id)
+                }"
+              >
+                {{ activity.name }}
+                <span>
+                  <i
+                    @click.stop="deleteActivity(activity)"
+                    class="delete-activity-icon"
+                  ></i>
+                </span>
+              </div>
+            </div>
+          </div>
           <div class="">
             <form @submit.prevent="addActivity(newActivityName)">
               <input
@@ -779,6 +805,7 @@
         // Convert the categoriesMap object to an array of values (which are the categories)
         this.categories = Object.values(categoriesMap)
         console.log('categories', this.categories)
+        console.log('uncategorizedActivities', this.uncategorizedActivities)
       }
     },
     created() {
