@@ -84,15 +84,6 @@
               :key="activity.id"
               class="activity-item"
             >
-              <!-- <div
-              @click="toggleSelect(activity.id)"
-              class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
-              :class="[
-                selectedActivities.includes(activity.id) === true
-                  ? 'border border-green-400'
-                  : ''
-              ]"
-            > -->
               <div
                 @click="toggleSelect(activity.id)"
                 class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
@@ -111,6 +102,15 @@
             </div>
           </div>
           <!-- New section for uncategorized activities -->
+          <!-- <div
+              @click="toggleSelect(activity.id)"
+              class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
+              :class="[
+                selectedActivities.includes(activity.id) === true
+                  ? 'border border-green-400'
+                  : ''
+              ]"
+            > -->
           <div v-if="uncategorizedActivities.length">
             <h2 class="uncategorized-header">Uncategorized</h2>
             <!-- You can style this header -->
@@ -122,15 +122,16 @@
               <!-- The template for the activity is the same as in categorized ones -->
               <div
                 @click="toggleSelect(activity.id)"
+                class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
                 :class="{
                   'active-activity': selectedActivities.includes(activity.id)
                 }"
               >
                 {{ activity.name }}
-                <span>
+                <span class="absolute inset-y-0 right-2">
                   <i
                     @click.stop="deleteActivity(activity)"
-                    class="delete-activity-icon"
+                    class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
                   ></i>
                 </span>
               </div>
