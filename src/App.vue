@@ -25,7 +25,7 @@
           <div v-for="category in categories" :key="category.id">
             <div
               @click="toggleSelect(category.id)"
-              class="relative text-xl bg-purple-400 text-black border-2 border-black my-1 pl-2 hover:bg-gray-600"
+              class="relative text-xl bg-purple-400 text-black border-2 border-black my-1 pl-2 hover:bg-purple-500"
               :class="[
                 selectedActivities.includes(category.id) === true
                   ? 'border border-green-400'
@@ -36,7 +36,7 @@
               <span class="absolute inset-y-0 right-2">
                 <i
                   @click.stop="deleteActivity(activity)"
-                  class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
+                  class="fa-solid fa-xmark text-gray-600 hover:cursor-pointer hover:text-red-500"
                 ></i>
               </span>
             </div>
@@ -704,15 +704,42 @@
       changeFavorite(activity) {
         console.log(activity.name)
       },
+      // getCategories() {
+      //   const categorySet = new Set()
+      //   this.activities.forEach(activity => {
+      //     if (activity.categories && activity.categories.length > 0) {
+      //       activity.categories.forEach(category => categorySet.add(category))
+      //     }
+      //   })
+      //   this.categories = Array.from(categorySet)
+      //   console.log('categories', this.categories)
+      // }
       getCategories() {
-        const categorySet = new Set()
+        let categoriesMap = {}
+
+        // Loop through all activities
         this.activities.forEach(activity => {
+          // Check if the activity has categories
           if (activity.categories && activity.categories.length > 0) {
-            activity.categories.forEach(category => categorySet.add(category))
+            // Loop through all categories of the activity
+            activity.categories.forEach(category => {
+              // If the category is already in the categoriesMap, push the activity to its list
+              if (categoriesMap[category.id]) {
+                categoriesMap[category.id].activities.push(activity)
+              } else {
+                // Otherwise, create a new category in the categoriesMap with the activity
+                categoriesMap[category.id] = {
+                  ...category,
+                  activities: [activity]
+                }
+              }
+            })
           }
         })
-        this.categories = Array.from(categorySet)
-        console.log('categories', this.categories)
+
+        // Convert the categoriesMap object to an array of values (which are the categories)
+        this.categories = Object.values(categoriesMap)
+        console.log('categories[0]', this.categories[0])
       }
     },
     created() {

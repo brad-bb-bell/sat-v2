@@ -118,11 +118,12 @@
     </div>
   </Section>
 
-  <Section>
+  <!-- <Section>
+    not sure why this is here
     <div class="flex justify-center">
       <Button type="green">Login</Button>
     </div>
-  </Section>
+  </Section> -->
 </template>
 <script>
   import axios from 'axios'
