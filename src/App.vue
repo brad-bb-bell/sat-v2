@@ -77,10 +77,11 @@
             </div>
 
             <!-- Nested loop for activities within the category -->
-            <div
+            <draggable
               v-for="activity in category.activities"
               :key="activity.id"
               class="activity-item"
+              tag="div"
             >
               <div
                 @click="toggleSelect(activity.id)"
@@ -91,7 +92,9 @@
                     : ''
                 ]"
               >
-                {{ activity.name }}
+                <template #item="{ element: activity }">
+                  {{ activity.name }}
+                </template>
                 <span class="absolute inset-y-0 right-2">
                   <i
                     @click.stop="deleteActivity(activity)"
@@ -99,7 +102,7 @@
                   ></i>
                 </span>
               </div>
-            </div>
+            </draggable>
           </div>
           <!-- New section for uncategorized activities -->
           <!-- <div
@@ -321,6 +324,7 @@
 </template>
 <script>
   import axios from 'axios'
+  import draggable from 'vuedraggable'
   import Section from './components/Section.vue'
   import Datepicker from '@vuepic/vue-datepicker'
   import '@vuepic/vue-datepicker/dist/main.css'
