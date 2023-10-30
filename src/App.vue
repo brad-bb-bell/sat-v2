@@ -63,16 +63,14 @@
           <div v-for="category in categories" :key="category.id">
             <div
               class="category-title relative text-xl bg-purple-400 text-black border-2 border-black my-1 pl-2 hover:bg-purple-500"
-              @click="toggleSelect(category.id)"
-              :class="{
-                'active-category': selectedActivities.includes(category.id)
-              }"
+              @click=""
+              :class="{}"
             >
               {{ category.name }}
               <!-- you can also add a button here for category-related actions -->
               <span class="absolute inset-y-0 right-2">
                 <i
-                  @click.stop="deleteActivity(activity)"
+                  @click.stop="console.log('Can you delete a category?')"
                   class="fa-solid fa-xmark text-gray-600 hover:cursor-pointer hover:text-red-500"
                 ></i>
               </span>
@@ -87,9 +85,11 @@
               <div
                 @click="toggleSelect(activity.id)"
                 class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
-                :class="{
-                  'active-activity': selectedActivities.includes(activity.id)
-                }"
+                :class="[
+                  selectedActivities.includes(activity.id) === true
+                    ? ' border-green-400'
+                    : ''
+                ]"
               >
                 {{ activity.name }}
                 <span class="absolute inset-y-0 right-2">
@@ -123,9 +123,11 @@
               <div
                 @click="toggleSelect(activity.id)"
                 class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
-                :class="{
-                  'active-activity': selectedActivities.includes(activity.id)
-                }"
+                :class="[
+                  selectedActivities.includes(activity.id) === true
+                    ? ' border-green-400'
+                    : ''
+                ]"
               >
                 {{ activity.name }}
                 <span class="absolute inset-y-0 right-2">
