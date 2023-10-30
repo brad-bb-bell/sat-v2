@@ -68,12 +68,12 @@
             >
               {{ category.name }}
               <!-- you can also add a button here for category-related actions -->
-              <span class="absolute inset-y-0 right-2">
+              <!-- <span class="absolute inset-y-0 right-2">
                 <i
                   @click.stop="console.log('Can you delete a category?')"
                   class="fa-solid fa-xmark text-gray-600 hover:cursor-pointer hover:text-red-500"
                 ></i>
-              </span>
+              </span> -->
             </div>
 
             <!-- Nested loop for activities within the category -->
