@@ -24,9 +24,8 @@
         <div v-else>
           <div v-for="category in categories" :key="category.id">
             <div
-              class="category-title relative text-xl bg-purple-400 text-black border-2 border-black my-1 pl-2 hover:bg-purple-500"
+              class="category-title relative text-xl bg-purple-400 text-black border-2 border-black my-1 pl-2 hover:bg-purple-500 select-none"
               @click=""
-              :class="{}"
             >
               {{ category.name }}
             </div>
@@ -41,7 +40,7 @@
               <template #item="{ element }">
                 <li
                   @click="toggleSelect(element.id)"
-                  class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
+                  class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 cursor-pointer"
                   :class="[
                     selectedActivities.includes(element.id) === true
                       ? ' border-green-400'
