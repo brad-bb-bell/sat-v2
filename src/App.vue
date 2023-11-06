@@ -22,44 +22,6 @@
         </div>
 
         <div v-else>
-          <!-- <div v-for="category in categories" :key="category.id">
-            <div
-              @click="toggleSelect(category.id)"
-              class="relative text-xl bg-purple-400 text-black border-2 border-black my-1 pl-2 hover:bg-purple-500"
-              :class="[
-                selectedActivities.includes(category.id) === true
-                  ? 'border border-green-400'
-                  : ''
-              ]"
-            >
-              {{ category.name }}
-              <span class="absolute inset-y-0 right-2">
-                <i
-                  @click.stop="deleteActivity(activity)"
-                  class="fa-solid fa-xmark text-gray-600 hover:cursor-pointer hover:text-red-500"
-                ></i>
-              </span>
-            </div>
-          </div>
-          <div v-for="activity in activities" :key="activity.id">
-            <div
-              @click="toggleSelect(activity.id)"
-              class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
-              :class="[
-                selectedActivities.includes(activity.id) === true
-                  ? 'border border-green-400'
-                  : ''
-              ]"
-            >
-              {{ activity.name }}
-              <span class="absolute inset-y-0 right-2">
-                <i
-                  @click.stop="deleteActivity(activity)"
-                  class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
-                ></i>
-              </span>
-            </div>
-          </div> -->
           <div v-for="category in categories" :key="category.id">
             <div
               class="category-title relative text-xl bg-purple-400 text-black border-2 border-black my-1 pl-2 hover:bg-purple-500"
@@ -67,62 +29,44 @@
               :class="{}"
             >
               {{ category.name }}
-              <!-- you can also add a button here for category-related actions -->
-              <!-- <span class="absolute inset-y-0 right-2">
-                <i
-                  @click.stop="console.log('Can you delete a category?')"
-                  class="fa-solid fa-xmark text-gray-600 hover:cursor-pointer hover:text-red-500"
-                ></i>
-              </span> -->
             </div>
-
             <!-- Nested loop for activities within the category -->
             <draggable
-              v-for="activity in category.activities"
-              :key="activity.id"
-              class="activity-item"
-              tag="div"
+              v-model="category.activities"
+              itemKey="id"
+              tag="ol"
+              group="activities"
+              @end="saveOrder"
             >
-              <div
-                @click="toggleSelect(activity.id)"
-                class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
-                :class="[
-                  selectedActivities.includes(activity.id) === true
-                    ? ' border-green-400'
-                    : ''
-                ]"
-              >
-                <template #item="{ element: activity }">
-                  {{ activity.name }}
-                </template>
-                <span class="absolute inset-y-0 right-2">
-                  <i
-                    @click.stop="deleteActivity(activity)"
-                    class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
-                  ></i>
-                </span>
-              </div>
+              <template #item="{ element }">
+                <li
+                  @click="toggleSelect(element.id)"
+                  class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
+                  :class="[
+                    selectedActivities.includes(element.id) === true
+                      ? ' border-green-400'
+                      : ''
+                  ]"
+                >
+                  {{ element.name }}
+                  <span class="absolute inset-y-0 right-2">
+                    <i
+                      @click.stop="deleteActivity(element)"
+                      class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
+                    ></i>
+                  </span>
+                </li>
+              </template>
             </draggable>
           </div>
-          <!-- New section for uncategorized activities -->
-          <!-- <div
-              @click="toggleSelect(activity.id)"
-              class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
-              :class="[
-                selectedActivities.includes(activity.id) === true
-                  ? 'border border-green-400'
-                  : ''
-              ]"
-            > -->
+
           <div v-if="uncategorizedActivities.length">
             <h2 class="uncategorized-header">Uncategorized</h2>
-            <!-- You can style this header -->
             <div
               v-for="activity in uncategorizedActivities"
               :key="activity.id"
               class="activity-item"
             >
-              <!-- The template for the activity is the same as in categorized ones -->
               <div
                 @click="toggleSelect(activity.id)"
                 class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
@@ -345,7 +289,8 @@
       Modal,
       ChevronDownIcon,
       Hero,
-      LoginSignup
+      LoginSignup,
+      draggable
     },
     data() {
       return {
