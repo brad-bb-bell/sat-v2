@@ -40,7 +40,7 @@
               <template #item="{ element }">
                 <li
                   @click="toggleSelect(element.id)"
-                  class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 cursor-pointer"
+                  class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 cursor-grab"
                   :class="[
                     selectedActivities.includes(element.id) === true
                       ? ' border-green-400'
@@ -61,29 +61,33 @@
 
           <div v-if="uncategorizedActivities.length">
             <h2 class="uncategorized-header">Uncategorized</h2>
-            <div
-              v-for="activity in uncategorizedActivities"
-              :key="activity.id"
-              class="activity-item"
+            <draggable
+              v-model="uncategorizedActivities"
+              itemKey="id"
+              tag="ol"
+              group="activities"
+              @end="saveOrder"
             >
-              <div
-                @click="toggleSelect(activity.id)"
-                class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
-                :class="[
-                  selectedActivities.includes(activity.id) === true
-                    ? ' border-green-400'
-                    : ''
-                ]"
-              >
-                {{ activity.name }}
-                <span class="absolute inset-y-0 right-2">
-                  <i
-                    @click.stop="deleteActivity(activity)"
-                    class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
-                  ></i>
-                </span>
-              </div>
-            </div>
+              <template #item="{ element }">
+                <li
+                  @click="toggleSelect(element.id)"
+                  class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 cursor-grab"
+                  :class="[
+                    selectedActivities.includes(element.id) === true
+                      ? ' border-green-400'
+                      : ''
+                  ]"
+                >
+                  {{ element.name }}
+                  <span class="absolute inset-y-0 right-2">
+                    <i
+                      @click.stop="deleteActivity(element)"
+                      class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
+                    ></i>
+                  </span>
+                </li>
+              </template>
+            </draggable>
           </div>
           <div class="">
             <form @submit.prevent="addActivity(newActivityName)">
