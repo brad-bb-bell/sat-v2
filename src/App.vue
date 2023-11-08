@@ -734,16 +734,6 @@
       changeFavorite(activity) {
         console.log(activity.name)
       },
-      // getCategories() {
-      //   const categorySet = new Set()
-      //   this.activities.forEach(activity => {
-      //     if (activity.categories && activity.categories.length > 0) {
-      //       activity.categories.forEach(category => categorySet.add(category))
-      //     }
-      //   })
-      //   this.categories = Array.from(categorySet)
-      //   console.log('categories', this.categories)
-      // }
       getCategories() {
         let categoriesMap = {}
         this.uncategorizedActivities = [] // New array for activities without categories
