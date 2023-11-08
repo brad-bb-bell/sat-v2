@@ -643,7 +643,6 @@
         this.favoriteCount.thirty = thirty
         this.favoriteCount.year = year
         this.favoriteCount.lastYear = prevYear
-        console.log()
       },
       getDaysBetweenDates(date1, date2) {
         const oneDay = 24 * 60 * 60 * 1000 // Number of milliseconds in a day
