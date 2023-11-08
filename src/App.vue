@@ -347,6 +347,16 @@
               ' to categoryId ' +
               this.dropCategoryId
           )
+          const updateCategory = this.categories.find(
+            category => category.id == this.dropCategoryId
+          )
+          this.activities
+            .find(activity => activity.id == this.dragActivityId)
+            .then(activity => {
+              activity.categories.push(updateCategory)
+            })
+
+          // console.log('updateActivity', updateActivity.categories)
 
           //   axios
           //     .put('/activities/' + this.draggedItem.dataset.id + '.json', {
