@@ -334,13 +334,33 @@
     },
     methods: {
       dragStart(e) {
-        this.draggedItem = e.item
-        console.log('activityId of dragged item', e.item.dataset.id)
+        this.dragActivityId = e.item.dataset.id
       },
       dropItem(e) {
-        console.log('categoryId of dropped item', e.to.dataset.categoryId)
-        // const toCategoryID = e.to.dataset.categoryId;
-        // this.addActivityToCategory(this.draggedItem.id, toCategoryID);
+        this.dropCategoryId = e.to.dataset.categoryId
+
+        // If the item was dropped in a category, update its category
+        if (this.dropCategoryId) {
+          console.log(
+            'Adding activityId ' +
+              this.dragActivityId +
+              ' to categoryId ' +
+              this.dropCategoryId
+          )
+
+          //   axios
+          //     .put('/activities/' + this.draggedItem.dataset.id + '.json', {
+          //       activity: {
+          //         category_id: e.to.dataset.categoryId
+          //       }
+          //     })
+          //     .then(response => {
+          //       console.log('Success,', response.data)
+          //     })
+          //     .catch(error => {
+          //       console.log(error.response.data.errors)
+          //     })
+        }
       },
       handleLogin(data) {
         this.user = data
