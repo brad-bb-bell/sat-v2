@@ -35,7 +35,9 @@
               itemKey="id"
               tag="ol"
               group="activities"
-              @end="saveOrder"
+              @start="dragStart"
+              @end="dropItem"
+              :data-category-id="category.id"
             >
               <template #item="{ element }">
                 <li
@@ -66,7 +68,8 @@
               itemKey="id"
               tag="ol"
               group="activities"
-              @end="saveOrder"
+              @start="dragStart"
+              @end="dropItem"
             >
               <template #item="{ element }">
                 <li
@@ -77,6 +80,7 @@
                       ? ' border-green-400'
                       : ''
                   ]"
+                  :data-id="element.id"
                 >
                   {{ element.name }}
                   <span class="absolute inset-y-0 right-2">
@@ -329,6 +333,15 @@
       }
     },
     methods: {
+      dragStart(e) {
+        this.draggedItem = e.item
+        console.log('activityId of dragged item', e.item.dataset.id)
+      },
+      dropItem(e) {
+        console.log('categoryId of dropped item', e.to.dataset.categoryId)
+        // const toCategoryID = e.to.dataset.categoryId;
+        // this.addActivityToCategory(this.draggedItem.id, toCategoryID);
+      },
       handleLogin(data) {
         this.user = data
         this.activities = this.user.activities
