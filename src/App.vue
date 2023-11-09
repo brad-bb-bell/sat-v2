@@ -334,42 +334,27 @@
     },
     methods: {
       dragStart(e) {
-        this.dragActivityId = e.item.dataset.id
+        this.dragActivityId = parseInt(e.item.dataset.id)
+        console.log('dataset', e.item.dataset)
       },
       dropItem(e) {
-        this.dropCategoryId = e.to.dataset.categoryId
+        this.dropCategoryId = parseInt(e.to.dataset.categoryId)
 
         // If the item was dropped in a category, update its category
-        if (this.dropCategoryId) {
+        if (this.dropCategoryId && this.dragActivityId) {
           console.log(
             'Adding activityId ' +
               this.dragActivityId +
               ' to categoryId ' +
               this.dropCategoryId
           )
+          const updateActivity = this.activities.find(
+            activity => activity.id === this.dragActivityId
+          )
           const updateCategory = this.categories.find(
             category => category.id == this.dropCategoryId
           )
-          this.activities
-            .find(activity => activity.id == this.dragActivityId)
-            .then(activity => {
-              activity.categories.push(updateCategory)
-            })
-
-          // console.log('updateActivity', updateActivity.categories)
-
-          //   axios
-          //     .put('/activities/' + this.draggedItem.dataset.id + '.json', {
-          //       activity: {
-          //         category_id: e.to.dataset.categoryId
-          //       }
-          //     })
-          //     .then(response => {
-          //       console.log('Success,', response.data)
-          //     })
-          //     .catch(error => {
-          //       console.log(error.response.data.errors)
-          //     })
+          updateActivity.categories.push(updateCategory)
         }
       },
       handleLogin(data) {
