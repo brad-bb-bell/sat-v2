@@ -335,7 +335,6 @@
     methods: {
       dragStart(e) {
         this.dragActivityId = parseInt(e.item.dataset.id)
-        console.log('dataset', e.item.dataset)
       },
       dropItem(e) {
         this.dropCategoryId = parseInt(e.to.dataset.categoryId)
@@ -369,6 +368,7 @@
           //   updateActivity.categories.push(updateCategory)
           // }
           updateActivity.categories.push(updateCategory)
+          console.log(this.activities)
         }
       },
       handleLogin(data) {
