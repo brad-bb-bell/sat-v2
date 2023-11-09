@@ -357,7 +357,7 @@
         // If the item was dropped in a category, update its category
         if (this.dropCategoryId && this.dragActivityId) {
           console.log(
-            'Adding activityId ' +
+            'activityId ' +
               this.dragActivityId +
               ' to categoryId ' +
               this.dropCategoryId
@@ -379,7 +379,12 @@
           const hasCategory = updateActivity.categories.some(
             cat => cat.id === updateCategory.id
           )
+          if (hasCategory) {
+            // this can be removed
+            console.log('Activity already belongs to this category')
+          }
           if (!hasCategory) {
+            console.log('Adding category to activity')
             updateActivity.categories.push(updateCategory)
           }
         }
