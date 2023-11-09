@@ -351,9 +351,23 @@
           const updateActivity = this.activities.find(
             activity => activity.id === this.dragActivityId
           )
+          if (!updateActivity) {
+            console.error('Activity not found:', this.dragActivityId)
+            return
+          }
           const updateCategory = this.categories.find(
             category => category.id == this.dropCategoryId
           )
+          if (!updateCategory) {
+            console.error('Category not found:', this.dropCategoryId)
+            return
+          }
+          // const hasCategory = updateActivity.categories.some(
+          //   cat => cat.id === updateCategory.id
+          // )
+          // if (!hasCategory) {
+          //   updateActivity.categories.push(updateCategory)
+          // }
           updateActivity.categories.push(updateCategory)
         }
       },
