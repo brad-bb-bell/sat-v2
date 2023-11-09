@@ -48,6 +48,7 @@
                       ? ' border-green-400'
                       : ''
                   ]"
+                  :data-id="element.id"
                 >
                   {{ element.name }}
                   <span class="absolute inset-y-0 right-2">
@@ -334,7 +335,21 @@
     },
     methods: {
       dragStart(e) {
-        this.dragActivityId = parseInt(e.item.dataset.id)
+        // Get the activity ID from the element's dataset
+        const activityId = parseInt(e.item.dataset.id)
+        this.dragActivityId = activityId
+        console.log('dragStart activityId', activityId)
+
+        // Use closest to find the parent draggable that has a data-category-id attribute
+        // and get the category ID from its dataset
+        const categoryElement = e.item.closest('[data-category-id]')
+        if (categoryElement) {
+          const categoryId = parseInt(categoryElement.dataset.categoryId)
+          console.log('dragStart categoryId', categoryId)
+
+          // If you need to save this categoryId in your data for later use, you can do so
+          this.dragCategoryId = categoryId
+        }
       },
       dropItem(e) {
         this.dropCategoryId = parseInt(e.to.dataset.categoryId)
