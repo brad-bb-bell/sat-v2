@@ -364,11 +364,9 @@
           const hasCategory = updateActivity.categories.some(
             cat => cat.id === updateCategory.id
           )
-          console.log('hasCategory', hasCategory)
           if (!hasCategory) {
             updateActivity.categories.push(updateCategory)
           }
-          console.log(this.activities)
         }
       },
       handleLogin(data) {
