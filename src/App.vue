@@ -354,6 +354,33 @@
       dropItem(e) {
         this.dropCategoryId = parseInt(e.to.dataset.categoryId)
 
+        // If the item was dropped in uncategorized, remove the category where it came from
+        if (
+          !this.dropCategoryId &&
+          this.dragActivityId &&
+          this.dragCategoryId
+        ) {
+          const updateActivity = this.activities.find(
+            activity => activity.id === this.dragActivityId
+          )
+          if (!updateActivity) {
+            console.error('Activity not found:', this.dragActivityId)
+            return
+          }
+
+          // Filter out the category you want to remove
+          updateActivity.categories = updateActivity.categories.filter(
+            category => category.id !== this.dragCategoryId
+          )
+          console.log(
+            'Removed ' +
+              updateActivity.name +
+              ' from category Id ' +
+              this.dragCategoryId
+          )
+          console.log('New categories: ', updateActivity.categories)
+        }
+
         // If the item was dropped in a category, update its category
         if (this.dropCategoryId && this.dragActivityId) {
           console.log(
