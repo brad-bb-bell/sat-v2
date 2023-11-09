@@ -361,13 +361,13 @@
             console.error('Category not found:', this.dropCategoryId)
             return
           }
-          // const hasCategory = updateActivity.categories.some(
-          //   cat => cat.id === updateCategory.id
-          // )
-          // if (!hasCategory) {
-          //   updateActivity.categories.push(updateCategory)
-          // }
-          updateActivity.categories.push(updateCategory)
+          const hasCategory = updateActivity.categories.some(
+            cat => cat.id === updateCategory.id
+          )
+          console.log('hasCategory', hasCategory)
+          if (!hasCategory) {
+            updateActivity.categories.push(updateCategory)
+          }
           console.log(this.activities)
         }
       },
