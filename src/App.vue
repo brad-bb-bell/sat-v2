@@ -271,6 +271,21 @@
         :cancelText="cancelText"
         v-on:close-modal="showModal = false"
       />
+
+      <!-- Dropdown Menu -->
+      <div
+        v-if="moveOrAddCheck"
+        class="position-absolute z-10 bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
+        :style="{
+          top: dropdownPosition.y + 'px',
+          left: dropdownPosition.x + 'px'
+        }"
+      >
+        <ul>
+          <li @click="moveActivityToCategory">Move</li>
+          <li @click="addActivityToCategory">Add</li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
@@ -334,6 +349,18 @@
       }
     },
     methods: {
+      showMoveOrAddDropdown(e) {
+        this.moveOrAddCheck = true
+        this.dropdownPosition = { x: e.clientX, y: e.clientY }
+      },
+      moveActivityToCategory() {
+        console.log('move')
+        this.moveOrAddCheck = false
+      },
+      addActivityToCategory() {
+        console.log('add')
+        this.moveOrAddCheck = false
+      },
       dragStart(e) {
         // Get the activity ID from the element's dataset
         const activityId = parseInt(e.item.dataset.id)
