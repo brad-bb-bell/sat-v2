@@ -33,7 +33,6 @@
             <draggable
               v-model="category.activities"
               v-on:mouseup="capturePosition($event)"
-              v-on:mousedown="capturePosition($event)"
               itemKey="id"
               tag="ol"
               group="activities"
@@ -319,6 +318,7 @@
     },
     data() {
       return {
+        currentMousePosition: { x: 0, y: 0 },
         // errors: [],
         // loginParams: {},
         // signupParams: {},
@@ -351,8 +351,9 @@
       }
     },
     methods: {
-      capturePosition(e) {
-        console.log('capturePosition', e)
+      captureMouseMove(event) {
+        this.currentMousePosition.x = event.clientX
+        this.currentMousePosition.y = event.clientY
       },
       showMoveOrAddDropdown(e) {
         this.moveOrAddCheck = true
@@ -387,12 +388,7 @@
         }
       },
       dropItem(e) {
-        this.dropdownPosition = { x: e.clientX, y: e.clientY }
-        console.log(
-          'showMoveOrAddDropdown mouse position x/y',
-          e.clientX,
-          e.clientY
-        )
+        console.log('Mouse position at drop:', this.currentMousePosition)
         this.dropCategoryId = parseInt(e.to.dataset.categoryId)
 
         // If the item was dropped in uncategorized, remove the category where it came from
@@ -941,10 +937,10 @@
         this.getCurrentStreak(this.didItsFullList)
         this.getLongestStreak(this.didItsFullList)
       })
-      document.addEventListener('mouseup', this.capturePosition)
+      document.addEventListener('mousemove', this.captureMouseMove)
     },
     beforeUnmount() {
-      document.removeEventListener('mouseup', this.capturePosition)
+      document.removeEventListener('mousemove', this.captureMouseMove)
     }
   }
 </script>
