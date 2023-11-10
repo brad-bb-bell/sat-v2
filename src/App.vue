@@ -276,11 +276,7 @@
       <!-- Dropdown Menu -->
       <div
         v-if="moveOrAddCheck"
-        class="position-absolute z-10 bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
-        :style="{
-          top: dropdownPosition.y + 'px',
-          left: dropdownPosition.x + 'px'
-        }"
+        class="absolute top-1 right-1 z-10 bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
       >
         <ul>
           <li @click="moveActivityToCategory">Move</li>
@@ -319,6 +315,7 @@
     data() {
       return {
         currentMousePosition: { x: 0, y: 0 },
+        moveOrAddCheck: false,
         // errors: [],
         // loginParams: {},
         // signupParams: {},
@@ -355,14 +352,13 @@
         this.currentMousePosition.x = event.clientX
         this.currentMousePosition.y = event.clientY
       },
-      showMoveOrAddDropdown(e) {
+      showMoveOrAddDropdown() {
         this.moveOrAddCheck = true
-        // this.dropdownPosition = { x: e.clientX, y: e.clientY }
-        // console.log(
-        //   'showMoveOrAddDropdown mouse position x/y',
-        //   e.clientX,
-        //   e.clientY
-        // )
+        console.log('show')
+        this.dropdownPosition = {
+          x: this.currentMousePosition.x,
+          y: this.currentMousePosition.y
+        }
       },
       moveActivityToCategory() {
         console.log('move')
@@ -456,7 +452,7 @@
           // If activity already has a category, determine if you want to move it from one category to another or add it to an additional category
           else if (this.dragCategoryId) {
             console.log('Move or add?')
-            this.showMoveOrAddDropdown(e)
+            this.showMoveOrAddDropdown()
           }
         }
       },
