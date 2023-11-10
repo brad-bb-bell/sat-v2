@@ -350,7 +350,6 @@
         }
       },
       dropItem(e) {
-        // A lot of 'if' statements in here... Can this be refactored to use switch statements?
         this.dropCategoryId = parseInt(e.to.dataset.categoryId)
 
         // If the item was dropped in uncategorized, remove the category where it came from
@@ -417,11 +416,9 @@
 
           // If activity already has a category, determine if you want to move it from one category to another or add it to an additional category
           else if (this.dragCategoryId) {
-            console.log('Moving activity to new category')
-            updateActivity.categories = updateActivity.categories.filter(
-              category => category.id !== this.dragCategoryId
-            )
-            updateActivity.categories.push(updateCategory)
+            console.log('Move or add?')
+            this.moveOrAddCheck = true
+            this.showMoveOrAddDropdown = true(e.event)
           }
         }
       },
