@@ -32,6 +32,8 @@
             <!-- Nested loop for activities within the category -->
             <draggable
               v-model="category.activities"
+              v-on:mouseup="capturePosition($event)"
+              v-on:mousedown="capturePosition($event)"
               itemKey="id"
               tag="ol"
               group="activities"
@@ -349,9 +351,17 @@
       }
     },
     methods: {
+      capturePosition(e) {
+        console.log('capturePosition', e)
+      },
       showMoveOrAddDropdown(e) {
         this.moveOrAddCheck = true
-        this.dropdownPosition = { x: e.clientX, y: e.clientY }
+        // this.dropdownPosition = { x: e.clientX, y: e.clientY }
+        // console.log(
+        //   'showMoveOrAddDropdown mouse position x/y',
+        //   e.clientX,
+        //   e.clientY
+        // )
       },
       moveActivityToCategory() {
         console.log('move')
@@ -377,6 +387,12 @@
         }
       },
       dropItem(e) {
+        this.dropdownPosition = { x: e.clientX, y: e.clientY }
+        console.log(
+          'showMoveOrAddDropdown mouse position x/y',
+          e.clientX,
+          e.clientY
+        )
         this.dropCategoryId = parseInt(e.to.dataset.categoryId)
 
         // If the item was dropped in uncategorized, remove the category where it came from
@@ -444,8 +460,7 @@
           // If activity already has a category, determine if you want to move it from one category to another or add it to an additional category
           else if (this.dragCategoryId) {
             console.log('Move or add?')
-            this.moveOrAddCheck = true
-            this.showMoveOrAddDropdown = true(e.event)
+            this.showMoveOrAddDropdown(e)
           }
         }
       },
@@ -926,6 +941,10 @@
         this.getCurrentStreak(this.didItsFullList)
         this.getLongestStreak(this.didItsFullList)
       })
+      document.addEventListener('mouseup', this.capturePosition)
+    },
+    beforeUnmount() {
+      document.removeEventListener('mouseup', this.capturePosition)
     }
   }
 </script>
