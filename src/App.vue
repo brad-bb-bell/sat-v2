@@ -276,7 +276,11 @@
       <!-- Dropdown Menu -->
       <div
         v-if="moveOrAddCheck"
-        class="absolute top-1 right-1 z-10 bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
+        class="absolute z-10 bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
+        :style="{
+          top: dropdownPosition.y + 'px',
+          left: dropdownPosition.x + 'px'
+        }"
       >
         <ul>
           <li @click="moveActivityToCategory">Move</li>
