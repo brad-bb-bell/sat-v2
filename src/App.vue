@@ -345,13 +345,12 @@
         const categoryElement = e.item.closest('[data-category-id]')
         if (categoryElement) {
           const categoryId = parseInt(categoryElement.dataset.categoryId)
-          console.log('dragStart categoryId', categoryId)
-
-          // If you need to save this categoryId in your data for later use, you can do so
           this.dragCategoryId = categoryId
+          console.log('dragStart categoryId', categoryId)
         }
       },
       dropItem(e) {
+        // A lot of 'if' statements in here... Can this be refactored to use switch statements?
         this.dropCategoryId = parseInt(e.to.dataset.categoryId)
 
         // If the item was dropped in uncategorized, remove the category where it came from
@@ -410,8 +409,18 @@
             // this can be removed
             console.log('Activity already belongs to this category')
           }
-          if (!hasCategory) {
+
+          if (!hasCategory && !this.dragCategoryId) {
             console.log('Adding category to activity')
+            updateActivity.categories.push(updateCategory)
+          }
+
+          // If activity already has a category, determine if you want to move it from one category to another or add it to an additional category
+          else if (this.dragCategoryId) {
+            console.log('Moving activity to new category')
+            updateActivity.categories = updateActivity.categories.filter(
+              category => category.id !== this.dragCategoryId
+            )
             updateActivity.categories.push(updateCategory)
           }
         }
