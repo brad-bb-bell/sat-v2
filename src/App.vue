@@ -405,7 +405,7 @@
             return
           }
 
-          // Filter out the category you want to remove
+          // Filter out the category you want to remove and update the activity
           updateActivity.categories = updateActivity.categories.filter(
             category => category.id !== this.dragCategoryId
           )
@@ -443,6 +443,10 @@
           const hasCategory = updateActivity.categories.some(
             cat => cat.id === updateCategory.id
           )
+          console.log(
+            'hittin where Im lookin. updateActivity has category with id: ',
+            hasCategory
+          )
           if (hasCategory) {
             // this can be removed
             console.log('Activity already belongs to this category')
@@ -454,7 +458,7 @@
           }
 
           // If activity already has a category, determine if you want to move it from one category to another or add it to an additional category
-          else if (this.dragCategoryId) {
+          if (this.dragCategoryId) {
             console.log('Move or add?')
             this.showMoveOrAddDropdown()
           }
