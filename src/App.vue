@@ -385,7 +385,6 @@
         }
       },
       dropItem(e) {
-        console.log('Mouse position at drop:', this.currentMousePosition)
         this.dropdownPosition = {
           x: this.currentMousePosition.x,
           y: this.currentMousePosition.y
