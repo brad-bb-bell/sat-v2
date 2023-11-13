@@ -409,13 +409,17 @@
           updateActivity.categories = updateActivity.categories.filter(
             category => category.id !== this.dragCategoryId
           )
+          this.dragCategoryId = null
           console.log(
             'Removed ' +
               updateActivity.name +
               ' from category Id ' +
               this.dragCategoryId
           )
-          console.log('New categories: ', updateActivity.categories)
+          console.log(
+            'Updated categories for this activity: ',
+            updateActivity.categories
+          )
         }
 
         // If the item was dropped in a category, update its category
@@ -443,22 +447,20 @@
           const alreadyBelongsToThisCategory = updateActivity.categories.some(
             cat => cat.id === updateCategory.id
           )
-          console.log(
-            'hittin where Im lookin. updateActivity has category with id: ',
-            alreadyBelongsToThisCategory
-          )
           if (alreadyBelongsToThisCategory) {
             // this can be removed
             console.log('Activity already belongs to this category')
           }
 
+          // if it doesn't belong to this category and it came from uncategorized (had no category id when it was picked up)
           if (!alreadyBelongsToThisCategory && !this.dragCategoryId) {
             console.log('Adding category to activity')
             updateActivity.categories.push(updateCategory)
           }
 
           // If activity already has a category, determine if you want to move it from one category to another or add it to an additional category
-          if (this.dragCategoryId) {
+          if (this.dragCategoryId && !alreadyBelongsToThisCategory) {
+            console.log('drageCategoryId', this.dragCategoryId)
             console.log('Move or add?')
             this.showMoveOrAddDropdown()
           }
