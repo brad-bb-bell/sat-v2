@@ -358,11 +358,7 @@
       },
       showMoveOrAddDropdown() {
         this.moveOrAddCheck = true
-        console.log('show')
-        this.dropdownPosition = {
-          x: this.currentMousePosition.x,
-          y: this.currentMousePosition.y
-        }
+        console.log('show move or add dropdown')
       },
       moveActivityToCategory() {
         console.log('move')
@@ -373,6 +369,7 @@
         this.moveOrAddCheck = false
       },
       dragStart(e) {
+        this.dragCategoryId = null
         // Get the activity ID from the element's dataset
         const activityId = parseInt(e.item.dataset.id)
         this.dragActivityId = activityId
@@ -389,6 +386,10 @@
       },
       dropItem(e) {
         console.log('Mouse position at drop:', this.currentMousePosition)
+        this.dropdownPosition = {
+          x: this.currentMousePosition.x,
+          y: this.currentMousePosition.y
+        }
         this.dropCategoryId = parseInt(e.to.dataset.categoryId)
 
         // If the item was dropped in uncategorized, remove the category where it came from
@@ -409,7 +410,8 @@
           updateActivity.categories = updateActivity.categories.filter(
             category => category.id !== this.dragCategoryId
           )
-          this.dragCategoryId = null
+          // removed the following line because I added it to dragStart
+          // this.dragCategoryId = null
           console.log(
             'Removed ' +
               updateActivity.name +
@@ -448,8 +450,9 @@
             cat => cat.id === updateCategory.id
           )
           if (alreadyBelongsToThisCategory) {
-            // this can be removed
+            // although nothing is happening in the code... visually the element is still being moved.. need a fix for this. Maybe just a fe-only resetting of categories? also, check the documentation because I think I read something about this this morning re: restricted movement
             console.log('Activity already belongs to this category')
+            return
           }
 
           // if it doesn't belong to this category and it came from uncategorized (had no category id when it was picked up)
@@ -460,7 +463,7 @@
 
           // If activity already has a category, determine if you want to move it from one category to another or add it to an additional category
           if (this.dragCategoryId && !alreadyBelongsToThisCategory) {
-            console.log('drageCategoryId', this.dragCategoryId)
+            console.log('dragCategoryId', this.dragCategoryId)
             console.log('Move or add?')
             this.showMoveOrAddDropdown()
           }
