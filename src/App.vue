@@ -440,19 +440,19 @@
             console.error('Category not found:', this.dropCategoryId)
             return
           }
-          const hasCategory = updateActivity.categories.some(
+          const alreadyBelongsToThisCategory = updateActivity.categories.some(
             cat => cat.id === updateCategory.id
           )
           console.log(
             'hittin where Im lookin. updateActivity has category with id: ',
-            hasCategory
+            alreadyBelongsToThisCategory
           )
-          if (hasCategory) {
+          if (alreadyBelongsToThisCategory) {
             // this can be removed
             console.log('Activity already belongs to this category')
           }
 
-          if (!hasCategory && !this.dragCategoryId) {
+          if (!alreadyBelongsToThisCategory && !this.dragCategoryId) {
             console.log('Adding category to activity')
             updateActivity.categories.push(updateCategory)
           }
