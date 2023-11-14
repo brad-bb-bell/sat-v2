@@ -12,6 +12,7 @@
     "@headlessui/vue": "^1.7.11",
     "@heroicons/vue": "^2.0.16",
     "@vuepic/vue-datepicker": "^3.6.5",
+    "@vueuse/core": "^10.6.1",
     "axios": "^1.2.2",
     "vue": "^3.2.45",
     "vuedraggable": "^4.1.0"

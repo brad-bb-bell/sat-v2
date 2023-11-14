@@ -15,6 +15,10 @@
         </button>
       </Section>
 
+      <div class="text-center pt-4">
+        Mouse Position: {{ mouseX }}, {{ mouseY }}
+      </div>
+
       <!-- Activities -->
       <Section>
         <div v-if="activities.length == 0" class="text-center mb-2">
@@ -301,6 +305,8 @@
   import Modal from './components/Modal.vue'
   import Hero from './components/Hero.vue'
   import LoginSignup from './components/LoginSignup.vue'
+  import { useMouse } from '@vueuse/core'
+  import { ref, onMounted, onUnmounted } from 'vue'
 
   export default {
     components: {
@@ -315,6 +321,29 @@
       Hero,
       LoginSignup,
       draggable
+    },
+    setup() {
+      // Initialize the mouse composables
+      const { x, y } = useMouse()
+
+      // Refs for the mouse position that can be used in the template
+      const mouseX = ref(0)
+      const mouseY = ref(0)
+
+      onMounted(() => {
+        // Update the refs whenever the mouse position changes
+        mouseX.value = x
+        mouseY.value = y
+      })
+
+      // Cleanup if needed when the component unmounts
+      onUnmounted(() => {
+        mouseX.value = 0
+        mouseY.value = 0
+      })
+
+      // Expose the refs to the template
+      return { mouseX, mouseY }
     },
     data() {
       return {
