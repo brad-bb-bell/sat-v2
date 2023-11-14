@@ -280,15 +280,25 @@
       <!-- Dropdown Menu -->
       <div
         v-if="moveOrAddCheck"
-        class="absolute z-10 bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
+        class="absolute z-10 bg-gray-700 border-2 border-gray-200 rounded-lg cursor-default overflow-hidden"
         :style="{
           top: moveOrAddPosition.y + 'px',
           left: moveOrAddPosition.x + 'px'
         }"
       >
-        <ul>
-          <li @click="moveActivityToCategory">Move</li>
-          <li @click="addActivityToCategory">Add</li>
+        <ul class="m-0 p-0 list-none">
+          <li
+            @click="moveActivityToCategory"
+            class="hover:bg-gray-600 border-b border-gray-200 px-2 py-1"
+          >
+            Move
+          </li>
+          <li
+            @click="addActivityToCategory"
+            class="hover:bg-gray-600 px-2 py-1"
+          >
+            Add
+          </li>
         </ul>
       </div>
     </div>
