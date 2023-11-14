@@ -282,8 +282,8 @@
         v-if="moveOrAddCheck"
         class="absolute z-10 bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
         :style="{
-          top: dropdownPosition.y + 'px',
-          left: dropdownPosition.x + 'px'
+          top: moveOrAddPosition.y + 'px',
+          left: moveOrAddPosition.x + 'px'
         }"
       >
         <ul>
@@ -348,6 +348,10 @@
     data() {
       return {
         moveOrAddCheck: false,
+        moveOrAddPosition: {
+          x: 0,
+          y: 0
+        },
         // errors: [],
         // loginParams: {},
         // signupParams: {},
@@ -409,11 +413,6 @@
         }
       },
       dropItem(e) {
-        console.log(
-          'mouse x/y',
-          this.currentMousePosition.x,
-          this.currentMousePosition.y
-        )
         this.dropCategoryId = parseInt(e.to.dataset.categoryId)
 
         // If the item was dropped in uncategorized, remove the category where it came from
@@ -489,6 +488,10 @@
           if (this.dragCategoryId && !alreadyBelongsToThisCategory) {
             console.log('dragCategoryId', this.dragCategoryId)
             console.log('Move or add?')
+            this.moveOrAddPosition.x = this.mouseX.value
+            this.moveOrAddPosition.y = this.mouseY.value
+            console.log('moveOrAddPosition', this.moveOrAddPosition)
+
             this.showMoveOrAddDropdown()
           }
         }
