@@ -318,9 +318,7 @@
     },
     data() {
       return {
-        currentMousePosition: { x: 0, y: 0 },
         moveOrAddCheck: false,
-        itemBeingDragged: false,
         // errors: [],
         // loginParams: {},
         // signupParams: {},
@@ -353,12 +351,6 @@
       }
     },
     methods: {
-      captureMouseMove(event) {
-        if (this.itemBeingDragged) {
-          this.currentMousePosition.x = event.clientX
-          this.currentMousePosition.y = event.clientY
-        }
-      },
       showMoveOrAddDropdown() {
         this.moveOrAddCheck = true
         console.log('show move or add dropdown')
@@ -372,12 +364,6 @@
         this.moveOrAddCheck = false
       },
       dragStart(e) {
-        this.itemBeingDragged = true
-        console.log(
-          'mouse x/y',
-          this.currentMousePosition.x,
-          this.currentMousePosition.y
-        )
         this.dragCategoryId = null
         // Get the activity ID from the element's dataset
         const activityId = parseInt(e.item.dataset.id)
@@ -394,11 +380,11 @@
         }
       },
       dropItem(e) {
-        this.dropdownPosition = {
-          x: this.currentMousePosition.x,
-          y: this.currentMousePosition.y
-        }
-        this.itemBeingDragged = false
+        console.log(
+          'mouse x/y',
+          this.currentMousePosition.x,
+          this.currentMousePosition.y
+        )
         this.dropCategoryId = parseInt(e.to.dataset.categoryId)
 
         // If the item was dropped in uncategorized, remove the category where it came from
@@ -955,10 +941,6 @@
         this.getCurrentStreak(this.didItsFullList)
         this.getLongestStreak(this.didItsFullList)
       })
-      document.addEventListener('mousemove', this.captureMouseMove)
-    },
-    beforeUnmount() {
-      document.removeEventListener('mousemove', this.captureMouseMove)
     }
   }
 </script>
