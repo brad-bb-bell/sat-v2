@@ -15,10 +15,6 @@
         </button>
       </Section>
 
-      <div class="text-center pt-4">
-        Mouse Position: {{ mouseX }}, {{ mouseY }}
-      </div>
-
       <!-- Activities -->
       <Section>
         <div v-if="activities.length == 0" class="text-center mb-2">
@@ -276,6 +272,12 @@
         :cancelText="cancelText"
         v-on:close-modal="showModal = false"
       />
+
+      <div
+        v-if="moveOrAddCheck"
+        class="fixed inset-0 bg-black bg-opacity-20 z-5"
+        @click="moveOrAddCheck = false"
+      ></div>
 
       <!-- Dropdown Menu -->
       <div
