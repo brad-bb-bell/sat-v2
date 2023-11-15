@@ -432,6 +432,11 @@
 
         console.log('added activity to addiitonal category', activity)
 
+        this.$nextTick(() => {
+          // Call getCategories or another method to update the UI
+          this.getCategories()
+        })
+
         this.moveOrAddCheck = false
       },
       dragStart(e) {
