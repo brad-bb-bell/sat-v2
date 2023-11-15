@@ -396,11 +396,43 @@
         console.log('show move or add dropdown')
       },
       moveActivityToCategory() {
-        console.log('move')
+        const activity = this.activities.find(a => a.id === this.dragActivityId)
+
+        // Remove from old category
+        if (this.dragCategoryId) {
+          const oldCategory = this.categories.find(
+            c => c.id === this.dragCategoryId
+          )
+          oldCategory.activities = oldCategory.activities.filter(
+            a => a.id !== this.dragActivityId
+          )
+        }
+
+        // Add to new category
+        const newCategory = this.categories.find(
+          c => c.id === this.dropCategoryId
+        )
+        if (newCategory && !newCategory.activities.includes(activity)) {
+          newCategory.activities.push(activity)
+        }
+
+        console.log('moved activity to new category', activity)
+
         this.moveOrAddCheck = false
       },
       addActivityToCategory() {
-        console.log('add')
+        const activity = this.activities.find(a => a.id === this.dragActivityId)
+
+        // Add to new category without removing from the old one
+        const newCategory = this.categories.find(
+          c => c.id === this.dropCategoryId
+        )
+        if (newCategory && !newCategory.activities.includes(activity)) {
+          newCategory.activities.push(activity)
+        }
+
+        console.log('added activity to addiitonal category', activity)
+
         this.moveOrAddCheck = false
       },
       dragStart(e) {
