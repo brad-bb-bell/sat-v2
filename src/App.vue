@@ -32,7 +32,6 @@
             <!-- Nested loop for activities within the category -->
             <draggable
               v-model="category.activities"
-              v-on:mouseup="capturePosition($event)"
               itemKey="id"
               tag="ol"
               group="activities"
@@ -43,12 +42,10 @@
               <template #item="{ element }">
                 <li
                   @click="toggleSelect(element.id)"
-                  class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 cursor-grab"
-                  :class="[
-                    selectedActivities.includes(element.id) === true
-                      ? ' border-green-400'
-                      : ''
-                  ]"
+                  class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 cursor-pointer"
+                  :class="{
+                    'border-green-400': selectedActivities.includes(element.id)
+                  }"
                   :data-id="element.id"
                 >
                   {{ element.name }}
@@ -76,12 +73,10 @@
               <template #item="{ element }">
                 <li
                   @click="toggleSelect(element.id)"
-                  class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 cursor-grab"
-                  :class="[
-                    selectedActivities.includes(element.id) === true
-                      ? ' border-green-400'
-                      : ''
-                  ]"
+                  class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 cursor-pointer"
+                  :class="{
+                    'border-green-400': selectedActivities.includes(element.id)
+                  }"
                   :data-id="element.id"
                 >
                   {{ element.name }}
