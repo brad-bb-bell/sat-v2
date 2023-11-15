@@ -412,8 +412,8 @@
         const newCategory = this.categories.find(
           c => c.id === this.dropCategoryId
         )
-        if (newCategory && !newCategory.activities.includes(activity)) {
-          newCategory.activities.push(activity)
+        if (newCategory && !activity.categories.includes(newCategory)) {
+          activity.categories.push(newCategory)
         }
 
         console.log('moved activity to new category', activity)
@@ -427,8 +427,9 @@
         const newCategory = this.categories.find(
           c => c.id === this.dropCategoryId
         )
-        if (newCategory && !newCategory.activities.includes(activity)) {
-          newCategory.activities.push(activity)
+        if (newCategory && !activity.categories.includes(newCategory)) {
+          console.log('inside if')
+          activity.categories.push(newCategory)
         }
 
         console.log('added activity to addiitonal category', activity)
