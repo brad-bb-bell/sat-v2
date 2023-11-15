@@ -400,11 +400,9 @@
 
         // Remove from old category
         if (this.dragCategoryId) {
-          const oldCategory = this.categories.find(
-            c => c.id === this.dragCategoryId
-          )
-          oldCategory.activities = oldCategory.activities.filter(
-            a => a.id !== this.dragActivityId
+          console.log('dragCategoryId should be removed', this.dragCategoryId)
+          activity.categories = activity.categories.filter(
+            c => c.id !== this.dragCategoryId
           )
         }
 
