@@ -61,7 +61,7 @@
           </div>
 
           <div v-if="uncategorizedActivities.length">
-            <h2 class="uncategorized-header">Uncategorized</h2>
+            <h2 class="text-center">Uncategorized</h2>
             <draggable
               v-model="uncategorizedActivities"
               itemKey="id"
