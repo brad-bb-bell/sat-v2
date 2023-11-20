@@ -621,6 +621,7 @@
               this.activities = this.activities.filter(
                 activity => activity.id != deleteActivityId
               )
+              this.getCategories()
             })
             .catch(error => {
               console.log(error.response.data.errors)
