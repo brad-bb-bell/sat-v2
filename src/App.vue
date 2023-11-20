@@ -638,6 +638,7 @@
           .then(response => {
             console.log('Successfully added new activity', response.data)
             this.activities.push(response.data)
+            this.getCategories()
           })
           .catch(error => {
             console.log(error.response.data.errors)
