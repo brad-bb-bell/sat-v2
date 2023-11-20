@@ -428,7 +428,6 @@
           c => c.id === this.dropCategoryId
         )
         if (newCategory && !activity.categories.includes(newCategory)) {
-          console.log('inside if')
           activity.categories.push(newCategory)
         }
 
@@ -440,6 +439,29 @@
         })
 
         this.moveOrAddCheck = false
+      },
+      checkMove(event) {
+        const toCategoryId = parseInt(event.to.dataset.categoryId)
+        const fromCategoryId = parseInt(event.from.dataset.categoryId)
+        const draggedItemId = parseInt(event.draggedContext.element.id)
+
+        if (toCategoryId === fromCategoryId) {
+          // If the item is dragged within the same category, allow it
+          return true
+        }
+
+        // Find the activity that is being dragged
+        const draggedItem = this.activities.find(
+          item => item.id === draggedItemId
+        )
+
+        // Check if the activity is already in the category it's being dragged to
+        const alreadyInCategory = draggedItem.categories.some(
+          cat => cat.id === toCategoryId
+        )
+
+        // Return false to prevent the move if it's already in the category
+        return !alreadyInCategory
       },
       dragStart(e) {
         this.dragCategoryId = null
