@@ -92,13 +92,23 @@
               </template>
             </draggable>
           </div>
-          <div>
+          <div class="pb-1">
             <form @submit.prevent="addActivity(newActivityName)">
               <input
                 type="text"
                 v-model="newActivityName"
                 placeholder="Add New Activity"
-                class="w-full pl-3 py-1 text-black border-2 border-black"
+                class="w-full pl-3 py-0.5 text-black border-2 border-black"
+              />
+            </form>
+          </div>
+          <div>
+            <form @submit.prevent="addCategory(newCategoryName)">
+              <input
+                type="text"
+                v-model="newCategoryName"
+                placeholder="Add New Category"
+                class="w-full pl-3 py-0.5 text-black border-2 border-black"
               />
             </form>
           </div>
