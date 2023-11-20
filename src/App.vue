@@ -37,6 +37,7 @@
               group="activities"
               @start="dragStart"
               @end="dropItem"
+              :move="checkMove"
               :data-category-id="category.id"
             >
               <template #item="{ element }">
@@ -69,6 +70,7 @@
               group="activities"
               @start="dragStart"
               @end="dropItem"
+              :move="checkMove"
             >
               <template #item="{ element }">
                 <li
