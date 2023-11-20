@@ -395,6 +395,7 @@
         modalMessage: '',
         modalTitle: '',
         newActivityName: '',
+        newCategoryName: '',
         selectedActivities: [],
         showLogin: false,
         showModal: false,
@@ -655,6 +656,24 @@
             console.log(error.response.data.errors)
           })
         this.newActivityName = ''
+      },
+      addCategory(name) {
+        const newCategory = {
+          user_id: localStorage.user_id,
+          name: name
+        }
+        axios
+          .post('/activities.json', newCategory)
+          .then(response => {
+            console.log('Successfully added new activity', response.data)
+            // we will change this to the categories array once we have that set up
+            this.activities.push(response.data)
+            this.getCategories()
+          })
+          .catch(error => {
+            console.log(error.response.data.errors)
+          })
+        this.newCategoryName = ''
       },
       toggleSelect(id) {
         if (this.selectedActivities.includes(id) === false) {
