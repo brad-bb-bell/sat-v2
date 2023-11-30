@@ -24,8 +24,9 @@
         <div v-else>
           <div v-for="category in categories" :key="category.id">
             <div
-              class="category-title relative text-xl bg-purple-400 text-black border-2 border-black my-1 pl-2 hover:bg-purple-500 select-none"
+              class="relative text-xl bg-purple-400 text-black border-2 border-black my-1 pl-2 hover:bg-purple-500 select-none"
               @click=""
+              @contextmenu.prevent="showContextMenu($event, category.id)"
             >
               {{ category.name }}
             </div>
@@ -310,6 +311,18 @@
           </li>
         </ul>
       </div>
+
+      <!-- Context Menu -->
+      <div
+        v-if="showCategoryContextMenu"
+        class="absolute z-10 bg-gray-700 border-2 border-gray-200 rounded-lg cursor-default overflow-hidden"
+        :style="{
+          top: contextMenuPosition.y + 'px',
+          left: contextMenuPosition.x + 'px'
+        }"
+      >
+        Delete
+      </div>
     </div>
   </div>
 </template>
@@ -367,6 +380,7 @@
     data() {
       return {
         moveOrAddCheck: false,
+        showCategoryContextMenu: false,
         moveOrAddPosition: {
           x: 0,
           y: 0
@@ -407,6 +421,12 @@
       showMoveOrAddDropdown() {
         this.moveOrAddCheck = true
         console.log('show move or add dropdown')
+      },
+      showContextMenu(event, categoryId) {
+        this.showCategoryContextMenu = true
+        this.contextMenuPosition.x = event.clientX
+        this.contextMenuPosition.y = event.clientY
+        console.log('show context menu', categoryId)
       },
       moveActivityToCategory() {
         const activity = this.activities.find(a => a.id === this.dragActivityId)
