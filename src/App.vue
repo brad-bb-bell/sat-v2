@@ -658,22 +658,23 @@
         this.newActivityName = ''
       },
       addCategory(name) {
+        console.log('categories', this.categories)
         const newCategory = {
           user_id: localStorage.user_id,
           name: name
         }
         axios
-          .post('/activities.json', newCategory)
+          .post('/categories.json', newCategory)
           .then(response => {
-            console.log('Successfully added new activity', response.data)
-            // we will change this to the categories array once we have that set up
-            this.activities.push(response.data)
+            console.log('Successfully added new category', response.data)
+            this.categories.push(response.data)
             this.getCategories()
           })
           .catch(error => {
             console.log(error.response.data.errors)
           })
         this.newCategoryName = ''
+        console.log('categories', this.categories)
       },
       toggleSelect(id) {
         if (this.selectedActivities.includes(id) === false) {
@@ -1028,7 +1029,7 @@
 
         // Convert the categoriesMap object to an array of values (which are the categories)
         this.categories = Object.values(categoriesMap)
-        console.log('categories', this.categories)
+        console.log('categories after getCategories', this.categories)
         console.log('uncategorizedActivities', this.uncategorizedActivities)
       }
     },
