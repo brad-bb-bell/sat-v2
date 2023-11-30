@@ -1001,8 +1001,14 @@
         console.log(activity.name)
       },
       getCategories() {
+        // Initialize categoriesMap with all categories having an empty activities list
         let categoriesMap = {}
-        this.uncategorizedActivities = [] // New array for activities without categories
+        this.categories.forEach(category => {
+          categoriesMap[category.id] = { ...category, activities: [] }
+        })
+
+        // New array for activities without categories
+        this.uncategorizedActivities = []
 
         // Loop through all activities
         this.activities.forEach(activity => {
@@ -1010,15 +1016,9 @@
           if (activity.categories && activity.categories.length > 0) {
             // Loop through all categories of the activity
             activity.categories.forEach(category => {
-              // If the category is already in the categoriesMap, push the activity to its list
+              // Add the activity to the corresponding category in categoriesMap
               if (categoriesMap[category.id]) {
                 categoriesMap[category.id].activities.push(activity)
-              } else {
-                // Otherwise, create a new category in the categoriesMap with the activity
-                categoriesMap[category.id] = {
-                  ...category,
-                  activities: [activity]
-                }
               }
             })
           } else {
@@ -1046,6 +1046,7 @@
             .then(response => {
               this.user = response.data
               this.activities = this.user.activities
+              this.categories = this.user.categories
               this.getCategories()
               this.didItsFullList = this.user.did_its
               this.didIts = this.user.did_its
