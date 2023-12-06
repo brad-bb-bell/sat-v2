@@ -479,12 +479,28 @@
           activity.categories.push(newCategory)
         }
 
-        console.log('added activity to additonal category', activity)
+        console.log('added activity to additional category', activity)
 
-        this.$nextTick(() => {
-          // Call getCategories or another method to update the UI
-          this.getCategories()
-        })
+        // Extract category IDs
+        const categoryIds = activity.categories.map(c => c.id)
+
+        // Axios call to update the backend
+        axios
+          .patch(`/activities/${activity.id}.json`, {
+            category_ids: categoryIds
+          })
+          .then(response => {
+            console.log('Activity updated with new category:', response.data)
+            // Optionally, update your local state or UI here
+            this.$nextTick(() => {
+              // Call getCategories or another method to update the UI
+              this.getCategories()
+            })
+          })
+          .catch(error => {
+            console.error('Error adding category to activity:', error)
+            // Handle errors here
+          })
 
         this.moveOrAddCheck = false
       },
