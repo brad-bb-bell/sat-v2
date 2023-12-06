@@ -452,7 +452,6 @@
         // Extract category IDs
         const categoryIds = activity.categories.map(c => c.id)
 
-        // Axios call to update the backend
         axios
           .patch(`/activities/${activity.id}.json`, {
             category_ids: categoryIds
