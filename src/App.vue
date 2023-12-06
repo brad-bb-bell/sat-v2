@@ -449,6 +449,23 @@
 
         console.log('moved activity to new category', activity)
 
+        // Extract category IDs
+        const categoryIds = activity.categories.map(c => c.id)
+
+        // Axios call to update the backend
+        axios
+          .patch(`/activities/${activity.id}.json`, {
+            category_ids: categoryIds
+          })
+          .then(response => {
+            console.log('Activity updated:', response.data)
+            // Optionally, update your local state or UI here
+          })
+          .catch(error => {
+            console.error('Error updating activity:', error)
+            // Handle errors, such as reverting the UI changes
+          })
+
         this.moveOrAddCheck = false
       },
       addActivityToCategory() {
@@ -462,7 +479,7 @@
           activity.categories.push(newCategory)
         }
 
-        console.log('added activity to addiitonal category', activity)
+        console.log('added activity to additonal category', activity)
 
         this.$nextTick(() => {
           // Call getCategories or another method to update the UI
