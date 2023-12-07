@@ -331,7 +331,13 @@
             @click="removeActivityFromCategory"
             class="hover:bg-gray-600 border-b border-gray-200 px-2 py-1"
           >
-            Delete
+            Edit Category Name
+          </li>
+          <li
+            @click="deleteCategory"
+            class="hover:bg-gray-600 border-b border-gray-200 px-2 py-1"
+          >
+            Delete Category
           </li>
         </ul>
       </div>
@@ -444,8 +450,8 @@
         this.contextMenuPosition.y = event.clientY
         console.log('show context menu', categoryId)
       },
-      removeActivityFromCategory() {
-        console.log('remove activity from category')
+      deleteCategory() {
+        console.log('delete category')
         this.showCategoryContextMenu = false
       },
       moveActivityToCategory() {
