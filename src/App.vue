@@ -334,7 +334,7 @@
             Edit Category Name
           </li>
           <li
-            @click="deleteCategory(category.id)"
+            @click="deleteCategory"
             class="hover:bg-gray-600 border-b border-gray-200 px-2 py-1"
           >
             Delete Category
@@ -407,6 +407,7 @@
           x: 0,
           y: 0
         },
+        contextMenuId: '',
         // errors: [],
         // loginParams: {},
         // signupParams: {},
@@ -446,13 +447,18 @@
       },
       showContextMenu(event, categoryId) {
         this.showCategoryContextMenu = true
+        this.contextMenuId = categoryId
         this.contextMenuPosition.x = event.clientX
         this.contextMenuPosition.y = event.clientY
-        console.log('show context menu for category with id', categoryId)
+        console.log(
+          'show context menu for category with id',
+          this.contextMenuId
+        )
       },
-      deleteCategory(id) {
-        console.log('delete category w id ' + id)
+      deleteCategory() {
+        console.log('delete category w id ' + this.contextMenuId)
         this.showCategoryContextMenu = false
+        this.contextMenuId = ''
       },
       moveActivityToCategory() {
         const activity = this.activities.find(a => a.id === this.dragActivityId)
