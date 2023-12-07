@@ -456,8 +456,35 @@
         )
       },
       deleteCategory() {
+        // this is actually just removing the category from the activity
+
         console.log('delete category w id ' + this.contextMenuId)
         this.showCategoryContextMenu = false
+
+        // Find all activities that include the category and update them
+        this.activities.forEach(activity => {
+          if (activity.categories.some(c => c.id === this.contextMenuId)) {
+            // Remove the category
+            activity.categories = activity.categories.filter(
+              c => c.id !== this.contextMenuId
+            )
+
+            // Make an Axios call to update each activity
+            axios
+              .patch(`/activities/${activity.id}.json`, {
+                category_ids: activity.categories.map(c => c.id)
+              })
+              .then(response => {
+                console.log('Category removed from activity:', response.data)
+                // Handle successful response
+              })
+              .catch(error => {
+                console.error('Error removing category from activity:', error)
+                // Handle error
+              })
+          }
+        })
+        this.getCategories
         this.contextMenuId = ''
       },
       moveActivityToCategory() {
