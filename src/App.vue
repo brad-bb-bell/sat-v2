@@ -457,6 +457,7 @@
       },
       deleteCategory() {
         // this is actually just removing the category from the activity
+        // should be renamed to removeCategoryFromActivity
 
         console.log('delete category w id ' + this.contextMenuId)
         this.showCategoryContextMenu = false
