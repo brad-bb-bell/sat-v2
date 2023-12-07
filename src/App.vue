@@ -286,6 +286,11 @@
         class="fixed inset-0 bg-black bg-opacity-20 z-5"
         @click="moveOrAddCheck = false"
       ></div>
+      <div
+        v-if="showCategoryContextMenu"
+        class="fixed inset-0 bg-black bg-opacity-20 z-5"
+        @click="showCategoryContextMenu = false"
+      ></div>
 
       <!-- Dropdown Menu -->
       <div
