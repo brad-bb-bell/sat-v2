@@ -321,7 +321,14 @@
           left: contextMenuPosition.x + 'px'
         }"
       >
-        Delete
+        <ul class="m-0 p-0 list-none">
+          <li
+            @click="removeActivityFromCategory"
+            class="hover:bg-gray-600 border-b border-gray-200 px-2 py-1"
+          >
+            Delete
+          </li>
+        </ul>
       </div>
     </div>
   </div>
@@ -385,6 +392,10 @@
           x: 0,
           y: 0
         },
+        contextMenuPosition: {
+          x: 0,
+          y: 0
+        },
         // errors: [],
         // loginParams: {},
         // signupParams: {},
@@ -427,6 +438,9 @@
         this.contextMenuPosition.x = event.clientX
         this.contextMenuPosition.y = event.clientY
         console.log('show context menu', categoryId)
+      },
+      removeActivityFromCategory() {
+        console.log('remove activity from category')
       },
       moveActivityToCategory() {
         const activity = this.activities.find(a => a.id === this.dragActivityId)
