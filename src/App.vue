@@ -446,6 +446,7 @@
       },
       removeActivityFromCategory() {
         console.log('remove activity from category')
+        this.showCategoryContextMenu = false
       },
       moveActivityToCategory() {
         const activity = this.activities.find(a => a.id === this.dragActivityId)
