@@ -456,7 +456,7 @@
         )
       },
       deleteCategory() {
-        //w
+        // works on the backend but for som reason it is not updating on the frontend with the getCategory method
         console.log('Deleting category with id:', this.contextMenuId)
         this.showCategoryContextMenu = false
 
