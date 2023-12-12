@@ -456,20 +456,43 @@
         )
       },
       deleteCategory() {
-        // works on the backend but for som reason it is not updating on the frontend with the getCategory method
         console.log('Deleting category with id:', this.contextMenuId)
         this.showCategoryContextMenu = false
 
-        axios
-          .delete(`/categories/${this.contextMenuId}.json`)
-          .then(response => {
-            console.log('Category deleted:', response.data)
-            // Remove the category from the local state
-            this.getCategories() // Refresh the categories list
-          })
-          .catch(error => {
-            console.error('Error deleting category:', error)
-          })
+        // Find the name of the category to delete
+        const categoryNameToDelete = this.categories.find(
+          c => c.id === this.contextMenuId
+        )?.name
+
+        if (categoryNameToDelete) {
+          axios
+            .delete(`/categories/${this.contextMenuId}.json`)
+            .then(response => {
+              console.log('Category deleted:', response.data)
+
+              // Remove the category from the local categories array
+              this.categories = this.categories.filter(
+                c => c.id !== this.contextMenuId
+              )
+
+              // Update the activities to remove the deleted category by its name
+              this.activities.forEach(activity => {
+                activity.categories = activity.categories.filter(
+                  cName => cName !== categoryNameToDelete
+                )
+              })
+
+              // Optionally, update the uncategorizedActivities array if needed
+              this.uncategorizedActivities = this.activities.filter(
+                activity => activity.categories.length === 0
+              )
+            })
+            .catch(error => {
+              console.error('Error deleting category:', error)
+            })
+        } else {
+          console.error('Category to delete not found')
+        }
 
         this.contextMenuId = ''
       },
