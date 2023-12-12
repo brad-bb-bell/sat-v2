@@ -456,6 +456,7 @@
         )
       },
       deleteCategory() {
+        //w
         console.log('Deleting category with id:', this.contextMenuId)
         this.showCategoryContextMenu = false
 
