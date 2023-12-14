@@ -484,6 +484,8 @@
               // Rollback to the original categories array
               this.categories = originalCategories
               // Optionally, inform the user that the deletion failed
+
+              // It's important to inform the user of the rollback if an error occurs so that they are not confused about the state of the application. You might display a notification or an error message to explain what happened.
             })
         } else {
           console.error('Category to delete not found')
