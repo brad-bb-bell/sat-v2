@@ -459,7 +459,7 @@
         console.log('Deleting category with id:', this.contextMenuId)
         this.showCategoryContextMenu = false
 
-        // Store a reference to the original categories
+        // Store a reference to the original categories. This will be used for rollback in case of an error from the api
         const originalCategories = [...this.categories]
 
         // Find the name of the category to delete
@@ -472,7 +472,6 @@
           this.categories = this.categories.filter(
             c => c.id !== this.contextMenuId
           )
-
           axios
             .delete(`/categories/${this.contextMenuId}.json`)
             .then(response => {
@@ -490,7 +489,6 @@
         } else {
           console.error('Category to delete not found')
         }
-
         this.contextMenuId = ''
       },
       moveActivityToCategory() {
