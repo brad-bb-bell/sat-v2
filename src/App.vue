@@ -469,23 +469,18 @@
             .delete(`/categories/${this.contextMenuId}.json`)
             .then(response => {
               console.log('Category deleted:', response.data)
-
+              console.log('FE Category data before deletion:', this.categories)
               // Remove the category from the local categories array
               this.categories = this.categories.filter(
                 c => c.id !== this.contextMenuId
               )
-
+              console.log('FE Category data after deletion:', this.categories)
               // Update the activities to remove the deleted category by its name
               this.activities.forEach(activity => {
                 activity.categories = activity.categories.filter(
                   cName => cName !== categoryNameToDelete
                 )
               })
-
-              // Optionally, update the uncategorizedActivities array if needed
-              this.uncategorizedActivities = this.activities.filter(
-                activity => activity.categories.length === 0
-              )
             })
             .catch(error => {
               console.error('Error deleting category:', error)
@@ -777,7 +772,7 @@
         this.newActivityName = ''
       },
       addCategory(name) {
-        console.log('categories', this.categories)
+        console.log('addCategory method start', this.categories)
         const newCategory = {
           user_id: localStorage.user_id,
           name: name
@@ -793,7 +788,7 @@
             console.log(error.response.data.errors)
           })
         this.newCategoryName = ''
-        console.log('categories', this.categories)
+        console.log('addCategory method end', this.categories)
       },
       toggleSelect(id) {
         if (this.selectedActivities.includes(id) === false) {
