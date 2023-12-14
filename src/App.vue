@@ -459,31 +459,31 @@
         console.log('Deleting category with id:', this.contextMenuId)
         this.showCategoryContextMenu = false
 
-        // Find the name of the category to delete
-        const categoryNameToDelete = this.categories.find(
-          c => c.id === this.contextMenuId
-        )?.name
+        // Store a reference to the original categories
+        const originalCategories = [...this.categories]
 
-        if (categoryNameToDelete) {
-          console.log('FE Category data before deletion:', this.categories)
-          // Remove the category from the local categories array
-          this.categories = [...this.categories].filter(
+        // Find the name of the category to delete
+        const categoryToDelete = this.categories.find(
+          c => c.id === this.contextMenuId
+        )
+
+        if (categoryToDelete) {
+          // Optimistically remove the category from the local categories array
+          this.categories = this.categories.filter(
             c => c.id !== this.contextMenuId
           )
-          console.log('FE Category data after deletion:', this.categories)
-          // Update the activities to remove the deleted category by its name
-          this.activities.forEach(activity => {
-            activity.categories = activity.categories.filter(
-              cName => cName !== categoryNameToDelete
-            )
-          })
+
           axios
             .delete(`/categories/${this.contextMenuId}.json`)
             .then(response => {
               console.log('Category deleted:', response.data)
+              // No need to do anything here, the optimistic update is already in place
             })
             .catch(error => {
               console.error('Error deleting category:', error)
+              // Rollback to the original categories array
+              this.categories = originalCategories
+              // Optionally, inform the user that the deletion failed
             })
         } else {
           console.error('Category to delete not found')
