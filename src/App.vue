@@ -465,22 +465,22 @@
         )?.name
 
         if (categoryNameToDelete) {
+          console.log('FE Category data before deletion:', this.categories)
+          // Remove the category from the local categories array
+          this.categories = [...this.categories].filter(
+            c => c.id !== this.contextMenuId
+          )
+          console.log('FE Category data after deletion:', this.categories)
+          // Update the activities to remove the deleted category by its name
+          this.activities.forEach(activity => {
+            activity.categories = activity.categories.filter(
+              cName => cName !== categoryNameToDelete
+            )
+          })
           axios
             .delete(`/categories/${this.contextMenuId}.json`)
             .then(response => {
               console.log('Category deleted:', response.data)
-              console.log('FE Category data before deletion:', this.categories)
-              // Remove the category from the local categories array
-              this.categories = this.categories.filter(
-                c => c.id !== this.contextMenuId
-              )
-              console.log('FE Category data after deletion:', this.categories)
-              // Update the activities to remove the deleted category by its name
-              this.activities.forEach(activity => {
-                activity.categories = activity.categories.filter(
-                  cName => cName !== categoryNameToDelete
-                )
-              })
             })
             .catch(error => {
               console.error('Error deleting category:', error)
