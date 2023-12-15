@@ -531,6 +531,7 @@
         this.moveOrAddCheck = false
       },
       addActivityToCategory() {
+        console.log('xxxxx addActivityToCategory')
         const activity = this.activities.find(a => a.id === this.dragActivityId)
 
         // Add to new category without removing from the old one
@@ -674,6 +675,7 @@
           if (!alreadyBelongsToThisCategory && !this.dragCategoryId) {
             console.log('Adding category to activity')
             updateActivity.categories.push(updateCategory)
+            this.addActivityToCategory()
           }
 
           // If activity already has a category, determine if you want to move it from one category to another or add it to an additional category
