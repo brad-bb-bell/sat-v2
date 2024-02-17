@@ -25,7 +25,6 @@
           <div v-for="category in categories" :key="category.id">
             <div
               class="relative text-xl bg-purple-400 text-black border-2 border-black my-1 pl-2 hover:bg-purple-500 select-none"
-              @click=""
               @contextmenu.prevent="showContextMenu($event, category.id)"
             >
               {{ category.name }}
