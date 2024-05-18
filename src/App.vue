@@ -50,7 +50,9 @@
                   :data-id="element.id"
                 >
                   {{ element.name }}
-                  <span class="absolute inset-y-0 right-2 text-gray-400">
+                  <span
+                    class="absolute inset-y-0 right-2 text-base flex items-center text-gray-400"
+                  >
                     {{ hashTable[element.name] || 0 }}x
                   </span>
                 </li>
