@@ -50,11 +50,8 @@
                   :data-id="element.id"
                 >
                   {{ element.name }}
-                  <span class="absolute inset-y-0 right-2">
-                    <i
-                      @click.stop="deleteActivity(element)"
-                      class="fa-solid fa-xmark text-gray-400 hover:cursor-pointer hover:text-red-500"
-                    ></i>
+                  <span class="absolute inset-y-0 right-2 text-gray-400">
+                    {{ hashTable[element.name] || 0 }}x
                   </span>
                 </li>
               </template>
