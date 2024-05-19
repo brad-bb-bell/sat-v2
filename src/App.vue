@@ -22,12 +22,17 @@
         </div>
 
         <div v-else>
-          <div v-for="category in categories" :key="category.id">
+          <div v-for="category in categoryTotals" :key="category.id">
             <div
               class="relative text-xl bg-purple-400 text-black border-2 border-black my-1 pl-2 hover:bg-purple-500 select-none"
               @contextmenu.prevent="showContextMenu($event, category.id)"
             >
               {{ category.name }}
+              <span
+                class="absolute inset-y-0 right-2 text-base flex items-center text-gray-700"
+              >
+                {{ category.total }}x
+              </span>
             </div>
             <!-- Nested loop for activities within the category -->
             <draggable
@@ -53,7 +58,7 @@
                   <span
                     class="absolute inset-y-0 right-2 text-base flex items-center text-gray-400"
                   >
-                    {{ hashTable[element.name] || 0 }}x
+                    {{ activityHashTable[element.name] || 0 }}x
                   </span>
                 </li>
               </template>
@@ -229,7 +234,7 @@
       <Section>
         <div class="text-xl text-center">All Activities</div>
         <div
-          v-for="(value, key) in hashTable"
+          v-for="(value, key) in activityHashTable"
           :key="key"
           class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
         >
@@ -393,6 +398,22 @@
       // Expose the refs to the template
       return { mouseX, mouseY }
     },
+    computed: {
+      categoryTotals() {
+        return this.categories.map(category => {
+          let total = 0
+          category.activities.forEach(activity => {
+            if (this.activityHashTable[activity.name]) {
+              total += this.activityHashTable[activity.name]
+            }
+          })
+          return {
+            ...category,
+            total
+          }
+        })
+      }
+    },
     data() {
       return {
         moveOrAddCheck: false,
@@ -423,7 +444,7 @@
         favoriteDays: 0,
         favoriteList: [],
         firstDate: '',
-        hashTable: {},
+        activityHashTable: {},
         isLoggedIn: false,
         lastDate: '',
         longestStreak: 0,
@@ -893,16 +914,16 @@
         })
       },
       addToHashTable(key, value) {
-        this.hashTable[key] = value
+        this.activityHashTable[key] = value
       },
       removeFromHashTable(key) {
-        delete this.hashTable[key]
+        delete this.activityHashTable[key]
       },
       hasKey(key) {
-        return this.hashTable.hasOwnProperty(key)
+        return this.activityHashTable.hasOwnProperty(key)
       },
       getValue(key) {
-        return this.hashTable[key]
+        return this.activityHashTable[key]
       },
       // increment and decrement could be lumped into one function
       incrementValue(key) {
@@ -1142,8 +1163,7 @@
 
         // Convert the categoriesMap object to an array of values (which are the categories)
         this.categories = Object.values(categoriesMap)
-        console.log('categories after getCategories', this.categories)
-        console.log('uncategorizedActivities', this.uncategorizedActivities)
+        console.log('Categories:', this.categories)
       }
     },
     created() {
