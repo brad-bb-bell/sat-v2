@@ -15,6 +15,24 @@
         </button>
       </Section>
 
+      <!-- Timeframe Dropdown -->
+      <div class="mb-4 text-center">
+        <label for="timeframe" class="mr-2">Select Timeframe:</label>
+        <select
+          id="timeframe"
+          v-model="selectedTimeframe"
+          class="border border-gray-300 rounded p-1"
+        >
+          <option
+            v-for="timeframe in timeframes"
+            :key="timeframe.value"
+            :value="timeframe.value"
+          >
+            {{ timeframe.label }}
+          </option>
+        </select>
+      </div>
+
       <!-- Activities -->
       <Section>
         <div v-if="activities.length == 0" class="text-center mb-2">
@@ -30,6 +48,7 @@
               {{ category.name }}
               <span
                 class="absolute inset-y-0 right-2 text-base flex items-center text-gray-700"
+                @click="toggleCategoryDropdown(category.id)"
               >
                 {{ category.total }}x
               </span>
@@ -57,8 +76,9 @@
                   {{ element.name }}
                   <span
                     class="absolute inset-y-0 right-2 text-base flex items-center text-gray-400"
+                    @click="toggleActivityDropdown(element.id)"
                   >
-                    {{ activityHashTable[element.name] || 0 }}x
+                    {{ activityHashTableFiltered[element.name] || 0 }}x
                   </span>
                 </li>
               </template>
@@ -399,12 +419,43 @@
       return { mouseX, mouseY }
     },
     computed: {
+      filteredDidIts() {
+        const now = new Date()
+        let filtered = this.didItsFullList
+
+        if (this.selectedTimeframe !== 'all-time') {
+          let cutoffDate
+          switch (this.selectedTimeframe) {
+            case '7-days':
+              cutoffDate = new Date(now.setDate(now.getDate() - 7))
+              break
+            case '30-days':
+              cutoffDate = new Date(now.setDate(now.getDate() - 30))
+              break
+            case '3-months':
+              cutoffDate = new Date(now.setMonth(now.getMonth() - 3))
+              break
+            case '6-months':
+              cutoffDate = new Date(now.setMonth(now.getMonth() - 6))
+              break
+            case '12-months':
+              cutoffDate = new Date(now.setFullYear(now.getFullYear() - 1))
+              break
+          }
+          filtered = this.didItsFullList.filter(
+            didIt => new Date(didIt.date) >= cutoffDate
+          )
+        }
+        return filtered
+      },
       categoryTotals() {
         return this.categories.map(category => {
           let total = 0
           category.activities.forEach(activity => {
             if (this.activityHashTable[activity.name]) {
-              total += this.activityHashTable[activity.name]
+              total += this.filteredDidIts.filter(
+                didIt => didIt.name === activity.name
+              ).length
             }
           })
           return {
@@ -412,6 +463,16 @@
             total
           }
         })
+      },
+      activityHashTableFiltered() {
+        const hashTable = {}
+        this.filteredDidIts.forEach(didIt => {
+          if (!hashTable[didIt.name]) {
+            hashTable[didIt.name] = 0
+          }
+          hashTable[didIt.name]++
+        })
+        return hashTable
       }
     },
     data() {
@@ -456,10 +517,23 @@
         showLogin: false,
         showModal: false,
         showSignup: false,
-        user: {}
+        user: {},
+        timeframe: 'all-time',
+        timeframes: [
+          { label: 'Last 7 days', value: '7-days' },
+          { label: 'Last 30 days', value: '30-days' },
+          { label: 'Last 3 months', value: '3-months' },
+          { label: 'Last 6 months', value: '6-months' },
+          { label: 'Last 12 months', value: '12-months' },
+          { label: 'All time', value: 'all-time' }
+        ],
+        selectedTimeframe: 'all-time'
       }
     },
     methods: {
+      updateTimeframe(timeframe) {
+        this.selectedTimeframe = timeframe
+      },
       showMoveOrAddDropdown() {
         this.moveOrAddCheck = true
         console.log('show move or add dropdown')
