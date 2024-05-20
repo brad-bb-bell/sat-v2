@@ -15,24 +15,6 @@
         </button>
       </Section>
 
-      <!-- Timeframe Dropdown -->
-      <div class="mb-4 text-center">
-        <label for="timeframe" class="mr-2">Select Timeframe:</label>
-        <select
-          id="timeframe"
-          v-model="selectedTimeframe"
-          class="border border-gray-300 rounded p-1"
-        >
-          <option
-            v-for="timeframe in timeframes"
-            :key="timeframe.value"
-            :value="timeframe.value"
-          >
-            {{ timeframe.label }}
-          </option>
-        </select>
-      </div>
-
       <!-- Activities -->
       <Section>
         <div v-if="activities.length == 0" class="text-center mb-2">
@@ -40,6 +22,21 @@
         </div>
 
         <div v-else>
+          <div class="mb-2 text-center">
+            <select
+              id="timeframe"
+              v-model="selectedTimeframe"
+              class="border border-gray-300 rounded p-1 text-xs text-black bg-purple-200"
+            >
+              <option
+                v-for="timeframe in timeframes"
+                :key="timeframe.value"
+                :value="timeframe.value"
+              >
+                {{ timeframe.label }}
+              </option>
+            </select>
+          </div>
           <div v-for="category in categoryTotals" :key="category.id">
             <div
               class="relative text-xl bg-purple-400 text-black border-2 border-black my-1 pl-2 hover:bg-purple-500 select-none"
