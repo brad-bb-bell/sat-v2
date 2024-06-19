@@ -962,6 +962,7 @@
                 this.currentStreak++
               }
               this.didIts.push(response.data)
+              this.didItsFullList.push(response.data)
               this.sortByDate(this.didIts)
               this.incrementValue(response.data.name)
               if (response.data.name == this.favoriteActivity.name) {
