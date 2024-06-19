@@ -503,6 +503,7 @@
         favoriteDays: 0,
         favoriteList: [],
         firstDate: '',
+        flashingActivity: [],
         activityHashTable: {},
         isLoggedIn: false,
         lastDate: '',
