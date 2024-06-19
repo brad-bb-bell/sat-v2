@@ -985,7 +985,6 @@
       },
       flashActivity() {
         this.flashingActivities = this.selectedActivities
-        console.log('flashingActivities', this.flashingActivities)
         setTimeout(() => {
           this.flashingActivities = []
         }, 1000) // Match the duration of your CSS animation
