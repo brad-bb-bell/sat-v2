@@ -66,7 +66,8 @@
                   @click="toggleSelect(element.id)"
                   class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 cursor-pointer"
                   :class="{
-                    'border-green-400': selectedActivities.includes(element.id)
+                    'border-green-400': selectedActivities.includes(element.id),
+                    flash: flashingActivities.includes(element.id)
                   }"
                   :data-id="element.id"
                 >
@@ -99,7 +100,7 @@
                   class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 cursor-pointer"
                   :class="{
                     'border-green-400': selectedActivities.includes(element.id),
-                    flash: flashingActivity.includes(element.id)
+                    flash: flashingActivities.includes(element.id)
                   }"
                   :data-id="element.id"
                 >
@@ -503,7 +504,7 @@
         favoriteDays: 0,
         favoriteList: [],
         firstDate: '',
-        flashingActivity: [],
+        flashingActivities: [],
         activityHashTable: {},
         isLoggedIn: false,
         lastDate: '',
@@ -965,6 +966,9 @@
               }
               this.didIts.push(response.data)
               this.didItsFullList.push(response.data)
+              this.flashActivity()
+              this.selectedId = []
+              this.selectedActivities = []
               this.sortByDate(this.didIts)
               this.incrementValue(response.data.name)
               if (response.data.name == this.favoriteActivity.name) {
@@ -977,8 +981,14 @@
               this.didIts = this.didIts.reverse().slice(0, this.didItsNumber)
             })
         }
-        this.selectedId = []
-        this.selectedActivities = []
+      },
+      flashActivity() {
+        this.flashingActivities = this.selectedActivities
+        for (let index = 0; index < this.flashingActivities.length; index++) {
+          setTimeout(() => {
+            this.flashingActivities = []
+          }, 2000) // Match the duration of your CSS animation
+        }
       },
       sortByDate(array) {
         array.sort(function (a, b) {
@@ -1289,18 +1299,34 @@
     opacity: 1;
   }
   .flash {
-    animation: flash-border 0.5s ease-in-out;
+    animation: flash-border 0.75s ease-in-out;
   }
 
   @keyframes flash-border {
     0% {
-      border-color: green;
+      border-color: rgb(74, 222, 128);
+      border-width: 2px;
+    }
+    12.5% {
+      border-color: transparent;
     }
     50% {
+      border-color: rgb(74, 222, 128);
+      border-width: 2px;
+    }
+    62.5% {
+      border-color: transparent;
+    }
+    75% {
+      border-color: rgb(74, 222, 128);
+      border-width: 2px;
+    }
+    87.5% {
       border-color: transparent;
     }
     100% {
-      border-color: green;
+      border-color: rgb(74, 222, 128);
+      border-width: 2px;
     }
   }
 </style>
