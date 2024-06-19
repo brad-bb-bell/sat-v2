@@ -966,9 +966,7 @@
               }
               this.didIts.push(response.data)
               this.didItsFullList.push(response.data)
-              this.flashActivity()
-              this.selectedId = []
-              this.selectedActivities = []
+
               this.sortByDate(this.didIts)
               this.incrementValue(response.data.name)
               if (response.data.name == this.favoriteActivity.name) {
@@ -981,14 +979,16 @@
               this.didIts = this.didIts.reverse().slice(0, this.didItsNumber)
             })
         }
+        this.flashActivity()
+        this.selectedId = []
+        this.selectedActivities = []
       },
       flashActivity() {
         this.flashingActivities = this.selectedActivities
-        for (let index = 0; index < this.flashingActivities.length; index++) {
-          setTimeout(() => {
-            this.flashingActivities = []
-          }, 2000) // Match the duration of your CSS animation
-        }
+        console.log('flashingActivities', this.flashingActivities)
+        setTimeout(() => {
+          this.flashingActivities = []
+        }, 1000) // Match the duration of your CSS animation
       },
       sortByDate(array) {
         array.sort(function (a, b) {
