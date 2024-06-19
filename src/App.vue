@@ -98,7 +98,8 @@
                   @click="toggleSelect(element.id)"
                   class="relative text-xl bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600 cursor-pointer"
                   :class="{
-                    'border-green-400': selectedActivities.includes(element.id)
+                    'border-green-400': selectedActivities.includes(element.id),
+                    flash: flashingActivity.includes(element.id)
                   }"
                   :data-id="element.id"
                 >
@@ -1285,5 +1286,20 @@
   input[type='number']::-webkit-inner-spin-button,
   input[type='number']::-webkit-outer-spin-button {
     opacity: 1;
+  }
+  .flash {
+    animation: flash-border 0.5s ease-in-out;
+  }
+
+  @keyframes flash-border {
+    0% {
+      border-color: green;
+    }
+    50% {
+      border-color: transparent;
+    }
+    100% {
+      border-color: green;
+    }
   }
 </style>
