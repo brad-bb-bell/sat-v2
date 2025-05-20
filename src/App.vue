@@ -249,18 +249,6 @@
         </div>
       </Section>
 
-      <!-- All Activities -->
-      <Section>
-        <div class="text-xl text-center">All Activities</div>
-        <div
-          v-for="(value, key) in activityHashTable"
-          :key="key"
-          class="bg-gray-700 border-2 border-black my-1 pl-2 hover:bg-gray-600"
-        >
-          {{ key }}: {{ value }}x
-        </div>
-      </Section>
-
       <!-- Recent Activities aka Did Its -->
       <Section>
         <div class="text-xl text-center py-1">
